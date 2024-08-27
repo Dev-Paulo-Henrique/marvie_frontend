@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMediaQuery } from "react-responsive";
 import { Sidebar } from "../../components/Sidebar";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Home } from "../Home";
@@ -15,17 +15,8 @@ import { OrderDetail } from "../Orders/OrderDetail";
 import { ProductDetail } from "../Products/ProductDetail";
 
 export function Admin() {
-  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 992);
+  const isDesktop = useMediaQuery({ minWidth: 992 });
   const { isConnected, isLoading } = useAxiosConnection();
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 992);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const sidebarWidth = isDesktop ? "280px" : "80px";
 
