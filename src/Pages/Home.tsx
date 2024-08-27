@@ -1,0 +1,46 @@
+// import { useState, useEffect } from "react";
+// import ContentLoader from "react-content-loader";
+import { Statics } from "../components/Stats";
+import { Title } from "../utils/Title";
+import { useAuth } from "../hooks/useAuth";
+
+export function Home() {
+  // const MyLoader = () => <ContentLoader />;
+  // const [loading, setLoading] = useState(true);
+  const { userName, 
+    // token
+   } = useAuth();
+
+  // useEffect(() => {
+  //   async function validateJWT() {
+  //     if (!token) {
+  //       await window.location.assign("/login");
+  //     } else {
+  //       setTimeout(() => {
+  //         setLoading(false);
+  //       }, 1000);
+  //     }
+  //   }
+  //   validateJWT();
+  // }, [token]);
+
+  Title({ title: "Home" });
+
+  return (
+    <div className="p-4">
+      <div>
+        <h2 className="fw-normal">Olá, {userName ? userName : "Usuário"}!</h2>
+        <span className="text-secondary">
+          Você fez login em: <strong>{import.meta.env.VITE_APP_TITLE}</strong>
+        </span>
+      </div>
+      <div className="d-flex bg-white w-100 rounded border border-secondary shadow my-4">
+        <Statics count={28} text="Pedidos pendentes nesta semana" />
+        <Statics count={6} text="Pedidos não aprovados nesta semana" />
+        <Statics count={2} text="Carrinhos abandonados nesta semana" />
+        <Statics count={3} text="Produtos sem estoque" />
+      </div>
+      <hr />
+    </div>
+  );
+}
