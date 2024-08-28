@@ -21,7 +21,6 @@ export function Dashboard() {
         <Spline height={150} type="line" width={400} title="Parcelamentos" value="25%"/>
         <Spline height={150} type="area" width={400} title="Formas de pagamento" value="25%"/>
         <Spline height={150} type="area" width={400} title="Top vendas por estado" value="25%"/>
-        <Spline height={150} type="area" width={400} title="Top produtos" value="25%"/>
       </div>
     </>
   );

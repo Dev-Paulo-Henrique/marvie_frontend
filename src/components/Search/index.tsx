@@ -62,7 +62,7 @@ export function Search() {
 
 export function SearchAdmin({onChange, value}: SearchAdminProps) {
   return (
-    <div data-mdb-input-init className="form-outline mb-4 position-relative">
+    <div className="form-outline mb-4 position-relative">
       <CiSearch className="position-absolute top-50 start-0 translate-middle-y ms-3" />
       <input
         type="text"

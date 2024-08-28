@@ -2,7 +2,7 @@ import Logotipo from "/logo.svg";
 import { useMediaQuery } from "react-responsive";
 
 export function Logo() {
-  const isDesktop = useMediaQuery({ query: '(min-width: 992px)' });
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   return (
     <a

@@ -70,6 +70,9 @@ export function ForgotPassword() {
         errorEmail={errorEmail}
         isLoading={isLoading}
         textSubmitButton={"Enviar"}
+        url="/login"
+        showLink
+        textLink="Voltar"
       />
     </div>
   );

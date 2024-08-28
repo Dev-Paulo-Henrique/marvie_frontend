@@ -11,11 +11,14 @@ import { ActiveLink } from "./ActiveLink";
 import { useMediaQuery } from "react-responsive";
 
 export function Sidebar() {
-  const isDesktop = useMediaQuery({ query: "(min-width: 992px)" });
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   const sidebarStyle = {
     width: isDesktop ? "280px" : "80px",
     height: "100vh",
+    top: 0,
+    left: 0,
+    zIndex: 1000
   };
 
   return (

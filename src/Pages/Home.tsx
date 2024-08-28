@@ -1,11 +1,9 @@
 // import { useState, useEffect } from "react";
-// import ContentLoader from "react-content-loader";
 import { Statics } from "../components/Stats";
 import { Title } from "../utils/Title";
 import { useAuth } from "../hooks/useAuth";
 
 export function Home() {
-  // const MyLoader = () => <ContentLoader />;
   // const [loading, setLoading] = useState(true);
   const { userName, 
     // token
@@ -25,6 +23,10 @@ export function Home() {
   // }, [token]);
 
   Title({ title: "Home" });
+  
+  // if (loading) {
+  //   return null;
+  // }
 
   return (
     <div className="p-4">
