@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import { Forms } from "../../components/Forms";
 import { toast } from "react-hot-toast";
 import { isAxiosError } from "axios";
+import { useMediaQuery } from "react-responsive";
 
 export function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -13,6 +14,8 @@ export function ForgotPassword() {
   const [errorEmail, setErrorEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
+
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   if (token) return <Navigate to="/admin/home" replace />;
 
@@ -58,7 +61,7 @@ export function ForgotPassword() {
       style={{ background: "var(--gray-100)" }}
       className="d-flex justify-content-end"
     >
-      <Particle />
+      {isDesktop && <Particle />}
       <Forms
         handleSubmit={handleLogin}
         title="Recuperar conta"

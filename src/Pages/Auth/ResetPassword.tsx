@@ -5,6 +5,7 @@ import { Forms } from "../../components/Forms";
 import { isAxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useMediaQuery } from "react-responsive";
 
 export function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -12,6 +13,8 @@ export function ResetPassword() {
   const [errorPassword, setErrorPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useParams<{ token: string }>();
+
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   const handleResetPassword = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -57,7 +60,7 @@ export function ResetPassword() {
       style={{ background: "var(--gray-100)" }}
       className="d-flex justify-content-end"
     >
-      <Particle />
+      {isDesktop && <Particle />}
       <Forms
         handleSubmit={handleResetPassword}
         title="Nova senha"

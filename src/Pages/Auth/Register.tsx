@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { api } from "../../services/api";
-import Logo from "/logo.svg";
 import { Particle } from "../../components/Particle";
 import { useAuth } from "../../hooks/useAuth";
 import { Navigate } from "react-router-dom";
@@ -69,14 +68,6 @@ export function Register() {
         className="d-flex flex-column w-25 px-5 vh-100 justify-content-center"
         style={{ background: "var(--gray-75)", zIndex: 0 }}
       >
-        <a href="/">
-          <img
-            src={Logo}
-            alt="Details"
-            className="mb-3 mx-5 end-0 bottom-0 position-absolute"
-            width={50}
-          />
-        </a>
         <div className="d-flex gap-2 align-items-center d-flex">
           <div className="d-flex align-items-center justify-content-center bg-white rounded p-1 px-2" style={{ width: "2rem", height: "2rem" }}><FaHeart size={10}/></div>
         <small style={{ color: "var(--gray-25)" }} className="mb-0">

@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Logo from "/logo.svg";
 import { useMediaQuery } from "react-responsive";
 
 interface FormsProps {
@@ -56,14 +55,6 @@ export function Forms({
       className={`d-flex flex-column ${!isDesktop && "w-100"} px-5 vh-100 justify-content-center`}
       style={{ background: "var(--gray-75)", zIndex: 0 }}
     >
-      <a href="/">
-        <img
-          src={Logo}
-          alt="Details"
-          className="mb-3 mx-5 end-0 bottom-0 position-absolute"
-          width={50}
-        />
-      </a>
       <h1 className="text-white fw-bold m-0">{title}</h1>
       <small style={{ color: "var(--gray-25)" }} className="mb-4">
         {subtitle}
