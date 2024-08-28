@@ -46,13 +46,15 @@ export function Card({
             </li>
             <li>
               <a href="#">
+                <FaMagnifyingGlass />
+              </a>
+            </li>
+            <li>
+              <a href="#">
                 <FaShoppingCart />
               </a>
             </li>
           </ul>
-          <a href="#" className="product-view">
-            <FaMagnifyingGlass />
-          </a>
         </div>
         <div className="product-content">
           <ul className="rating">
