@@ -48,6 +48,7 @@ export function Card({
                 onClick={() =>
                   toast(`Adicionado aos favoritos`, {
                     icon: "❤️",
+                    id: "fav"
                   })
                 }
               >
@@ -56,11 +57,20 @@ export function Card({
             </li>
             <li>
               <a
-                // href="#"
+                // href="/product/1"
                 onClick={() =>
                   toast(`Carregando informações...`, {
                     icon: "🔍",
+                    id: "info"
                   })
+                  // toast.promise(
+                  //   null,
+                  //    {
+                  //      loading: 'Saving...',
+                  //      success: <b>Settings saved!</b>,
+                  //      error: <b>Could not save.</b>,
+                  //    }
+                  //  )
                 }
               >
                 <FaMagnifyingGlass />
@@ -72,6 +82,7 @@ export function Card({
                 onClick={() =>
                   toast(`Adicionado ao carrinho`, {
                     icon: "🛒",
+                    id: "cart"
                   })
                 }
               >

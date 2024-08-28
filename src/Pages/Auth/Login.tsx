@@ -86,7 +86,6 @@ export function Login() {
         errorPass={errorPass}
         senha={senha}
         setSecondField={(e) => setSenha(e.target.value)}
-        showRegisterButton
         showLink
         showFirstField
         showSecondField

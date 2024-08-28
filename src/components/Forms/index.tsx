@@ -18,7 +18,6 @@ interface FormsProps {
   errorEmail?: string;
   errorPass?: string;
   senha?: string;
-  showRegisterButton?: boolean;
   showLink?: boolean;
   showFirstField?: boolean;
   showSecondField?: boolean;
@@ -39,7 +38,6 @@ export function Forms({
   errorPass,
   senha,
   setSecondField,
-  showRegisterButton,
   showLink,
   textSubmitButton,
   showFirstField,
@@ -123,18 +121,6 @@ export function Forms({
               {textLink}
             </a>
           </div>
-        )}
-        {showRegisterButton && (
-          <>
-            <hr />
-            <a
-              href="/register"
-              className="btn btn-block fw-bold p-3"
-              style={{ background: "var(--gray-25)" }}
-            >
-              Cadastrar
-            </a>
-          </>
         )}
       </div>
     </form>
