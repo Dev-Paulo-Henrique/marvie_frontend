@@ -1,5 +1,6 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
+import { useMediaQuery } from "react-responsive";
 // import { useState } from "react"
 
 interface SplineProps {
@@ -21,7 +22,7 @@ interface SplineProps {
     | "rangeArea"
     | "treemap"
     | undefined;
-  width: number;
+  width?: number;
   height: number;
   title: string;
   count?: number;
@@ -88,9 +89,11 @@ export function Spline({ type, width, height, title, value, count, action }: Spl
     },
   ];
 
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+
   return (
-      <div className="d-flex flex-column align-items-start bg-white px-4 py-3 rounded border border-secondary mb-4">
-    <span className="badge mx-3 text-uppercase" style={{ background: "var(--blue-50)" }}>{title}</span>
+      <div className={`d-flex flex-column align-items-start bg-white px-4 py-3 rounded border border-secondary mb-4 ${!isDesktop && "w-100"}`}>
+    <small className="badge ms-3 text-uppercase" style={{ background: "var(--blue-50)" }}>{title}</small>
     <span className="fs-2 fw-normal mx-3" style={{ color: "var(--blue-100)" }}>{value}</span>
     {count && action && <small className="text-secondary mx-3">{count} pedidos <strong>{action}</strong></small>}
         <Chart options={options} series={series} {...options.chart} />
