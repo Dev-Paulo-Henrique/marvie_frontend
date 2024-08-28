@@ -13,10 +13,10 @@ export function ViewProduct() {
         <ViewProductDetail id={id} />
       ) : (
         <div className="d-flex flex-column justify-content-center align-items-center vh-100">
-          <span className="text-secondary fs-5 text-center">
+          <span className="text-secondary fs-3 text-center">
             Produto indisponível
           </span>
-          <a href="/" className="text-muted text-decoration-none mt-2">
+          <a href="/" className="text-muted text-decoration-none mt-3">
             <IoIosArrowRoundBack />
             Voltar
           </a>

@@ -41,6 +41,7 @@ export function Admin() {
           marginLeft: sidebarWidth,
           background: "#f7f7f8",
           height: "100vh",
+          overflowY: 'auto',
         }}
       >
         {!isConnected ? (
