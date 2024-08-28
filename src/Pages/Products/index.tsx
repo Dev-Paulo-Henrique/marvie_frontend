@@ -12,6 +12,7 @@ import { SearchAdmin } from "../../components/Search";
 
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../../services/firebase"
+import { useMediaQuery } from "react-responsive";
 
 
 interface ProductsProps {
@@ -32,6 +33,8 @@ export function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   Title({ title: "Produtos" });
 
@@ -84,11 +87,11 @@ export function Products() {
 
   return (
     <>
-      <Header title="Produtos" link="products/new" textButton="Novo Produto" />
+      <Header title="Produtos" link="products/new" textButton={`${isDesktop ? "Novo" : ""} Produto`} />
       <div className="pb-4">
         <SearchAdmin value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value), setCurrentPage(1)}}/>
         {filteredProducts.length > 0 ? (
-          <>
+          <div className="d-flex justify-content-center align-items-center flex-column">
             <table className="table table-hover shadow-sm">
               <TableHeader id nome quantidadeEmEstoque />
               <tbody>
@@ -108,7 +111,7 @@ export function Products() {
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
-          </>
+          </div>
         ) : (
           <p className="text-secondary">Nenhum produto encontrado.</p>
         )}

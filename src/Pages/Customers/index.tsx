@@ -8,6 +8,7 @@ import { useCheckbox } from "../../hooks/useCheckbox";
 import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
+import { useMediaQuery } from "react-responsive";
 
 interface UserProps {
   id: number;
@@ -21,6 +22,8 @@ export function Customers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   Title({ title: "Clientes" });
 
@@ -60,7 +63,7 @@ export function Customers() {
 
   return (
     <>
-      <Header title="Clientes" link="customers/new" textButton="Novo Cliente" />
+      <Header title="Clientes" link="customers/new" textButton={`${isDesktop ? "Novo" : ""} Cliente`} />
       <div className="pb-4">
         <SearchAdmin
           value={searchTerm}
@@ -69,7 +72,7 @@ export function Customers() {
           }}
         />
         {filteredUsers.length > 0 ? (
-          <>
+          <div className="d-flex justify-content-center align-items-center flex-column">
             <table className="table table-hover shadow-sm">
               <TableHeader nome dataDeCadastro />
               <tbody>
@@ -89,7 +92,7 @@ export function Customers() {
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
-          </>
+          </div>
         ) : (
           <p className="text-secondary">Nenhum cliente encontrado.</p>
         )}

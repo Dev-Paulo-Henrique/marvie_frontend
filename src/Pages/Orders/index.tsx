@@ -101,7 +101,7 @@ export function Orders() {
       <div className="pb-4">
       <SearchAdmin value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value), setCurrentPage(1)}}/>
         {currentOrders.length > 0 ? (
-          <>
+          <div className="d-flex justify-content-center align-items-center flex-column">
             <table className="table table-hover shadow-sm">
             <TableHeader numeroDoPedido data total status />
               <tbody>
@@ -124,7 +124,7 @@ export function Orders() {
               totalPages={totalPages}
               onPageChange={handlePageChange}
             />
-          </>
+          </div>
         ) : (
           <p className="text-secondary">Nenhum pedido encontrado.</p>
         )}
