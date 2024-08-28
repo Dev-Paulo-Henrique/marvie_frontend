@@ -4,8 +4,8 @@ import Logo from "/logo.svg";
 import { Particle } from "../../components/Particle";
 import { useAuth } from "../../hooks/useAuth";
 import { Navigate } from "react-router-dom";
-// import { toast } from "react-hot-toast"
 import { FaHeart } from "react-icons/fa";
+import { useMediaQuery } from "react-responsive";
 
 
 export function Register() {
@@ -15,6 +15,8 @@ export function Register() {
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPass, setErrorPass] = useState("");
   const { token } = useAuth();
+
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   if(token) return <Navigate to="/admin/home" replace />
 
@@ -61,7 +63,7 @@ export function Register() {
       style={{ background: "var(--gray-100)" }}
       className="d-flex justify-content-end"
     >
-      <Particle />
+      {isDesktop && <Particle />}
       <form
         onSubmit={handleLogin}
         className="d-flex flex-column w-25 px-5 vh-100 justify-content-center"

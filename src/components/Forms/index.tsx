@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import Logo from "/logo.svg";
+import { useMediaQuery } from "react-responsive";
 
 interface FormsProps {
   handleSubmit: (event: { preventDefault: () => void }) => Promise<void>;
@@ -48,10 +49,11 @@ export function Forms({
   url,
   textLink
 }: FormsProps) {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
   return (
     <form
       onSubmit={handleSubmit}
-      className="d-flex flex-column w-25 px-5 vh-100 justify-content-center"
+      className={`d-flex flex-column ${!isDesktop && "w-100"} px-5 vh-100 justify-content-center`}
       style={{ background: "var(--gray-75)", zIndex: 0 }}
     >
       <a href="/">
