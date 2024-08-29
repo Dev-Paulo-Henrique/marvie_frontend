@@ -1,3 +1,4 @@
+import { useMediaQuery } from "react-responsive";
 import "../../scss/styles.scss";
 import { Logo } from "../Logo";
 import { Search } from "../Search";
@@ -13,6 +14,7 @@ interface HeaderProps {
 }
 
 export function Header({ role, isCart }: HeaderProps) {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
   return (
     <>
       <header className="p-3 border-bottom w-100 bg-custom-primary">
@@ -39,7 +41,7 @@ export function Header({ role, isCart }: HeaderProps) {
                 {!isCart && (
                   <>
                     <Search />
-                    <div className="d-flex justify-content-center align-items-center gap-3">
+                    {isDesktop ? <div className="d-flex justify-content-center align-items-center gap-3">
                       <a
                         href="/login"
                         className="d-block gap-1 link-dark d-flex align-items-center text-decoration-none text-light btn-outline-light btn py-2 px-3"
@@ -54,7 +56,12 @@ export function Header({ role, isCart }: HeaderProps) {
                         <CiShoppingCart color="#FFFFFF" size={32} />
                         <span className="badge badge-light text-dark">0</span>
                       </a> */}
-                    </div>
+                    </div> : <a
+                        href="/login"
+                        className="d-block link-dark d-flex align-items-center text-decoration-none py-2 px-3"
+                      >
+                        <CiUser size={32} color="#FFFFFF" />
+                      </a>}
                   </>
                 )}
               </>

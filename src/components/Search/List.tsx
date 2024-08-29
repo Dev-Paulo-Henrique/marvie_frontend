@@ -5,7 +5,7 @@ import { Title } from "../../utils/Title";
 
 export function List() {
   const { search } = useParams<{ search: string }>();
-  Title({title: search ? search : import.meta.env.VITE_APP_TITLE })
+  Title({title: `Busca por "${search ? search : import.meta.env.VITE_APP_TITLE }"`})
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(search ? search.toLowerCase() : "")
