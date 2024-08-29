@@ -94,6 +94,20 @@ body {
   animation: pulse 1.5s infinite;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+  border-radius: 0
+}
+
+.cursor-pointer:hover {
+  background: var(--white-90);
+}
+
+ul.list-unstyled li:last-child {
+  border-radius: 0 0 0.375rem 0.375rem;
+  border-bottom: none;
+}
+
 // --------------------------------------
 
 .product-grid .product-image {

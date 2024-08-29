@@ -2,7 +2,7 @@ import { useState } from "react";
 import { api } from "../../services/api";
 import { Particle } from "../../components/Particle";
 import { useAuth } from "../../hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Forms } from "../../components/Forms";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
@@ -19,6 +19,8 @@ export function Login() {
   const { token } = useAuth();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
+
+  const navigate = useNavigate();
 
   Title({title: "Login"})
 
@@ -56,7 +58,7 @@ export function Login() {
       localStorage.setItem("authToken", token);
       localStorage.setItem("authName", userName);
       // setTimeout(() => {
-      window.location.href = "/admin/home";
+      navigate("/admin/home");
       // }, 2500)
     } catch (error) {
       if (isAxiosError(error)) {

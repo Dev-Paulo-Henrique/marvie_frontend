@@ -3,6 +3,7 @@ import { Footer } from "../components/Footer";
 import { Banner } from "../components/Banner";
 import { Card } from "../components/Card";
 import { products } from "./../utils/Cards"
+import { Cart } from "../components/Cart";
 
 export function Main() {
   return (
@@ -31,6 +32,7 @@ export function Main() {
           )}
         </div>
       </div>
+      <Cart/>
       <Footer />
     </>
   );

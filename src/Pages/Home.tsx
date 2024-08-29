@@ -2,17 +2,19 @@
 import { Statics } from "../components/Stats";
 import { Title } from "../utils/Title";
 import { useAuth } from "../hooks/useAuth";
+// import { useNavigate } from "react-router-dom";
 
 export function Home() {
   // const [loading, setLoading] = useState(true);
   const { userName, 
     // token
    } = useAuth();
+  // const navigate = useNavigate();
 
   // useEffect(() => {
   //   async function validateJWT() {
   //     if (!token) {
-  //       await window.location.assign("/login");
+  //       await navigate("/login");
   //     } else {
   //       setTimeout(() => {
   //         setLoading(false);

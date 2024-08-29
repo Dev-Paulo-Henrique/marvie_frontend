@@ -7,18 +7,8 @@ import {
   FaMagnifyingGlass,
   FaHeart,
 } from "react-icons/fa6";
+import { CardProps } from "../../utils/Cards"
 // import { useNavigate } from "react-router-dom";
-
-interface CardProps {
-  name: string;
-  firstImage: string;
-  secondImage: string;
-  price: string;
-  oldPrice?: string;
-  tag?: string;
-  discount?: string;
-  reviews?: number;
-}
 
 export function Card({
   name,
@@ -41,8 +31,8 @@ export function Card({
             <img className="img-2" src={secondImage} />
           </a>
           {tag && <span className="product-hot-label">{tag}</span>}
-          {discount && (
-            <span className="product-discount-label">{discount}</span>
+          {discount && oldPrice && (
+            <span className="product-discount-label">-{discount}%</span>
           )}
           <ul className="product-links">
             <li>
@@ -124,7 +114,7 @@ export function Card({
             </a>
           </h3>
           <div className="price text-primary fw-bold fs-5">
-            {oldPrice && <span className="text-secondary">{oldPrice}</span>} {price}
+            {oldPrice && discount && <span className="text-secondary">{oldPrice}</span>} {price}
           </div>
         </div>
       </div>
