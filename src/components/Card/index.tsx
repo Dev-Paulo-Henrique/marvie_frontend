@@ -7,7 +7,7 @@ import {
   FaMagnifyingGlass,
   FaHeart,
 } from "react-icons/fa6";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 interface CardProps {
   name: string;
@@ -30,7 +30,7 @@ export function Card({
   discount,
   reviews,
 }: CardProps) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 col-6 mt-3">
@@ -65,21 +65,22 @@ export function Card({
             </li>
             <li>
               <a
-                // href="/product/1"
-                onClick={() =>
-                  toast(`🔍 Carregando informações...`, {
-                    position: "top-center",
-                    toastId: "cart",
-                    hideProgressBar: true,
-                    autoClose: 3000,
-                    pauseOnHover: false,
-                    closeButton: false,
-                    className: 'text-center',
-                    onClose: () => {
-                      navigate('/product/1');
-                    }
-                  })
-                }
+                href="/product/1"
+                // onClick={() =>
+                //   toast(`🔍 Carregando informações...`, {
+                //     position: "top-center",
+                //     toastId: "cart",
+                //     hideProgressBar: true,
+                //     autoClose: 3000,
+                //     pauseOnHover: false,
+                //     closeButton: false,
+                //     className: 'text-center',
+                //     onClose: () => {
+                //       navigate('/product/1');
+                //       window.scrollTo({ top: 0, behavior: 'smooth' });
+                //     }
+                //   })
+                // }
               >
                 <FaMagnifyingGlass />
               </a>

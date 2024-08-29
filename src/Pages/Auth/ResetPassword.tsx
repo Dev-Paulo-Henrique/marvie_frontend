@@ -6,6 +6,7 @@ import { isAxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useMediaQuery } from "react-responsive";
+import { Title } from "../../utils/Title";
 
 export function ResetPassword() {
   const [password, setPassword] = useState("");
@@ -15,6 +16,8 @@ export function ResetPassword() {
   const { token } = useParams<{ token: string }>();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
+
+  Title({title: "Nova Senha"})
 
   const handleResetPassword = async (event: { preventDefault: () => void }) => {
     event.preventDefault();

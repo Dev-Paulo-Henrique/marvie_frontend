@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
 import { Card } from "../Card";
 import { products } from "../../utils/Cards";
+import { Title } from "../../utils/Title";
 
 export function List() {
   const { search } = useParams<{ search: string }>();
+  Title({title: search ? search : import.meta.env.VITE_APP_TITLE })
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(search ? search.toLowerCase() : "")

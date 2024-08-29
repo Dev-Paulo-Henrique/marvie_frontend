@@ -7,6 +7,7 @@ import { Forms } from "../../components/Forms";
 import { isAxiosError } from "axios";
 import toast from "react-hot-toast";
 import { useMediaQuery } from "react-responsive";
+import { Title } from "../../utils/Title";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -18,6 +19,8 @@ export function Login() {
   const { token } = useAuth();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
+
+  Title({title: "Login"})
 
   if (token) return <Navigate to="/admin/home" replace />;
 

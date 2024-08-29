@@ -2,8 +2,10 @@ import "../../scss/styles.scss";
 import { Logo } from "../Logo";
 import { Search } from "../Search";
 import {
-  // CiShoppingCart, 
-  CiUser } from "react-icons/ci";
+  // CiShoppingCart,
+  CiUser,
+} from "react-icons/ci";
+
 
 interface HeaderProps {
   role?: string;
@@ -40,9 +42,10 @@ export function Header({ role, isCart }: HeaderProps) {
                     <div className="d-flex justify-content-center align-items-center gap-3">
                       <a
                         href="/login"
-                        className="d-block link-dark text-decoration-none"
+                        className="d-block gap-1 link-dark d-flex align-items-center text-decoration-none text-light btn-outline-light btn py-2 px-3"
                       >
-                        <CiUser color="#FFFFFF" size={32} />
+                        <CiUser size={20} />
+                        <span>Login</span>
                       </a>
                       {/* <a
                         href="/checkout"

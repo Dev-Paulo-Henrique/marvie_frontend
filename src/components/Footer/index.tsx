@@ -13,7 +13,7 @@ export function Footer() {
             <img src={Logo} alt="Logo" width="auto" height="50" />
           </a>
         </div>
-        <small className="text-muted">© 2024 Marvie, IFPE</small>
+        <small className="text-muted">© 2024 {import.meta.env.VITE_APP_TITLE}, IFPE</small>
 
         <ul className="nav col-md-4 justify-content-end list-unstyled d-flex">
           <li className="ms-3">

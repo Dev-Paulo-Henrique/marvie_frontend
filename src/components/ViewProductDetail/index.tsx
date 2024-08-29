@@ -4,6 +4,7 @@ import { Slider } from "../Slider";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Title } from "../../utils/Title";
 
 interface ViewProductDetailProps {
   id: string | undefined;
@@ -13,6 +14,8 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
   // const isDesktop = useMediaQuery({ minWidth: 992 });
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
+
+  Title({title: "Nome do Produto"})
 
   return (
     <section className="py-lg-5">
@@ -116,6 +119,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                     },
                     onClose: () => {
                       navigate('/checkout');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
                     }
                   })
                 }
