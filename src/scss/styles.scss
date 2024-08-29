@@ -248,3 +248,45 @@ body {
 ::-webkit-scrollbar-thumb {
   background: #dad7d7;
 }
+
+.slick-thumb {
+  bottom: -45px;
+  display: flex !important;
+  justify-content: center;
+}
+.slick-thumb li {
+  width: 100px !important;
+  height: 45px;
+}
+.slick-thumb li img {
+  width: 100%;
+  height: 100%;
+  filter: grayscale(100%);
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 5px;
+}
+.slick-thumb li.slick-active img{
+    filter: grayscale(0%);
+}
+.slick-slider {
+  margin: 30px auto 50px;
+}
+.slick-slider image {
+  border: none
+}
+
+@media (max-width: 992px) {
+  .slick-thumb {
+    bottom: -70px;
+  }
+
+  .slick-thumb li {
+    width: 60px !important;
+    height: 40px;
+  }
+
+  .slick-slider {
+    margin: 20px auto 80px;
+  }
+}

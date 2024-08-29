@@ -1,5 +1,9 @@
 // import { useMediaQuery } from "react-responsive";
 import { FaPlus, FaMinus, FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
+import { ProductSlider } from "../Slider";
+import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 interface ViewProductDetailProps {
   id: string | undefined;
@@ -7,101 +11,49 @@ interface ViewProductDetailProps {
 
 export function ViewProductDetail({id}: ViewProductDetailProps) {
   // const isDesktop = useMediaQuery({ minWidth: 992 });
+  const [quantity, setQuantity] = useState(1);
+  const navigate = useNavigate();
 
   return (
-    <section className="py-5">
+    <section className="py-lg-5">
       <div className="container">
         <div className="row gx-5">
           {/* Product Image and Gallery */}
-          <aside className="col-lg-6">
-            <div className="border rounded-4 mb-3 d-flex justify-content-center">
-              <a
-                data-fslightbox="mygallery"
-                className="rounded-4"
-                target="_blank"
-                href="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big.webp"
-                rel="noopener noreferrer"
-              >
-                <img
-                  className="rounded-4 img-fluid"
-                  src="https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big.webp"
-                  alt="Main product"
-                />
-              </a>
-            </div>
-            <div className="d-flex justify-content-center mb-3">
-              {["big1.webp", "big2.webp", "big3.webp", "big4.webp"].map(
-                (img, index) => (
-                  <a
-                    key={index}
-                    data-fslightbox="mygallery"
-                    className="border mx-1 rounded-2"
-                    target="_blank"
-                    href={`https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/${img}`}
-                    rel="noopener noreferrer"
-                  >
-                    <img
-                      width="60"
-                      height="60"
-                      className="rounded-2 img-fluid"
-                      src={`https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/${img}`}
-                      alt={`Thumbnail ${index + 1}`}
-                    />
-                  </a>
-                )
-              )}
-            </div>
-          </aside>
+          <ProductSlider/>
 
-          {/* Product Details */}
           <main className="col-lg-6">
             <div className="ps-lg-3">
             <small className="text-muted">Ref: {id}</small>
-              <h4 className="text-dark">
-                Moletom masculino de qualidade para o inverno, moda masculina
-              </h4>
+              <h3 className="text-dark">
+                Moletom masculino de qualidade para o inverno
+              </h3>
               <div className="d-flex align-items-center my-2">
                 <div className="text-warning me-2">
                   {[...Array(4)].map((_, i) => (
-                    <FaStar size={15} key={i} />
+                    <FaStar size={20} key={i} />
                   ))}
-                  <FaRegStarHalfStroke size={15} />
+                  <FaRegStarHalfStroke size={20} />
                 </div>
-                <span className="text-muted">(154 avaliações)</span>
+                <small className="text-muted">(154 avaliações)</small>
               </div>
 
-              <div className="mb-3">
-                <span className="h5">R$75.00</span>
+              <div className="mb-2">
+                <small className="text-decoration-line-through text-muted">R$ 98,99</small>
+                <br />
+                <span className="h3 text-primary fw-bold">R$ 75,00 <small className="fs-5">no PIX</small></span>
               </div>
 
-              <p className="mb-4">
+              <p className="mb-4 text-justify">
                 O visual moderno e o item de demonstração de qualidade são
                 inspirados no streetwear coleção que continua a romper com as
                 convenções de moda convencional. Fabricadas na Itália, essas
                 roupas pretas e marrons camisas de cano baixo para homens.
               </p>
 
-              <div className="row mb-3">
-                <dl className="row">
-                  <dt className="col-sm-3">Tipo:</dt>
-                  <dd className="col-sm-9">Regular</dd>
-
-                  <dt className="col-sm-3">Cor:</dt>
-                  <dd className="col-sm-9">Blue</dd>
-
-                  <dt className="col-sm-3">Material:</dt>
-                  <dd className="col-sm-9">Cotton, Jeans</dd>
-
-                  <dt className="col-sm-3">Marca:</dt>
-                  <dd className="col-sm-9">Marvie</dd>
-                </dl>
-              </div>
-
               <hr />
 
-              {/* Size and Quantity Selection */}
-              <div className="row mb-4">
-                <div className="col-md-6 mb-3">
+              <div className="row mb-2">
+                <div className="col-4">
                   <label className="form-label">Tamanho</label>
                   <select className="form-select">
                     <option>Pequeno</option>
@@ -109,27 +61,41 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                     <option>Largo</option>
                   </select>
                 </div>
-                <div className="col-md-6">
+                <div className="col-4 mb-3">
+                  <label className="form-label">Cor</label>
+                  <select className="form-select">
+                    <option>Azul</option>
+                    <option>Branco</option>
+                    <option>Vermelho</option>
+                  </select>
+                </div>
+                <div className="col-4">
                   <label className="form-label">Quantidade</label>
-                  <div className="input-group">
+                  <div className="input-group border rounded">
                     <button
-                      className="btn btn-secondary"
+                      className="btn btn-light"
                       type="button"
                       id="button-addon1"
-                    >
+                      disabled={quantity == 1}
+                      onClick={() => setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1))}
+                      >
                       <FaMinus />
                     </button>
                     <input
                       type="text"
-                      className="form-control text-center"
+                      className="form-control text-center border-0"
                       placeholder="1"
                       aria-label="Quantity"
                       aria-describedby="button-addon1"
+                      value={quantity}
+                      readOnly
                     />
                     <button
-                      className="btn btn-secondary"
+                      className="btn btn-light"
                       type="button"
                       id="button-addon2"
+                      disabled={quantity == 10}
+                      onClick={() => setQuantity(prevQuantity => prevQuantity + 1)}
                     >
                       <FaPlus />
                     </button>
@@ -137,9 +103,27 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                 </div>
               </div>
 
-              {/* Action Buttons */}
               <div className="d-flex">
-                <a href="#" className="w-100 btn btn-primary p-3 fs-5">
+                <a
+                //  href="#"
+                onClick={() =>
+                  toast(`🛒 Redirecionando para o carrinho...`, {
+                    position: "top-center",
+                    toastId: "cart",
+                    hideProgressBar: false,
+                    autoClose: 3000,
+                    pauseOnHover: false,
+                    className: 'text-center',
+                    closeButton: false,
+                    progressStyle: {
+                      background: "var(--blue-100)",
+                    },
+                    onClose: () => {
+                      navigate('/checkout');
+                    }
+                  })
+                }
+                 className="w-100 btn btn-primary p-3 fs-5">
                   Comprar agora
                 </a>
               </div>

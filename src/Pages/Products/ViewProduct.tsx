@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { ViewProductDetail } from "../../components/ViewProductDetail";
 import { Header } from "../../components/Header";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { Footer } from "../../components/Footer";
 
 export function ViewProduct() {
   const { id } = useParams<{ id: string }>();
@@ -22,6 +23,7 @@ export function ViewProduct() {
           </a>
         </div>
       )}
+      <Footer/>
     </>
   );
 }

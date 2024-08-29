@@ -8,6 +8,9 @@ import { useAuth } from "./hooks/useAuth";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { ForgotPassword } from "./Pages/Auth/ForgotPassword";
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import "./scss/styles.scss";
 import { Checkout } from "./Pages/Checkout";
 import { ResetPassword } from "./Pages/Auth/ResetPassword";
@@ -41,6 +44,7 @@ function App() {
       <BrowserRouter>
         <AppRoutes />
         <Toaster />
+        <ToastContainer />
       </BrowserRouter>
     </AuthContextProvider>
   );

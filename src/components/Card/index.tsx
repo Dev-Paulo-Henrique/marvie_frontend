@@ -1,4 +1,4 @@
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 import { FaShoppingCart } from "react-icons/fa";
 import {
   FaStar,
@@ -7,6 +7,7 @@ import {
   FaMagnifyingGlass,
   FaHeart,
 } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
   name: string;
@@ -29,11 +30,13 @@ export function Card({
   discount,
   reviews,
 }: CardProps) {
+  const navigate = useNavigate();
+
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 col-6 mt-3">
       <div className="product-grid">
         <div className="product-image">
-          <a href="#" className="image">
+          <a href="/product/1#" className="image">
             <img className="img-1" src={firstImage} />
             <img className="img-2" src={secondImage} />
           </a>
@@ -46,9 +49,14 @@ export function Card({
               <a
                 // href="#"
                 onClick={() =>
-                  toast(`Adicionado aos favoritos`, {
-                    icon: "❤️",
-                    id: "fav"
+                  toast(`❤️ Adicionado aos favoritos`, {
+                    position: "top-center",
+                    toastId: "cart",
+                    hideProgressBar: true,
+                    autoClose: 3000,
+                    pauseOnHover: false,
+                    className: 'text-center',
+                    closeButton: false,
                   })
                 }
               >
@@ -59,18 +67,18 @@ export function Card({
               <a
                 // href="/product/1"
                 onClick={() =>
-                  toast(`Carregando informações...`, {
-                    icon: "🔍",
-                    id: "info"
+                  toast(`🔍 Carregando informações...`, {
+                    position: "top-center",
+                    toastId: "cart",
+                    hideProgressBar: true,
+                    autoClose: 3000,
+                    pauseOnHover: false,
+                    closeButton: false,
+                    className: 'text-center',
+                    onClose: () => {
+                      navigate('/product/1');
+                    }
                   })
-                  // toast.promise(
-                  //   null,
-                  //    {
-                  //      loading: 'Saving...',
-                  //      success: <b>Settings saved!</b>,
-                  //      error: <b>Could not save.</b>,
-                  //    }
-                  //  )
                 }
               >
                 <FaMagnifyingGlass />
@@ -80,9 +88,14 @@ export function Card({
               <a
                 // href="#"
                 onClick={() =>
-                  toast(`Adicionado ao carrinho`, {
-                    icon: "🛒",
-                    id: "cart"
+                  toast(`🛒 Adicionado ao carrinho`, {
+                    position: "top-center",
+                    toastId: "cart",
+                    hideProgressBar: true,
+                    autoClose: 3000,
+                    pauseOnHover: false,
+                    closeButton: false,
+                    className: 'text-center'
                   })
                 }
               >

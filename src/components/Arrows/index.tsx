@@ -1,4 +1,4 @@
-import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
+import { IoMdArrowDropleftCircle, IoMdArrowDroprightCircle } from "react-icons/io";
 
 interface ArrowProps {
   className?: string;
@@ -12,35 +12,26 @@ export function NextArrow({
   className,
   style,
   onClick,
-  currentSlide,
-  slideCount,
 }: ArrowProps) {
-  if (typeof currentSlide !== "undefined" && typeof slideCount !== "undefined" && currentSlide < slideCount - 4) {
-    return (
-      <IoIosArrowRoundForward
-        className={className}
-        style={{ ...style, display: "block", color: "#000" }}
-        onClick={onClick}
-      />
-    );
-  }
-  return null;
+  return (
+    <IoMdArrowDroprightCircle
+      className={className}
+      style={{ ...style, color: "#000", right: 15, zIndex: 1 }}
+      onClick={onClick}
+    />
+  );
 }
 
 export function PrevArrow({
   className,
   style,
   onClick,
-  currentSlide,
 }: ArrowProps) {
-  if (typeof currentSlide !== "undefined" && currentSlide > 0) {
-    return (
-      <IoIosArrowRoundBack
-        className={className}
-        style={{ ...style, display: "block", color: "#000" }}
-        onClick={onClick}
-      />
-    );
-  }
-  return null;
+  return (
+    <IoMdArrowDropleftCircle 
+      className={className}
+      style={{ ...style, color: "#000", left: 15, zIndex: 1 }}
+      onClick={onClick}
+    />
+  );
 }
