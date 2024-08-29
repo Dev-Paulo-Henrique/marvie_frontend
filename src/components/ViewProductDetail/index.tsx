@@ -53,7 +53,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
               <hr />
 
               <div className="row mb-2">
-                <div className="col-4">
+                <div className="col-6 col-lg-4 mb-3">
                   <label className="form-label">Tamanho</label>
                   <select className="form-select">
                     <option>Pequeno</option>
@@ -61,7 +61,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                     <option>Largo</option>
                   </select>
                 </div>
-                <div className="col-4 mb-3">
+                <div className="col-6 col-lg-4 mb-3">
                   <label className="form-label">Cor</label>
                   <select className="form-select">
                     <option>Azul</option>
@@ -69,7 +69,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                     <option>Vermelho</option>
                   </select>
                 </div>
-                <div className="col-4">
+                <div className="col-lg-4 mb-3">
                   <label className="form-label">Quantidade</label>
                   <div className="input-group border rounded">
                     <button
@@ -78,7 +78,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                       disabled={quantity == 1}
                       onClick={() => setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1))}
                       >
-                      <FaMinus size={10}/>
+                      <FaMinus/>
                     </button>
                     <input
                       type="number"
@@ -93,7 +93,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                       disabled={quantity == 10}
                       onClick={() => setQuantity(prevQuantity => prevQuantity + 1)}
                     >
-                      <FaPlus size={10}/>
+                      <FaPlus/>
                     </button>
                   </div>
                 </div>
