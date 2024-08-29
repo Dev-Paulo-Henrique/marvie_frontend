@@ -122,8 +122,8 @@ export function Card({
               {name}
             </a>
           </h3>
-          <div className="price">
-            {oldPrice && <span>{oldPrice}</span>} {price}
+          <div className="price text-primary fw-bold fs-5">
+            {oldPrice && <span className="text-secondary">{oldPrice}</span>} {price}
           </div>
         </div>
       </div>

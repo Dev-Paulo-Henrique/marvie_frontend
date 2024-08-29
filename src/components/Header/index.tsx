@@ -1,7 +1,9 @@
 import "../../scss/styles.scss";
 import { Logo } from "../Logo";
 import { Search } from "../Search";
-import { CiShoppingCart, CiUser } from "react-icons/ci";
+import {
+  // CiShoppingCart, 
+  CiUser } from "react-icons/ci";
 
 interface HeaderProps {
   role?: string;
@@ -42,13 +44,13 @@ export function Header({ role, isCart }: HeaderProps) {
                       >
                         <CiUser color="#FFFFFF" size={32} />
                       </a>
-                      <a
+                      {/* <a
                         href="/checkout"
                         className="d-block link-dark text-decoration-none"
                       >
                         <CiShoppingCart color="#FFFFFF" size={32} />
-                        <span className="badge badge-light text-dark">3</span>
-                      </a>
+                        <span className="badge badge-light text-dark">0</span>
+                      </a> */}
                     </div>
                   </>
                 )}

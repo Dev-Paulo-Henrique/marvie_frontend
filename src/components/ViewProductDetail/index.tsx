@@ -1,6 +1,6 @@
 // import { useMediaQuery } from "react-responsive";
 import { FaPlus, FaMinus, FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
-import { ProductSlider } from "../Slider";
+import { Slider } from "../Slider";
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -19,7 +19,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
       <div className="container">
         <div className="row gx-5">
           {/* Product Image and Gallery */}
-          <ProductSlider/>
+          <Slider/>
 
           <main className="col-lg-6">
             <div className="ps-lg-3">
@@ -103,7 +103,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                 <a
                 //  href="#"
                 onClick={() =>
-                  toast(`🛒 Redirecionando para o carrinho...`, {
+                  toast(`🛒 Redirecionando para o checkout...`, {
                     position: "top-center",
                     toastId: "cart",
                     hideProgressBar: false,

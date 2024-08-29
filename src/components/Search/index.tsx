@@ -1,5 +1,6 @@
 import { CiSearch } from "react-icons/ci";
 import { SetStateAction, useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 interface SearchAdminProps {
   value: string;
@@ -11,14 +12,11 @@ interface SearchAdminProps {
 
 export function Search() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { search } = useParams<{ search: string }>();
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get("search");
-    if (query) {
-      setSearchQuery(query);
-    }
-  }, []);
+      setSearchQuery(search ? search : "");
+  }, [search]);
 
   const handleInputChange = (event: {
     target: { value: SetStateAction<string> };
@@ -28,7 +26,7 @@ export function Search() {
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    window.location.href = `/?search=${encodeURIComponent(searchQuery)}`;
+    window.location.href = `/busca/${encodeURIComponent(searchQuery)}`;
   };
 
   return (

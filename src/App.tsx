@@ -15,6 +15,7 @@ import "./scss/styles.scss";
 import { Checkout } from "./Pages/Checkout";
 import { ResetPassword } from "./Pages/Auth/ResetPassword";
 import { ViewProduct } from "./Pages/Products/ViewProduct";
+import { Busca } from "./Pages/Busca";
 
 const AppRoutes = () => {
   const { token, userName } = useAuth();
@@ -24,6 +25,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Main />} />
+      <Route path="/busca/:search" element={<Busca />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/reset_password/:token" element={<ResetPassword />} />
       <Route path="/product/:id" element={<ViewProduct />} />
