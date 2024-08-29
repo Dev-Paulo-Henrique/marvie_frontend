@@ -40,7 +40,7 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
               <div className="mb-2">
                 <small className="text-decoration-line-through text-muted">R$ 98,99</small>
                 <br />
-                <span className="h3 text-primary fw-bold">R$ 75,00 <small className="fs-5">no PIX</small></span>
+                <span className="h2 text-primary fw-bold">R$ 75,00 <small className="fs-5">no PIX</small></span>
               </div>
 
               <p className="mb-4 text-justify">
@@ -75,29 +75,25 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                     <button
                       className="btn btn-light"
                       type="button"
-                      id="button-addon1"
                       disabled={quantity == 1}
                       onClick={() => setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1))}
                       >
-                      <FaMinus />
+                      <FaMinus size={10}/>
                     </button>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control text-center border-0"
-                      placeholder="1"
                       aria-label="Quantity"
-                      aria-describedby="button-addon1"
                       value={quantity}
                       readOnly
                     />
                     <button
                       className="btn btn-light"
                       type="button"
-                      id="button-addon2"
                       disabled={quantity == 10}
                       onClick={() => setQuantity(prevQuantity => prevQuantity + 1)}
                     >
-                      <FaPlus />
+                      <FaPlus size={10}/>
                     </button>
                   </div>
                 </div>
