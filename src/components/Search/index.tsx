@@ -92,7 +92,7 @@ export function Search() {
           type="search"
           className="w-100 border-0"
           style={{ outline: 0 }}
-          placeholder="Buscar produtos, marcas e muito mais..."
+          placeholder="Buscar..."
           aria-label="Search"
           value={searchQuery}
           onChange={handleInputChange}

@@ -35,7 +35,7 @@ export function TableRowUsers({
 }: TableRowUsersProps) {
   return (
     <tr>
-      <th scope="row" className="align-middle">
+      <th scope="row" className="d-none d-lg-table-cell align-middle">
         <input
           className="form-check-input me-1 row-checkbox"
           type="checkbox"

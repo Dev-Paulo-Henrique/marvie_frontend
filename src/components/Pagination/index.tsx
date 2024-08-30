@@ -1,4 +1,5 @@
 import { IoIosArrowRoundForward, IoIosArrowRoundBack } from "react-icons/io";
+import { useMediaQuery } from "react-responsive";
 
 interface PaginationProps {
   currentPage: number;
@@ -13,6 +14,8 @@ export function Pagination({
   onPageChange,
   totalItens
 }: PaginationProps) {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+  
   const getPageNumbers = () => {
     let startPage = Math.max(currentPage - 2, 1);
     let endPage = Math.min(currentPage + 2, totalPages);
@@ -39,6 +42,7 @@ export function Pagination({
         >
           <button
             className="page-link"
+            style={!isDesktop ? { fontSize: "0.7rem" } : {}}
             onClick={() => onPageChange(currentPage - 1)}
             aria-label="Previous"
             disabled={currentPage === 1}
@@ -55,6 +59,7 @@ export function Pagination({
           >
             <button
               className="page-link"
+              style={!isDesktop ? { fontSize: "0.7rem" } : {}}
               onClick={() => onPageChange(pageNumber)}
             >
               {pageNumber}
@@ -67,6 +72,7 @@ export function Pagination({
         >
           <button
             className="page-link"
+            style={!isDesktop ? { fontSize: "0.7rem" } : {}}
             onClick={() => onPageChange(currentPage + 1)}
             aria-label="Next"
             disabled={currentPage === totalPages}
