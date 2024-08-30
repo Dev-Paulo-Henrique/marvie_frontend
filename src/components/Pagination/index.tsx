@@ -11,9 +11,26 @@ export function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
+  const getPageNumbers = () => {
+    let startPage = Math.max(currentPage - 2, 1);
+    let endPage = Math.min(currentPage + 2, totalPages);
+
+    if (endPage - startPage < 4) {
+      if (startPage === 1) {
+        endPage = Math.min(startPage + 4, totalPages);
+      } else if (endPage === totalPages) {
+        startPage = Math.max(endPage - 4, 1);
+      }
+    }
+
+    return Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index);
+  };
+
+  const pageNumbers = getPageNumbers();
+
   return (
-    <nav className="d-flex justify-content-center">
-      <ul className="pagination">
+    <nav className="d-flex justify-content-center mt-3">
+      <ul className="pagination flex-wrap">
         <li
           className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
           style={currentPage === 1 ? { cursor: "not-allowed" } : {}}
@@ -29,23 +46,21 @@ export function Pagination({
             </span>
           </button>
         </li>
-        {Array.from({ length: totalPages }, (_, index) => (
+        {pageNumbers.map((pageNumber) => (
           <li
-            key={index + 1}
-            className={`page-item ${currentPage === index + 1 ? "active" : ""}`}
+            key={pageNumber}
+            className={`page-item ${currentPage === pageNumber ? "active" : ""}`}
           >
             <button
               className="page-link"
-              onClick={() => onPageChange(index + 1)}
+              onClick={() => onPageChange(pageNumber)}
             >
-              {index + 1}
+              {pageNumber}
             </button>
           </li>
         ))}
         <li
-          className={`page-item ${
-            currentPage === totalPages ? "disabled" : ""
-          }`}
+          className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}
           style={currentPage === totalPages ? { cursor: "not-allowed" } : {}}
         >
           <button

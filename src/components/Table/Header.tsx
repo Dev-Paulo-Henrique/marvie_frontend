@@ -22,7 +22,7 @@ export function TableHeader({
   return (
     <thead>
       <tr>
-        <th scope="col">
+        <th scope="col" className="d-none d-lg-block">
           <input
             id="header-checkbox"
             className="form-check-input me-1"
@@ -30,7 +30,7 @@ export function TableHeader({
           />
         </th>
         {id && (
-          <th scope="col">
+          <th scope="col" className="d-none d-lg-table-cell">
             <small className="text-uppercase text-secondary">ID</small>
           </th>
         )}
@@ -69,9 +69,9 @@ export function TableHeader({
           </th>
         )}
         {quantidadeEmEstoque && (
-          <th scope="col">
+          <th scope="col" className="text-center">
             <small className="text-uppercase text-secondary">
-              Quantidade em estoque
+              Estoque
             </small>
           </th>
         )}

@@ -70,7 +70,7 @@ export function TableRowProducts({
 }: TableRowProductsProps) {
   return (
     <tr>
-      <th scope="row" className="align-middle">
+      <th scope="row" className="d-none d-lg-table-cell align-middle">
         <input
           className="form-check-input me-1 row-checkbox"
           type="checkbox"
@@ -78,14 +78,14 @@ export function TableRowProducts({
           aria-label="..."
         />
       </th>
-      <td className="align-middle">{id}</td>
+      <td className="d-none d-lg-table-cell align-middle">#{id}</td>
       <td className="align-middle">
         <a href={`/admin/products/${id}`} className="text-decoration-none">
           <img src={img} width={50} />
           <span className="mx-3">{nome}</span>
         </a>
       </td>
-      <td className="align-middle">{estoque}</td>
+      <td className="align-middle text-center">{estoque}</td>
     </tr>
   );
 }
