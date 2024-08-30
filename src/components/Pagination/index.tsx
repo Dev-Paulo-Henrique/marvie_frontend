@@ -4,12 +4,14 @@ interface PaginationProps {
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
+  totalItens: string;
 }
 
 export function Pagination({
   currentPage,
   totalPages,
   onPageChange,
+  totalItens
 }: PaginationProps) {
   const getPageNumbers = () => {
     let startPage = Math.max(currentPage - 2, 1);
@@ -29,7 +31,7 @@ export function Pagination({
   const pageNumbers = getPageNumbers();
 
   return (
-    <nav className="d-flex justify-content-center mt-3">
+    <nav className="d-flex justify-content-center mt-3 flex-column align-items-center">
       <ul className="pagination flex-wrap">
         <li
           className={`page-item ${currentPage === 1 ? "disabled" : ""}`}
@@ -75,6 +77,7 @@ export function Pagination({
           </button>
         </li>
       </ul>
+      {totalItens && <small className="text-muted">Total: {totalItens}</small>}
     </nav>
   );
 }

@@ -33,6 +33,7 @@ export function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [loading, setLoading] = useState(true);
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
@@ -40,6 +41,7 @@ export function Products() {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      setLoading(true);
       const res = await listAll(ref(storage));
       const firstImageUrl = res.items.length > 0 ? await getDownloadURL(res.items[0]) : ''
       try {
@@ -61,6 +63,8 @@ export function Products() {
         setProducts(fakeProducts);
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -89,8 +93,16 @@ export function Products() {
     <>
       <Header title="Produtos" link="products/new" textButton={`${isDesktop ? "Novo" : ""} Produto`} />
       <div className="pb-4">
-        <SearchAdmin value={searchTerm} onChange={(e) => {setSearchTerm(e.target.value), setCurrentPage(1)}}/>
-        {filteredProducts.length > 0 ? (
+        <SearchAdmin value={searchTerm} onChange={(e) => { setSearchTerm(e.target.value), setCurrentPage(1) }} />
+        {loading ? (
+          <div
+          className="d-flex flex-column gap-2 justify-content-center align-items-center"
+          style={{ height: "calc(100vh/2)" }}
+        >
+          <div className="spinner-border" role="status"></div>
+          <span className="text-secondary">Carregando...</span>
+        </div>
+        ) : filteredProducts.length > 0 ? (
           <div className="d-flex justify-content-center align-items-center flex-column">
             <table className="table table-hover shadow-sm">
               <TableHeader id nome quantidadeEmEstoque />
@@ -110,10 +122,11 @@ export function Products() {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              totalItens={`${products.length} ${products.length > 1 ? 'produtos' : 'produto'}`}
             />
           </div>
         ) : (
-          <p className="text-secondary">Nenhum produto encontrado.</p>
+          <p className="text-secondary text-center">Nenhum produto encontrado.</p>
         )}
       </div>
     </>

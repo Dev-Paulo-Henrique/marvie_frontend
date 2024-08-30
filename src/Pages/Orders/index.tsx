@@ -123,10 +123,11 @@ export function Orders() {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              totalItens={`${orders.length} ${orders.length > 1 ? 'pedidos' : 'pedido'}`}
             />
           </div>
         ) : (
-          <p className="text-secondary">Nenhum pedido encontrado.</p>
+          <p className="text-secondary text-center">Nenhum pedido encontrado.</p>
         )}
       </div>
     </>

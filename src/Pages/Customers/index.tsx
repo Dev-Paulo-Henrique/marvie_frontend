@@ -91,10 +91,11 @@ export function Customers() {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={handlePageChange}
+              totalItens={`${users.length} ${users.length > 1 ? 'usuários' : 'usuário'}`}
             />
           </div>
         ) : (
-          <p className="text-secondary">Nenhum cliente encontrado.</p>
+          <p className="text-secondary text-center">Nenhum cliente encontrado.</p>
         )}
       </div>
     </>
