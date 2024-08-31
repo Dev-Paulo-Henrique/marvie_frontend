@@ -63,7 +63,7 @@ export function Customers() {
 
   return (
     <>
-      <Header title="Clientes" link="customers/new" textButton={`${isDesktop ? "Novo" : ""} Cliente`} />
+      <Header title="Clientes" textButton={`${isDesktop ? "Novo" : ""} Cliente`} />
       <div className="pb-4">
         <SearchAdmin
           value={searchTerm}

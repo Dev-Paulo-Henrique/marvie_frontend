@@ -6,6 +6,7 @@ import { Title } from "../../utils/Title";
 import { addHours } from 'date-fns'
 // import { md4 } from 'hash-wasm';
 import { useMask } from '@react-input/mask';
+import { useNavigate } from "react-router-dom";
 
 export function AddCustomer() {
   const [nome, setNome] = useState("");
@@ -16,6 +17,7 @@ export function AddCustomer() {
   const [telefone, setTelefone] = useState("");
   const [CEP, setCEP] = useState("");
   const [numero, setNumero] = useState("");
+  const navigate = useNavigate();
   const inputTelefoneRef = useMask({ mask: '+__ (__) _____-____', replacement: { _: /\d/ } });
   const inputCEPRef = useMask({ mask: '_____-___', replacement: { _: /\d/ } });
 
@@ -192,9 +194,9 @@ export function AddCustomer() {
             </div>
           </div>
           <div className="d-flex gap-2 mt-4 justify-content-end">
-            <a href="/admin/customers" className="btn btn-danger">
+            <button onClick={() => navigate("/admin/customers")} className="btn btn-danger">
               Cancelar
-            </a>
+            </button>
             <button type="submit" className="btn btn-primary">
               Salvar
             </button>

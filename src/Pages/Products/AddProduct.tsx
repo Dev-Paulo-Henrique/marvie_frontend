@@ -3,6 +3,7 @@ import { api } from "../../services/api";
 import { toast } from "react-hot-toast";
 import { Header } from "../Admin/Header";
 import { Title } from "../../utils/Title";
+import { useNavigate } from "react-router-dom";
 // import { md4 } from 'hash-wasm';
 
 export function AddProduct() {
@@ -14,6 +15,8 @@ export function AddProduct() {
   const [telefone, setTelefone] = useState("");
   const [CEP, setCEP] = useState("");
   const [numero, setNumero] = useState("");
+
+  const navigate = useNavigate();
 
   Title({ title: "Novo Produto" });
 
@@ -186,9 +189,9 @@ export function AddProduct() {
             </div>
           </div>
           <div className="d-flex gap-2 mt-4 justify-content-end">
-            <a href="/admin/customers" className="btn btn-danger">
+            <button onClick={() => navigate("/admin/products")} className="btn btn-danger">
               Cancelar
-            </a>
+            </button>
             <button type="submit" className="btn btn-primary">
               Salvar
             </button>

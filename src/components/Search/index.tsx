@@ -151,7 +151,7 @@ export function SearchAdmin({ onChange, value }: SearchAdminProps) {
         type="text"
         className="form-control ps-5"
         id="datatable-search-input"
-        placeholder="Buscar produto"
+        placeholder={`Buscar ${document.title.toLocaleLowerCase()}...`}
         value={value}
         onChange={onChange}
       />

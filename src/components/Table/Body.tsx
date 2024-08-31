@@ -1,6 +1,7 @@
 import { format, formatDistance } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { statusColorMap } from "../../utils/StatusColorMap";
+import { ReactNode } from "react";
 
 interface TableRowUsersProps {
   id: string;
@@ -14,6 +15,7 @@ interface TableRowProductsProps {
   nome: string;
   estoque: number;
   img: string;
+  actions: ReactNode;
 }
 
 interface TableRowOrdersProps {
@@ -35,16 +37,16 @@ export function TableRowUsers({
 }: TableRowUsersProps) {
   return (
     <tr>
-      <th scope="row" className="d-none d-lg-table-cell align-middle">
+      {/* <th scope="row" className="d-none d-lg-table-cell align-middle">
         <input
           className="form-check-input me-1 row-checkbox"
           type="checkbox"
           value=""
           aria-label="..."
         />
-      </th>
-      <td className="align-middle">
-        <a href={`/admin/customers/${id}`} className="text-decoration-none">
+      </th> */}
+      <td className="align-middle ps-lg-4">
+        <a href={`/admin/customers/${id}`} className="text-decoration-none text-break">
           {name}
         </a>
       </td>
@@ -67,25 +69,28 @@ export function TableRowProducts({
   img,
   estoque,
   nome,
+  actions
 }: TableRowProductsProps) {
   return (
     <tr>
-      <th scope="row" className="d-none d-lg-table-cell align-middle">
+      {/* <th scope="row" className="d-none d-lg-table-cell align-middle">
         <input
           className="form-check-input me-1 row-checkbox"
           type="checkbox"
           value=""
           aria-label="..."
         />
-      </th>
-      <td className="d-none d-lg-table-cell align-middle">#{id}</td>
-      <td className="align-middle">
-        <a href={`/admin/products/${id}`} className="text-decoration-none">
-          <img src={img} width={50} />
-          <span className="mx-3">{nome}</span>
-        </a>
+      </th> */}
+      <td className="d-none d-lg-table-cell align-middle text-center">{id}</td>
+      <td className="align-middle ps-lg-4">
+        <div className="d-flex align-items-center">
+          <img src={img} width={50} className="d-none d-lg-block"/>
+          <span className="mx-3 fs-6 text-break">{nome}</span>
+        </div>
       </td>
-      <td className="align-middle text-center">{estoque}</td>
+      <td className="d-none d-lg-table-cell align-middle text-center">{estoque}</td>
+      <td className="d-none d-lg-table-cell align-middle text-center">{actions}</td>
+      <td className="d-table-cell d-lg-none align-middle text-center">{actions}</td>
     </tr>
   );
 }
@@ -102,10 +107,10 @@ export function TableRowOrders({
 }: TableRowOrdersProps) {
   return (
     <tr key={id} className="align-middle">
-      <td>
+      {/* <td>
         <input type="checkbox" className="form-check-input row-checkbox" />
-      </td>
-      <td>
+      </td> */}
+      <td className="ps-lg-4">
         <div className="d-flex align-items-center gap-2">
         <img
             src={paymentFlag}

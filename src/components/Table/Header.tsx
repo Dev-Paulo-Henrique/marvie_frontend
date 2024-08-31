@@ -17,25 +17,25 @@ export function TableHeader({
   numeroDoPedido,
   data,
   total,
-  status
+  status,
 }: TabelHeaderProps) {
   return (
     <thead>
       <tr>
-        <th scope="col" className="d-none d-lg-block">
+        {/* <th scope="col" className="d-none d-lg-block">
           <input
             id="header-checkbox"
             className="form-check-input me-1"
             type="checkbox"
           />
-        </th>
+        </th> */}
         {id && (
-          <th scope="col" className="d-none d-lg-table-cell">
+          <th scope="col" className="d-none d-lg-table-cell text-center">
             <small className="text-uppercase text-secondary">ID</small>
           </th>
         )}
         {numeroDoPedido && (
-          <th scope="col">
+          <th scope="col" className="ps-lg-4">
             <small className="text-uppercase text-secondary">
               Número do pedido
             </small>
@@ -57,23 +57,31 @@ export function TableHeader({
           </th>
         )}
         {nome && (
-          <th scope="col">
+          <th scope="col" className="ps-4">
             <small className="text-uppercase text-secondary">Nome</small>
           </th>
         )}
         {dataDeCadastro && (
           <th scope="col">
-            <small className="text-uppercase text-secondary">
+            <small className="d-none d-lg-block text-uppercase text-secondary">
               Data de cadastro
+            </small>
+            <small className="d-block d-lg-none text-uppercase text-secondary">
+              Cadastro
             </small>
           </th>
         )}
         {quantidadeEmEstoque && (
-          <th scope="col" className="text-center">
-            <small className="text-uppercase text-secondary">
-              Estoque
-            </small>
-          </th>
+          <>
+            <th scope="col" className="d-none d-lg-table-cell text-center">
+              <small className="text-uppercase text-secondary">
+                Quantidade em Estoque
+              </small>
+            </th>
+            <th scope="col" className="d-lg-table-cell text-center">
+              <small className="text-uppercase text-secondary">Ações</small>
+            </th>
+          </>
         )}
       </tr>
     </thead>
