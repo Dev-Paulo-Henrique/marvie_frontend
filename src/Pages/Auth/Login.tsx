@@ -16,7 +16,7 @@ export function Login() {
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPass, setErrorPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { token } = useAuth();
+  const { token, setToken, setUserName } = useAuth();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
@@ -54,15 +54,16 @@ export function Login() {
 
     try {
       const response = await api.post("/users/login", { email, senha });
-      const { token, userName, auth } = response.data;
-      console.log(auth);
-      localStorage.setItem("authToken", token);
-      localStorage.setItem("authName", userName);
+      const { token, userName } = response.data;
+
+      setToken(token);
+      setUserName(userName);
+
       toast.success(`Bem-vindo(a) ${userName}`, {
         position: "top-center",
         toastId: "success",
         hideProgressBar: true,
-        autoClose: 1000,
+        autoClose: 3000,
         pauseOnHover: false,
         closeButton: false,
         className: "text-center",
@@ -71,7 +72,6 @@ export function Login() {
           window.scrollTo({ top: 0, behavior: "smooth" });
         },
       });
-      setIsLoading(false);
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response) {
@@ -80,17 +80,17 @@ export function Login() {
             position: "top-center",
             toastId: "error",
             hideProgressBar: true,
-            autoClose: 1000,
+            autoClose: 3000,
             pauseOnHover: false,
             className: "text-center",
             closeButton: false,
           });
-          setIsLoading(false);
-          console.log(error.response.data);
         }
       } else {
         console.log("Erro desconhecido:", error);
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 

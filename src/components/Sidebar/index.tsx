@@ -54,7 +54,7 @@ export function Sidebar() {
       <ul className="nav nav-pills flex-column mb-0">
         <ActiveLink
           href="/"
-          executable={() => localStorage.removeItem("authToken")}
+          executable={() => localStorage.clear()}
         >
           <IoLogOutOutline className={`bi ${isDesktop ? "me-2" : ""}`} />
           {isDesktop && "Sair"}

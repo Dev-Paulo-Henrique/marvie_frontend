@@ -1,6 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { Sidebar } from "../../components/Sidebar";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
 import { Home } from "../Home";
 import { Dashboard } from "../Dashboard";
 import { Orders } from "../Orders";
@@ -13,10 +13,38 @@ import { useAxiosConnection } from "../../utils/AxiosConnection";
 import { BsServer } from "react-icons/bs";
 import { OrderDetail } from "../Orders/OrderDetail";
 import { ProductDetail } from "../Products/ProductDetail";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import { Title } from "../../utils/Title";
 
 export function Admin() {
   const isDesktop = useMediaQuery({ minWidth: 992 });
   const { isConnected, isLoading } = useAxiosConnection();
+
+  const [loading, setLoading] = useState(true);
+  const {
+    token
+   } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function validateJWT() {
+      if (!token) {
+        await navigate("/login");
+      } else {
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    }
+    validateJWT();
+  }, [navigate, token]);
+
+  Title({ title: "Marvie" });
+  
+  if (loading) {
+    return null;
+  }
 
   const sidebarWidth = isDesktop ? "280px" : "80px";
 

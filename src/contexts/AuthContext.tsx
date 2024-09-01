@@ -5,6 +5,8 @@ import { api } from '../services/api';
 type AuthContextType = {
   token: string | null;
   userName: string | null;
+  setToken: (token: string | null) => void;
+  setUserName: (userName: string | null) => void;
 };
 
 type AuthContextProviderProps = {
@@ -18,47 +20,53 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadToken() {
-      const storedToken = localStorage.getItem("authToken");
-      if (storedToken) {
-        setToken(storedToken);
-        await validateToken(storedToken);
-      } else {
-        setToken(null);
-        setUserName(null);
-      }
+    const storedToken = localStorage.getItem("authToken");
+    const storedUserName = localStorage.getItem("authName");
+
+    if (storedToken) {
+      setToken(storedToken);
     }
-
-    async function validateToken(token: string) {
-      try {
-        const response = await api.get("/token", {
-          headers: {
-            "x-access-token": token,
-          },
-        });
-
-        const userData = response.data;
-        localStorage.setItem("authToken", token);
-        setToken(token);
-        setUserName(userData.userName);
-      } catch (error) {
-        if (isAxiosError(error)) {
-          if (error.response?.status === 401) {
-            localStorage.removeItem("authToken");
-            setToken(null);
-            setUserName(null);
-          }
-        } else {
-          console.error("Erro desconhecido:", error);
-        }
-      }
+    
+    if (storedUserName) {
+      setUserName(storedUserName);
     }
-
-    loadToken();
   }, []);
 
+  async function validateToken(token: string) {
+    try {
+      const response = await api.get("/token", {
+        headers: {
+          "x-access-token": token,
+        },
+      });
+
+      const userData = response.data;
+      setToken(token);
+      setUserName(userData.userName);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("authName", userData.userName);
+    } catch (error) {
+      if (isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("authName");
+          setToken(null);
+          setUserName(null);
+        }
+      } else {
+        console.error("Erro desconhecido:", error);
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (token) {
+      validateToken(token);
+    }
+  }, [token]);
+
   return (
-    <AuthContext.Provider value={{ token, userName }}>
+    <AuthContext.Provider value={{ token, userName, setToken, setUserName }}>
       {children}
     </AuthContext.Provider>
   );
