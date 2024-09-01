@@ -19,6 +19,7 @@ export function Card({
   tag,
   discount,
   reviews,
+  id
 }: CardProps) {
   // const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ export function Card({
     <div className="col-lg-3 col-md-4 col-sm-6 col-6 mt-3">
       <div className="product-grid">
         <div className="product-image">
-          <a href="/product/1#" className="image">
+          <a href={`/product/${id}`} className="image">
             <img className="img-1" src={firstImage} />
             <img className="img-2" src={secondImage} />
           </a>
@@ -55,7 +56,7 @@ export function Card({
             </li>
             <li>
               <a
-                href="/product/1"
+                href={`/product/${id}`}
                 // onClick={() =>
                 //   toast(`🔍 Carregando informações...`, {
                 //     position: "top-center",

@@ -1,35 +1,48 @@
 // import { useMediaQuery } from "react-responsive";
 import { FaPlus, FaMinus, FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
 import { Slider } from "../Slider";
-import { toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import { Title } from "../../utils/Title";
+import { useProduct } from "../../hooks/useProduct";
+import { IoIosArrowRoundBack } from "react-icons/io";
 
-interface ViewProductDetailProps {
-  id: string | undefined;
-}
-
-export function ViewProductDetail({id}: ViewProductDetailProps) {
+export function ViewProductDetail() {
   // const isDesktop = useMediaQuery({ minWidth: 992 });
+  const { id } = useParams<{ id: string }>();
   const [quantity, setQuantity] = useState(1);
   const navigate = useNavigate();
+  const productId = id;
+  const product = useProduct(productId);
 
-  Title({title: "Nome do Produto"})
+  Title({
+    title: product?.name ? product?.name : import.meta.env.VITE_APP_TITLE,
+  });
+
+  if (!product) {
+    return <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+    <span className="text-secondary fs-3 text-center">
+      Produto indisponível
+    </span>
+    <a href="/" className="text-muted text-decoration-none mt-3">
+      <IoIosArrowRoundBack />
+      Voltar
+    </a>
+  </div>;
+  }
 
   return (
     <section className="py-lg-5">
-      <div className="container">
+      <div className="container mb-lg-5">
         <div className="row gx-5">
           {/* Product Image and Gallery */}
-          <Slider/>
+          <Slider images={[product.firstImage, product.secondImage]} />
 
           <main className="col-lg-6">
             <div className="ps-lg-3">
-            <small className="text-muted">Ref: {id}</small>
-              <h3 className="text-dark">
-                Moletom masculino de qualidade para o inverno
-              </h3>
+              <small className="text-muted">Ref: <b>{product.id}</b></small>
+              <h3 className="text-dark">{product.name}</h3>
               <div className="d-flex align-items-center my-2">
                 <div className="text-warning me-2">
                   {[...Array(4)].map((_, i) => (
@@ -37,21 +50,26 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                   ))}
                   <FaRegStarHalfStroke size={20} />
                 </div>
-                <small className="text-muted">(154 avaliações)</small>
+                <small className="text-muted">
+                  ({product.reviews && product.reviews > 1 ? `${product.reviews} avaliações` : `${product.reviews} avaliação`})
+                </small>
               </div>
 
               <div className="mb-2">
-                <small className="text-decoration-line-through text-muted">R$ 98,99</small>
-                <br />
-                <span className="h2 text-primary fw-bold">R$ 75,00 <small className="fs-5">no PIX</small></span>
+                {product.oldPrice && (
+                  <>
+                    <small className="text-decoration-line-through text-muted">
+                      {product.oldPrice}
+                    </small>
+                    <br />
+                  </>
+                )}
+                <span className="h2 text-primary fw-bold">
+                  {product.price} <small className="fs-5">no PIX</small>
+                </span>
               </div>
 
-              <p className="mb-4 text-justify">
-                O visual moderno e o item de demonstração de qualidade são
-                inspirados no streetwear coleção que continua a romper com as
-                convenções de moda convencional. Fabricadas na Itália, essas
-                roupas pretas e marrons camisas de cano baixo para homens.
-              </p>
+              <p className="mb-4 text-justify">{product.description}</p>
 
               <hr />
 
@@ -59,17 +77,17 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                 <div className="col-6 col-lg-4 mb-3">
                   <label className="form-label">Tamanho</label>
                   <select className="form-select">
-                    <option>Pequeno</option>
-                    <option>Médio</option>
-                    <option>Largo</option>
+                  {product.sizes && product.sizes.map(size => (
+                      <option key={size}>{size}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="col-6 col-lg-4 mb-3">
                   <label className="form-label">Cor</label>
                   <select className="form-select">
-                    <option>Azul</option>
-                    <option>Branco</option>
-                    <option>Vermelho</option>
+                  {product.colors && product.colors.map(color => (
+                      <option key={color}>{color}</option>
+                    ))}
                   </select>
                 </div>
                 <div className="col-lg-4 mb-3">
@@ -79,9 +97,13 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                       className="btn btn-light"
                       type="button"
                       disabled={quantity == 1}
-                      onClick={() => setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1))}
-                      >
-                      <FaMinus/>
+                      onClick={() =>
+                        setQuantity((prevQuantity) =>
+                          prevQuantity > 1 ? prevQuantity - 1 : 1
+                        )
+                      }
+                    >
+                      <FaMinus />
                     </button>
                     <input
                       type="number"
@@ -94,9 +116,11 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
                       className="btn btn-light"
                       type="button"
                       disabled={quantity == 10}
-                      onClick={() => setQuantity(prevQuantity => prevQuantity + 1)}
+                      onClick={() =>
+                        setQuantity((prevQuantity) => prevQuantity + 1)
+                      }
                     >
-                      <FaPlus/>
+                      <FaPlus />
                     </button>
                   </div>
                 </div>
@@ -104,26 +128,27 @@ export function ViewProductDetail({id}: ViewProductDetailProps) {
 
               <div className="d-flex">
                 <a
-                //  href="#"
-                onClick={() =>
-                  toast(`🛒 Redirecionando para o checkout...`, {
-                    position: "top-center",
-                    toastId: "cart",
-                    hideProgressBar: false,
-                    autoClose: 3000,
-                    pauseOnHover: false,
-                    className: 'text-center',
-                    closeButton: false,
-                    progressStyle: {
-                      background: "var(--blue-100)",
-                    },
-                    onClose: () => {
-                      navigate('/checkout');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }
-                  })
-                }
-                 className="w-100 btn btn-primary p-3 fs-5">
+                  //  href="#"
+                  onClick={() =>
+                    toast(`🛒 Redirecionando para o checkout...`, {
+                      position: "top-center",
+                      toastId: "cart",
+                      hideProgressBar: false,
+                      autoClose: 3000,
+                      pauseOnHover: false,
+                      className: "text-center",
+                      closeButton: false,
+                      progressStyle: {
+                        background: "var(--blue-100)",
+                      },
+                      onClose: () => {
+                        navigate("/checkout");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      },
+                    })
+                  }
+                  className="w-100 btn btn-primary p-3 fs-5"
+                >
                   Comprar agora
                 </a>
               </div>

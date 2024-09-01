@@ -24,6 +24,7 @@ export function Main() {
                 tag={product.tag}
                 oldPrice={product.oldPrice}
                 discount={product.discount}
+                id={product.id}
               />
             ))
           ) : (

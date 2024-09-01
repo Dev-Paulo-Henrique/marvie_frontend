@@ -6,7 +6,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { NextArrow, PrevArrow } from "../Arrows";
 
-export function Slider() {
+interface SliderProps {
+  images: string[];
+}
+
+export function Slider({ images }: SliderProps) {
   const settings = {
     infinite: true,
     speed: 500,
@@ -20,7 +24,7 @@ export function Slider() {
       return (
         <div>
           <img
-            src={`https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/big${i + 1}.webp`}
+            src={images[i]}
             alt={`Thumbnail ${i + 1}`}
           />
         </div>
@@ -30,8 +34,6 @@ export function Slider() {
     dotsClass: "slick-dots slick-thumb",
   };
 
-  const images = ["big1.webp", "big2.webp", "big3.webp", "big4.webp"];
-
   return (
     <aside className="col-lg-6">
       <Slick {...settings}>
@@ -40,11 +42,11 @@ export function Slider() {
             key={index}
             className="border mb-3 d-flex justify-content-center"
           >
-              <img
-                className="rounded-4 img-fluid"
-                src={`https://mdbcdn.b-cdn.net/img/bootstrap-ecommerce/items/detail1/${img}`}
-                alt={`Main product ${index + 1}`}
-              />
+            <img
+              className="img-fluid"
+              src={img}
+              alt={`Main product ${index + 1}`}
+            />
           </div>
         ))}
       </Slick>
