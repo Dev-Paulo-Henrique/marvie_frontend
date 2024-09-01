@@ -2,9 +2,9 @@ import { useState } from "react";
 import { api } from "../../services/api";
 import { Particle } from "../../components/Particle";
 import { useAuth } from "../../hooks/useAuth";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Forms } from "../../components/Forms";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
 import { useMediaQuery } from "react-responsive";
 import { Title } from "../../utils/Title";
@@ -15,6 +15,7 @@ export function ForgotPassword() {
   const [errorEmail, setErrorEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
@@ -42,7 +43,19 @@ export function ForgotPassword() {
 
     try {
       const response = await api.post("/password_reset/request", { email });
-      toast.success(response.data);
+      toast.success(response.data, {
+        position: "top-center",
+        toastId: "success",
+        hideProgressBar: true,
+        autoClose: 1000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: "text-center",
+        onClose: () => {
+          navigate("/login");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+      });
       setIsLoading(false);
       setEmail("");
       setErrorMessage("");
@@ -50,7 +63,15 @@ export function ForgotPassword() {
       if (isAxiosError(error)) {
         if (error.response) {
           setErrorMessage(error.response.data);
-          toast.error(error.response.data);
+          toast.error(error.response.data, {
+            position: "top-center",
+            toastId: "error",
+            hideProgressBar: true,
+            autoClose: 1000,
+            pauseOnHover: false,
+            className: 'text-center',
+            closeButton: false,
+          })
           setIsLoading(false);
         }
       } else {

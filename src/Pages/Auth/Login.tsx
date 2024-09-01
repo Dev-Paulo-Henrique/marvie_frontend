@@ -5,7 +5,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Forms } from "../../components/Forms";
 import { isAxiosError } from "axios";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import { useMediaQuery } from "react-responsive";
 import { Title } from "../../utils/Title";
 
@@ -22,7 +22,7 @@ export function Login() {
 
   const navigate = useNavigate();
 
-  Title({title: "Login"})
+  Title({ title: "Login" });
 
   if (token) return <Navigate to="/admin/home" replace />;
 
@@ -46,27 +46,47 @@ export function Login() {
     }
 
     if (!valid) {
-      setErrorMessage("")
+      setErrorMessage("");
       return;
     }
 
+    setIsLoading(true);
+
     try {
       const response = await api.post("/users/login", { email, senha });
-      // toast.success(response.data);
       const { token, userName, auth } = response.data;
       console.log(auth);
       localStorage.setItem("authToken", token);
       localStorage.setItem("authName", userName);
-      // setTimeout(() => {
-      navigate("/admin/home");
-      // }, 2500)
+      toast.success(`Bem-vindo(a) ${userName}`, {
+        position: "top-center",
+        toastId: "success",
+        hideProgressBar: true,
+        autoClose: 1000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: "text-center",
+        onClose: () => {
+          navigate("/admin/home");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+      });
+      setIsLoading(false);
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response) {
           setErrorMessage(error.response.data);
-          toast.error(error.response.data);
+          toast.error(error.response.data, {
+            position: "top-center",
+            toastId: "error",
+            hideProgressBar: true,
+            autoClose: 1000,
+            pauseOnHover: false,
+            className: "text-center",
+            closeButton: false,
+          });
           setIsLoading(false);
-          console.log(error.response.data)
+          console.log(error.response.data);
         }
       } else {
         console.log("Erro desconhecido:", error);

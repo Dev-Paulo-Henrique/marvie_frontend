@@ -44,7 +44,7 @@ export function Admin() {
           overflowY: 'auto',
         }}
       >
-        {!isConnected ? (
+        {isConnected ? (
           <Routes>
             <Route path="home" element={<Home />} />
             <Route path="dashboard" element={<Dashboard />} />

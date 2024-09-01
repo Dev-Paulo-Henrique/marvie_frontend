@@ -3,8 +3,8 @@ import { api } from "../../services/api";
 import { Particle } from "../../components/Particle";
 import { Forms } from "../../components/Forms";
 import { isAxiosError } from "axios";
-import { useParams } from "react-router-dom";
-import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import {toast} from "react-toastify";
 import { useMediaQuery } from "react-responsive";
 import { Title } from "../../utils/Title";
 
@@ -14,6 +14,7 @@ export function ResetPassword() {
   const [errorPassword, setErrorPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { token } = useParams<{ token: string }>();
+  const navigate = useNavigate();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
@@ -42,14 +43,34 @@ export function ResetPassword() {
         token,
         newPassword: password,
       });
-      toast.success(response.data);
+      toast.success(response.data, {
+        position: "top-center",
+        toastId: "success",
+        hideProgressBar: true,
+        autoClose: 1000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: "text-center",
+        onClose: () => {
+          navigate("/admin");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+      });
       setPassword("");
       setIsLoading(false);
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response) {
           setErrorMessage(error.response.data);
-          toast.error(error.response.data);
+          toast.error(error.response.data, {
+            position: "top-center",
+            toastId: "error",
+            hideProgressBar: true,
+            autoClose: 1000,
+            pauseOnHover: false,
+            className: "text-center",
+            closeButton: false,
+          });
           setIsLoading(false);
         }
       } else {
