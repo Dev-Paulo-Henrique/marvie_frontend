@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
-import { useParams } from "react-router-dom";
-import { toast } from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import Avatar from "react-avatar";
+import { Loading } from "../../components/Loading";
+import { Error } from "../../components/Error";
+import { isAxiosError } from "axios";
+
 interface UserDataProps {
   id: number;
   nome: string;
@@ -20,42 +24,75 @@ interface UserDataProps {
 
 export function Profile() {
   const [user, setUser] = useState<UserDataProps | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { userId } = useParams<{ userId: string }>();
   const { token } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchUser = async (token: string | null) => {
+    const fetchUser = async () => {
       try {
         const response = await api.get(`/users/${userId}`, {
-          headers: {
-            "x-access-token": token,
-          },
+          headers: token ? { "x-access-token": token } : {},
         });
-        // console.log(token);
-        // console.log(response.data);
         setUser(response.data);
         document.title = response.data.nome;
       } catch (error) {
         console.error("Erro ao buscar dados do usuário:", error);
+        setError("Erro ao carregar dados do usuário.");
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchUser(token);
+    fetchUser();
   }, [token, userId]);
 
   async function handleDeleteUser() {
     try {
-      await api
-        .delete(`/users/${userId}`)
-        .then(() => toast.success("Usuário deletado"))
-        .finally(() =>
-          setTimeout(() => {
-            window.history.back();
-          }, 2500)
-        );
+      await api.delete(`/users/${userId}`);
+      toast.success("Usuário deletado", {
+        position: "top-center",
+        toastId: "create",
+        hideProgressBar: true,
+        autoClose: 3000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: 'text-center',
+        onClose: () => {
+          navigate('/admin/customers');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      })
+      setTimeout(() => {
+        window.history.back();
+      }, 2500);
     } catch (error) {
-      toast.error("Não foi possível deletar este usuário");
+      if (isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data, {
+            position: "top-center",
+            toastId: "create",
+            hideProgressBar: true,
+            autoClose: 3000,
+            pauseOnHover: false,
+            closeButton: false,
+            className: 'text-center',
+          })
+        }
+      } else {
+        console.log("Erro desconhecido:", error);
+      }
     }
+  }
+
+  if (loading) {
+    return <Loading/>
+  }
+
+  if (error) {
+    return <Error/>
   }
 
   if (!user) {
@@ -77,7 +114,6 @@ export function Profile() {
           </h2>
           <small className="text-secondary">{user.email}</small>
         </div>
-        {/* <h1>Customer ID: {userId}</h1> */}
       </div>
       <div className="row w-100 gap-2">
         <div className="form-group col-auto bg-white p-2 rounded border">
@@ -95,7 +131,7 @@ export function Profile() {
           <p>{user.telefone}</p>
         </div>
         <div className="form-group col-auto bg-white p-2 rounded border">
-          <label className="fw-bold">Data de cadastro</label>
+          <label className="fw-bold">Data de Cadastro</label>
           <p>
             {new Date(user.createdAt).toLocaleDateString("pt-BR", {
               day: "2-digit",
@@ -103,10 +139,6 @@ export function Profile() {
               year: "numeric",
             })}
           </p>
-        </div>
-        <div className="form-group col-auto bg-white p-2 rounded border">
-          <label className="fw-bold">Nome Completo</label>
-          <p>{user.nome}</p>
         </div>
         <div className="form-group col-auto bg-white p-2 rounded border">
           <label className="fw-bold">Nome Completo</label>

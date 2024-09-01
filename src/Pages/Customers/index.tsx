@@ -3,12 +3,15 @@ import { TableRowUsers } from "../../components/Table/Body";
 import { Title } from "../../utils/Title";
 import { Header } from "../Admin/Header";
 import { Pagination } from "../../components/Pagination";
-import { faker } from "@faker-js/faker";
 import { useCheckbox } from "../../hooks/useCheckbox";
 import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
 import { useMediaQuery } from "react-responsive";
+import { api } from "../../services/api";
+import { Loading } from "../../components/Loading";
+import { useAuth } from "../../hooks/useAuth";
+import { Error } from "../../components/Error";
 
 interface UserProps {
   id: number;
@@ -22,26 +25,30 @@ export function Customers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const { token } = useAuth();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
   Title({ title: "Clientes" });
 
   useEffect(() => {
-    const generateFakeUsers = () => {
-      const fakeUsers: UserProps[] = Array.from({ length: 50 }).map(
-        (_, index) => ({
-          id: index + 1,
-          nome: faker.person.fullName(),
-          createdAt: faker.date.past(),
-          relativeDate: faker.date.recent(),
-        })
-      );
-      setUsers(fakeUsers);
+    const fetchUsers = async () => {
+      try {
+        const response = await api.get<UserProps[]>('/users', { headers: {
+          'x-access-token': token,
+        } });
+        setUsers(response.data);
+      } catch (err) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    generateFakeUsers();
-  }, []);
+    fetchUsers();
+  }, [token, users]);
 
   useCheckbox(users);
 
@@ -60,6 +67,18 @@ export function Customers() {
       setCurrentPage(newPage);
     }
   };
+
+  if (loading) {
+    return (
+      <Loading/>
+    );
+  }
+
+  if (error) {
+    return (
+      <Error/>
+    );
+  }
 
   return (
     <>
@@ -82,7 +101,7 @@ export function Customers() {
                     id={user.id.toString()}
                     name={user.nome}
                     date={user.createdAt}
-                    relativeDate={user.relativeDate}
+                    relativeDate={user.createdAt}
                   />
                 ))}
               </tbody>

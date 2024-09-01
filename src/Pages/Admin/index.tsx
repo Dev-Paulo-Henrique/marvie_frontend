@@ -16,48 +16,36 @@ import { ProductDetail } from "../Products/ProductDetail";
 import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Title } from "../../utils/Title";
+import { Loading } from "../../components/Loading";
 
 export function Admin() {
   const isDesktop = useMediaQuery({ minWidth: 992 });
   const { isConnected, isLoading } = useAxiosConnection();
 
   const [loading, setLoading] = useState(true);
-  const {
-    token
-   } = useAuth();
+  const { token } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function validateJWT() {
       if (!token) {
-        await navigate("/login");
+        if(!localStorage.getItem("authToken")) {
+          await navigate("/login");
+        }
       } else {
-        setTimeout(() => {
-          setLoading(false);
-        }, 1000);
+        setLoading(false);
       }
     }
     validateJWT();
   }, [navigate, token]);
 
   Title({ title: "Marvie" });
-  
-  if (loading) {
-    return null;
-  }
 
   const sidebarWidth = isDesktop ? "280px" : "80px";
+  
 
-  if (isLoading) {
-    return (
-      <div
-        className="d-flex flex-column gap-2 justify-content-center align-items-center"
-        style={{ height: "100vh" }}
-      >
-        <div className="spinner-border" role="status"></div>
-        <span className="text-secondary">Carregando...</span>
-      </div>
-    );
+  if (isLoading || loading) {
+    return <Loading />;
   }
 
   return (
@@ -69,7 +57,7 @@ export function Admin() {
           marginLeft: sidebarWidth,
           background: "#f7f7f8",
           height: "100vh",
-          overflowY: 'auto',
+          overflowY: "auto",
         }}
       >
         {isConnected ? (
@@ -90,7 +78,8 @@ export function Admin() {
           <div className="d-flex flex-column justify-content-center align-items-center h-100">
             <BsServer color="#2A3C44" size={50} />
             <span className="text-secondary mt-3 fs-5 text-center">
-            Não foi possível conectar ao servidor no momento</span>
+              Não foi possível conectar ao servidor no momento
+            </span>
           </div>
         )}
       </div>

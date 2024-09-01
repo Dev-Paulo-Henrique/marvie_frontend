@@ -15,6 +15,7 @@ import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../../services/firebase";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
+import { Loading } from "../../components/Loading";
 
 interface ProductsProps {
   id: number;
@@ -93,6 +94,12 @@ export function Products() {
     }
   };
 
+  if (loading) {
+    return (
+      <Loading/>
+    );
+  }
+
   return (
     <>
       <Header
@@ -106,15 +113,7 @@ export function Products() {
             setSearchTerm(e.target.value), setCurrentPage(1);
           }}
         />
-        {loading ? (
-          <div
-            className="d-flex flex-column gap-2 justify-content-center align-items-center"
-            style={{ height: "calc(100vh/2)" }}
-          >
-            <div className="spinner-border" role="status"></div>
-            <span className="text-secondary">Carregando...</span>
-          </div>
-        ) : filteredProducts.length > 0 ? (
+        {filteredProducts.length > 0 ? (
           <div className="d-flex justify-content-center align-items-center flex-column">
             <table className="table table-hover shadow-sm">
               <TableHeader id nome quantidadeEmEstoque />

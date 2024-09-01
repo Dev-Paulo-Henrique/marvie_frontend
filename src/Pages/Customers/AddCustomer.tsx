@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { api } from "../../services/api";
-import { toast } from "react-hot-toast";
+import { toast } from "react-toastify";
 import { Header } from "../Admin/Header";
 import { Title } from "../../utils/Title";
 import { addHours } from 'date-fns'
-// import { md4 } from 'hash-wasm';
+import { isAxiosError } from "axios";
 import { useMask } from '@react-input/mask';
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 export function AddCustomer() {
   const [nome, setNome] = useState("");
@@ -18,6 +19,7 @@ export function AddCustomer() {
   const [CEP, setCEP] = useState("");
   const [numero, setNumero] = useState("");
   const navigate = useNavigate();
+  const { token } = useAuth();
   const inputTelefoneRef = useMask({ mask: '+__ (__) _____-____', replacement: { _: /\d/ } });
   const inputCEPRef = useMask({ mask: '_____-___', replacement: { _: /\d/ } });
 
@@ -56,7 +58,7 @@ export function AddCustomer() {
         return
     }
     try {
-        await api.post("/users", newCustomer);
+        await api.post("/users", newCustomer, { headers: { 'x-access-token': token } });
         setNome("")
         setEmail("")
         setSenha("")
@@ -65,10 +67,36 @@ export function AddCustomer() {
         setTelefone("")
         setCEP("")
         setNumero("")
-        toast.success('Cliente criado');
+        toast.success("Cliente criado!", {
+          position: "top-center",
+          toastId: "create",
+          hideProgressBar: true,
+          autoClose: 3000,
+          pauseOnHover: false,
+          closeButton: false,
+          className: 'text-center',
+          onClose: () => {
+            navigate('/admin/customers');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+        })
       } catch (error) {
         console.error("Erro ao salvar cliente:", error);
-        toast.error("Erro ao salvar cliente");
+        if (isAxiosError(error)) {
+          if (error.response) {
+            toast.error(error.response.data, {
+              position: "top-center",
+              toastId: "create",
+              hideProgressBar: true,
+              autoClose: 3000,
+              pauseOnHover: false,
+              closeButton: false,
+              className: 'text-center',
+            })
+          }
+        } else {
+          console.log("Erro desconhecido:", error);
+        }
       }
   };
 
