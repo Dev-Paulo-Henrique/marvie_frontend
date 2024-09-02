@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ResumeItem } from "../ResumeItem";
-import toast from "react-hot-toast";
+import {toast} from "react-toastify";
 
 const items = [
   { title: "Produto", subtitle: "Descrição breve", amount: 10 },
@@ -26,11 +26,27 @@ export function Resume() {
       setDiscountedTotal(newTotal);
       setIsCodeApplied(true);
       setPromoCode("");
-      toast.success("Cupom aplicado!");
+      toast.success("Cupom aplicado!", {
+        position: "top-center",
+        toastId: "create",
+        hideProgressBar: true,
+        autoClose: 3000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: 'text-center',
+      })
     } else {
       setDiscountedTotal(total);
       setIsCodeApplied(false);
-      toast.error("Cupom inválido");
+      toast.error("Cupom inválido", {
+        position: "top-center",
+        toastId: "create",
+        hideProgressBar: true,
+        autoClose: 3000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: 'text-center',
+      })
     }
   };
 

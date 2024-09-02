@@ -8,14 +8,17 @@ import { useAuth } from "./hooks/useAuth";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { ForgotPassword } from "./Pages/Auth/ForgotPassword";
 
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./scss/styles.scss";
+import "bootstrap/dist/js/bootstrap.bundle.min";
 import { Checkout } from "./Pages/Checkout";
 import { ResetPassword } from "./Pages/Auth/ResetPassword";
 import { ViewProduct } from "./Pages/Products/ViewProduct";
 import { Busca } from "./Pages/Busca";
+import { CartProvider } from "./contexts/CartContext";
+import { Cart } from "./components/Cart";
 
 const AppRoutes = () => {
   const { token, userName } = useAuth();
@@ -43,11 +46,14 @@ const AppRoutes = () => {
 function App() {
   return (
     <AuthContextProvider>
-      <BrowserRouter>
-        <AppRoutes />
-        <Toaster />
-        <ToastContainer />
-      </BrowserRouter>
+      <CartProvider>
+        <BrowserRouter>
+          <AppRoutes />
+          <Toaster />
+          <Cart />
+          <ToastContainer />
+        </BrowserRouter>
+      </CartProvider>
     </AuthContextProvider>
   );
 }

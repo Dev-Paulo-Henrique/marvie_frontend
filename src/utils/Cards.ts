@@ -38,7 +38,7 @@ export interface CardProps {
   name: string;
   firstImage: string;
   secondImage: string;
-  price: string;
+  price: number;
   oldPrice?: string;
   tag?: string;
   discount?: number;
@@ -53,7 +53,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img1,
     secondImage: Img2,
-    price: "R$ 65,99",
+    price: 65.99,
     name: "Women's Blouse Top",
     reviews: 18,
     description: "Esta blusa feminina é ideal para os dias quentes de verão. Feita com um tecido leve e respirável, oferece conforto durante todo o dia. Seu design moderno e elegante permite combinar facilmente com diferentes peças do seu guarda-roupa.",
@@ -65,7 +65,7 @@ export const products: CardProps[] = [
     firstImage: Img3,
     secondImage: Img4,
     tag: "Novidade",
-    price: "R$ 85,99",
+    price: 85.99,
     name: "Men's Jacket",
     reviews: 3,
     description: "A nova jaqueta masculina traz um visual sofisticado e resistente, perfeita para enfrentar o frio do inverno. Confeccionada com materiais de alta qualidade, oferece um ajuste confortável e um estilo que combina com diversas ocasiões.",
@@ -76,7 +76,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img5,
     secondImage: Img6,
-    price: "R$ 78,99",
+    price: 78.99,
     name: "Men's Jacket",
     reviews: 35,
     description: "Jaqueta masculina casual que combina estilo e conforto. Ideal para o uso diário, possui um corte moderno e é feita com tecido durável. Perfeita para adicionar um toque despojado ao seu visual sem comprometer a elegância.",
@@ -87,7 +87,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img7,
     secondImage: Img8,
-    price: "R$ 52,49",
+    price: 52.49,
     oldPrice: "R$ 74,99",
     name: "Women's T-Shirt",
     discount: 30,
@@ -100,7 +100,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img9,
     secondImage: Img10,
-    price: "R$ 119,99",
+    price: 119.99,
     oldPrice: "R$ 149,99",
     name: "Men's Jacket Black",
     discount: 20,
@@ -113,7 +113,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img11,
     secondImage: Img12,
-    price: "R$ 78,99",
+    price: 78.99,
     name: "Men's Jacket Jeans",
     reviews: 5,
     description: "Jaqueta masculina em jeans, uma peça essencial para um visual casual e estiloso. Feita com denim de alta qualidade, proporciona durabilidade e um ajuste confortável. Ideal para diversas ocasiões, desde um passeio descontraído até um evento casual.",
@@ -125,7 +125,7 @@ export const products: CardProps[] = [
     firstImage: Img13,
     secondImage: Img14,
     tag: "Promoção",
-    price: "R$ 85,99",
+    price: 85.99,
     name: "Women's Blouse Top",
     reviews: 63,
     description: "Blusa feminina que combina um design moderno com tecido leve, perfeita para os dias quentes. Seu corte versátil e as cores disponíveis permitem criar looks variados e elegantes. Ideal para quem busca conforto e estilo durante o verão.",
@@ -136,7 +136,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img15,
     secondImage: Img16,
-    price: "R$ 65,99",
+    price: 65.99,
     name: "Men's Jacket",
     reviews: 1,
     description: "Jaqueta masculina básica, ideal para o uso diário com um toque casual. Feita com um tecido resistente e com um corte que oferece liberdade de movimento. Uma escolha prática para quem precisa de uma peça versátil para diferentes ocasiões.",
@@ -147,7 +147,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img17,
     secondImage: Img18,
-    price: "R$ 49,99",
+    price: 49.99,
     name: "Men's Jacket",
     tag: "Últimas unidades",
     reviews: 23,
@@ -159,7 +159,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img19,
     secondImage: Img20,
-    price: "R$ 78,99",
+    price: 78.99,
     name: "Women's T-shirt",
     reviews: 76,
     description: "Camiseta feminina que une conforto e estilo em uma única peça. Feita com tecido suave e respirável, é perfeita para o uso diário. Seu design simples e elegante torna-a fácil de combinar com outras peças do guarda-roupa, garantindo um visual casual e sofisticado.",
@@ -170,7 +170,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img21,
     secondImage: Img22,
-    price: "R$ 85,99",
+    price: 85.99,
     name: "Men's Blazer",
     reviews: 12,
     description: "Blazer masculino sofisticado, ideal para eventos formais e ocasiões especiais. Confeccionado com materiais de alta qualidade, proporciona um ajuste elegante e confortável. Disponível em azul marinho, é a escolha perfeita para quem deseja um visual clássico e refinado.",
@@ -181,7 +181,7 @@ export const products: CardProps[] = [
   {
     firstImage: Img23,
     secondImage: Img24,
-    price: "R$ 72,24",
+    price: 72.24,
     name: "Women's Cotton Top",
     oldPrice: "R$ 84,99",
     discount: 15,

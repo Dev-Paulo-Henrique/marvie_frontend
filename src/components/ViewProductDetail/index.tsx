@@ -2,8 +2,12 @@
 import { FaPlus, FaMinus, FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
 import { Slider } from "../Slider";
 import { toast } from "react-toastify";
-import { useNavigate, useParams } from "react-router-dom";
+import {
+  // useNavigate,
+  useParams,
+} from "react-router-dom";
 import { useState } from "react";
+import { useCart } from "../../hooks/useCart";
 import { Title } from "../../utils/Title";
 import { useProduct } from "../../hooks/useProduct";
 import { IoIosArrowRoundBack } from "react-icons/io";
@@ -12,8 +16,9 @@ export function ViewProductDetail() {
   // const isDesktop = useMediaQuery({ minWidth: 992 });
   const { id } = useParams<{ id: string }>();
   const [quantity, setQuantity] = useState(1);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const productId = id;
+  const { addItem } = useCart();
   const product = useProduct(productId);
 
   Title({
@@ -21,16 +26,39 @@ export function ViewProductDetail() {
   });
 
   if (!product) {
-    return <div className="d-flex flex-column justify-content-center align-items-center vh-100">
-    <span className="text-secondary fs-3 text-center">
-      Produto indisponível
-    </span>
-    <a href="/" className="text-muted text-decoration-none mt-3">
-      <IoIosArrowRoundBack />
-      Voltar
-    </a>
-  </div>;
+    return (
+      <div className="d-flex flex-column justify-content-center align-items-center vh-100">
+        <span className="text-secondary fs-3 text-center">
+          Produto indisponível
+        </span>
+        <a href="/" className="text-muted text-decoration-none mt-3">
+          <IoIosArrowRoundBack />
+          Voltar
+        </a>
+      </div>
+    );
   }
+
+  const handleAddToCart = () => {
+    addItem({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity,
+    });
+    toast(`🛒 Adicionado ao carrinho.`, {
+      position: "top-center",
+      toastId: "cart",
+      hideProgressBar: false,
+      autoClose: 3000,
+      pauseOnHover: false,
+      className: "text-center",
+      closeButton: false,
+      progressStyle: {
+        background: "var(--blue-100)",
+      },
+    });
+  };
 
   return (
     <section className="py-lg-5">
@@ -41,7 +69,9 @@ export function ViewProductDetail() {
 
           <main className="col-lg-6">
             <div className="ps-lg-3">
-              <small className="text-muted">Ref: <b>{product.id}</b></small>
+              <small className="text-muted">
+                Ref: <b>{product.id}</b>
+              </small>
               <h3 className="text-dark">{product.name}</h3>
               <div className="d-flex align-items-center my-2">
                 <div className="text-warning me-2">
@@ -51,7 +81,11 @@ export function ViewProductDetail() {
                   <FaRegStarHalfStroke size={20} />
                 </div>
                 <small className="text-muted">
-                  ({product.reviews && product.reviews > 1 ? `${product.reviews} avaliações` : `${product.reviews} avaliação`})
+                  (
+                  {product.reviews && product.reviews > 1
+                    ? `${product.reviews} avaliações`
+                    : `${product.reviews} avaliação`}
+                  )
                 </small>
               </div>
 
@@ -65,7 +99,11 @@ export function ViewProductDetail() {
                   </>
                 )}
                 <span className="h2 text-primary fw-bold">
-                  {product.price} <small className="fs-5">no PIX</small>
+                  {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(product.price)}{" "}
+                  <small className="fs-5">no PIX</small>
                 </span>
               </div>
 
@@ -77,17 +115,19 @@ export function ViewProductDetail() {
                 <div className="col-6 col-lg-4 mb-3">
                   <label className="form-label">Tamanho</label>
                   <select className="form-select">
-                  {product.sizes && product.sizes.map(size => (
-                      <option key={size}>{size}</option>
-                    ))}
+                    {product.sizes &&
+                      product.sizes.map((size) => (
+                        <option key={size}>{size}</option>
+                      ))}
                   </select>
                 </div>
                 <div className="col-6 col-lg-4 mb-3">
                   <label className="form-label">Cor</label>
                   <select className="form-select">
-                  {product.colors && product.colors.map(color => (
-                      <option key={color}>{color}</option>
-                    ))}
+                    {product.colors &&
+                      product.colors.map((color) => (
+                        <option key={color}>{color}</option>
+                      ))}
                   </select>
                 </div>
                 <div className="col-lg-4 mb-3">
@@ -127,30 +167,13 @@ export function ViewProductDetail() {
               </div>
 
               <div className="d-flex">
-                <a
+                <button
                   //  href="#"
-                  onClick={() =>
-                    toast(`🛒 Redirecionando para o checkout...`, {
-                      position: "top-center",
-                      toastId: "cart",
-                      hideProgressBar: false,
-                      autoClose: 3000,
-                      pauseOnHover: false,
-                      className: "text-center",
-                      closeButton: false,
-                      progressStyle: {
-                        background: "var(--blue-100)",
-                      },
-                      onClose: () => {
-                        navigate("/checkout");
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      },
-                    })
-                  }
+                  onClick={handleAddToCart}
                   className="w-100 btn btn-primary p-3 fs-5"
                 >
-                  Comprar agora
-                </a>
+                  Adicionar ao carrinho
+                </button>
               </div>
             </div>
           </main>

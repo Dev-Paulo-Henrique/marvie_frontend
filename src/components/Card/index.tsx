@@ -8,6 +8,7 @@ import {
   FaHeart,
 } from "react-icons/fa6";
 import { CardProps } from "../../utils/Cards"
+import { useCart } from "../../hooks/useCart";
 // import { useNavigate } from "react-router-dom";
 
 export function Card({
@@ -22,6 +23,7 @@ export function Card({
   id
 }: CardProps) {
   // const navigate = useNavigate();
+  const { addItem } = useCart();
 
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 col-6 mt-3">
@@ -80,7 +82,7 @@ export function Card({
               <a
                 // href="#"
                 onClick={() =>
-                  toast(`🛒 Adicionado ao carrinho`, {
+                  {toast(`🛒 Adicionado ao carrinho`, {
                     position: "top-center",
                     toastId: "cart",
                     hideProgressBar: true,
@@ -88,7 +90,12 @@ export function Card({
                     pauseOnHover: false,
                     closeButton: false,
                     className: 'text-center'
-                  })
+                  }), addItem({
+                    id,
+                    name,
+                    price,
+                    quantity: 1,
+                  })}
                 }
               >
                 <FaShoppingCart />
@@ -114,8 +121,11 @@ export function Card({
               {name}
             </a>
           </h3>
-          <div className="price text-primary fw-bold fs-5">
-            {oldPrice && discount && <span className="text-secondary">{oldPrice}</span>} {price}
+          <div className="price text-primary fw-bold fs-5 d-flex flex-wrap">
+            {oldPrice && discount && <span className="text-secondary">{oldPrice}</span>} {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(price)}
           </div>
         </div>
       </div>
