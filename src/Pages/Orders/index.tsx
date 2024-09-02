@@ -83,7 +83,7 @@ export function Orders() {
   }, []);
 
   const filteredOrders = orders.filter((order) =>
-    order.numeroPedido?.toLowerCase().includes(searchTerm.toLowerCase())
+    order.clientName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const [currentOrders, totalPages] = paginate(filteredOrders, currentPage, itemsPerPage);

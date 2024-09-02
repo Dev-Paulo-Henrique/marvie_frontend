@@ -1,3 +1,5 @@
+import { useMediaQuery } from "react-responsive";
+
 interface TabelHeaderProps {
   id?: boolean;
   nome?: boolean;
@@ -19,6 +21,8 @@ export function TableHeader({
   total,
   status,
 }: TabelHeaderProps) {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+
   return (
     <thead>
       <tr>
@@ -41,12 +45,12 @@ export function TableHeader({
             </small>
           </th>
         )}
-        {data && (
+        {isDesktop && data && (
           <th scope="col">
             <small className="text-uppercase text-secondary">Data</small>
           </th>
         )}
-        {total && (
+        {isDesktop && total && (
           <th scope="col">
             <small className="text-uppercase text-secondary">Total</small>
           </th>
