@@ -3,10 +3,12 @@ import { FaShoppingCart } from "react-icons/fa";
 import { Modal } from "../Modal";
 import { useCart } from '../../hooks/useCart';
 // import { CartContext } from "../../contexts/CartContext";
+import { useLocation } from 'react-router-dom';
 
 export function Cart() {
   const { cartItems } = useCart();
   const modalRef = useRef(null);
+  const location = useLocation();
 //   const { cartItems } = useContext(CartContext);
 
   const handleShow = () => {
@@ -17,6 +19,12 @@ export function Cart() {
   };
 
 const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+
+const isVisible = location.pathname === '/' || location.pathname.startsWith('/product/') || location.pathname.startsWith('/busca/');
+
+if (!isVisible) {
+  return null;
+}
 
   return (
     <>
