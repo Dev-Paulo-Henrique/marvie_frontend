@@ -1,9 +1,55 @@
+import { FormEvent, useState } from "react";
 import { Footer } from "../components/Footer";
 import { CheckoutForm } from "../components/Forms/Checkout";
 import { Header } from "../components/Header";
-import { Resume } from "../components/Resume"
+import { PaymentDetails } from "../components/PaymentDetails";
+import { PaymentMethod } from "../components/PaymentMethod";
+import { Resume } from "../components/Resume";
+import { useCart } from "../hooks/useCart";
+import { Title } from "../utils/Title";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export function Checkout() {
+  const { cartItems, deleteItens } = useCart();
+  const navigate = useNavigate();
+  const [discountedTotal, setDiscountedTotal] = useState<number | null>(null);
+
+  Title({ title: "Checkout" });
+
+  const total = cartItems.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const finalTotal = discountedTotal !== null ? discountedTotal : total;
+    toast.success(
+      `Compra realizada com sucesso!\n\nValor: ${new Intl.NumberFormat(
+        "pt-BR",
+        {
+          style: "currency",
+          currency: "BRL",
+        }
+      ).format(finalTotal)}`,
+      {
+        position: "top-center",
+        toastId: "create",
+        hideProgressBar: true,
+        autoClose: 3000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: "text-center",
+        onClose: () => {
+          navigate("/");
+          deleteItens()
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+      }
+    );
+  }
+
   return (
     <>
       <Header isCart />
@@ -11,148 +57,20 @@ export function Checkout() {
       <div className="container mt-5">
         <main>
           <div className="row g-5">
-            <Resume />
+            <Resume items={cartItems} onDiscountApplied={(newTotal) => setDiscountedTotal(newTotal)} />
             <div className="col-md-7 col-lg-8">
               <h4 className="mb-3">Endereço de cobrança</h4>
-              <form className="needs-validation was-validated" noValidate>
+              <form
+                className="needs-validation was-validated"
+                noValidate
+                onSubmit={(e) => handleSubmit(e)}
+              >
                 <CheckoutForm />
 
                 <hr className="my-4" />
 
-                <div className="form-check">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="same-address"
-                  />
-                  <label className="form-check-label" htmlFor="same-address">
-                    O endereço de envio é o mesmo que o endereço de cobrança
-                  </label>
-                </div>
-
-                <div className="form-check">
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="save-info"
-                  />
-                  <label className="form-check-label" htmlFor="save-info">
-                    Salvar essas informações para a próxima vez
-                  </label>
-                </div>
-
-                <hr className="my-4" />
-
-                <h4 className="mb-3">Pagamento</h4>
-
-                <div className="my-3">
-                  <div className="form-check">
-                    <input
-                      id="credit"
-                      name="paymentMethod"
-                      type="radio"
-                      className="form-check-input"
-                      checked
-                      required
-                    />
-                    <label className="form-check-label" htmlFor="credit">
-                      Cartão de crédito
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      id="debit"
-                      name="paymentMethod"
-                      type="radio"
-                      className="form-check-input"
-                      required
-                    />
-                    <label className="form-check-label" htmlFor="debit">
-                      Cartão de débito
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      id="pix"
-                      name="paymentMethod"
-                      type="radio"
-                      className="form-check-input"
-                      required
-                    />
-                    <label className="form-check-label" htmlFor="pix">
-                      Pix
-                    </label>
-                  </div>
-                </div>
-
-                <div className="row gy-3">
-                  <div className="col-md-6">
-                    <label htmlFor="cc-name" className="form-label">
-                      Nome no cartão
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control text-uppercase"
-                      id="cc-name"
-                      placeholder=""
-                      required
-                    />
-                    <small className="text-muted">
-                      Nome completo como exibido no cartão
-                    </small>
-                    <div className="invalid-feedback">
-                      Este campo é obrigatório.
-                    </div>
-                  </div>
-
-                  <div className="col-md-6">
-                    <label htmlFor="cc-number" className="form-label">
-                      Número do cartão
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="cc-number"
-                      placeholder=""
-                      required
-                    />
-                    <div className="invalid-feedback">
-                      Este campo é obrigatório.
-                    </div>
-                  </div>
-
-                  <div className="col-md-3">
-                    <label htmlFor="cc-expiration" className="form-label">
-                      Validade
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="cc-expiration"
-                      placeholder=""
-                      required
-                    />
-                    <div className="invalid-feedback">
-                      Este campo é obrigatório.
-                    </div>
-                  </div>
-
-                  <div className="col-md-3">
-                    <label htmlFor="cc-cvv" className="form-label">
-                      CVV
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="cc-cvv"
-                      placeholder=""
-                      required
-                    />
-                    <div className="invalid-feedback">
-                      Este campo é obrigatório.
-                    </div>
-                  </div>
-                </div>
+                <PaymentMethod />
+                <PaymentDetails />
 
                 <hr className="my-4" />
 

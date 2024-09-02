@@ -11,6 +11,7 @@ export interface CartContextType {
   cartItems: CartItem[];
   addItem: (item: CartItem) => void;
   removeItem: (id: number) => void;
+  deleteItens: () => void;
 
   
   favorites: Set<number>;
@@ -85,6 +86,10 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
     });
   };
 
+  const deleteItens = () => {
+    setCartItems([]);
+  };
+
 
   const addFavorite = (id: number) => {
     setFavorites(prev => {
@@ -107,7 +112,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({
   const isFavorite = (id: number) => favorites.has(id);
 
   return (
-    <CartContext.Provider value={{ favorites, addFavorite, removeFavorite, isFavorite, cartItems, addItem, removeItem }}>
+    <CartContext.Provider value={{ favorites, addFavorite, removeFavorite, isFavorite, cartItems, addItem, removeItem, deleteItens }}>
       {children}
     </CartContext.Provider>
   );

@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
 import { ResumeItem } from "../ResumeItem";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
-const items = [
-  { title: "Produto", subtitle: "Descrição breve", amount: 10 },
-  { title: "Produto", subtitle: "Descrição breve", amount: 50 },
-];
+interface Item {
+  id: number;
+  name: string;
+  price: number;
+  quantity: number;
+}
 
-export function Resume() {
+interface ResumeProps {
+  items: Item[];
+  onDiscountApplied?: (newTotal: number) => void;
+}
+
+export function Resume({ items, onDiscountApplied  }: ResumeProps) {
   const [itemList, setItemList] = useState(items);
   const [promoCode, setPromoCode] = useState("");
-  const [discountedTotal, setDiscountedTotal] = useState(0);
+  const [discountedTotal, setDiscountedTotal] = useState<number | null>(null);
   const [isCodeApplied, setIsCodeApplied] = useState(false);
 
   useEffect(() => {
     setItemList(items);
-  }, []);
+  }, [items]);
 
-  const total = itemList.reduce((acc, item) => acc + item.amount, 0);
+  const total = itemList.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
   const applyDiscount = (code: string) => {
     if (code === "IFPEMARVIE") {
@@ -26,27 +36,29 @@ export function Resume() {
       setDiscountedTotal(newTotal);
       setIsCodeApplied(true);
       setPromoCode("");
+      if (onDiscountApplied) onDiscountApplied(newTotal);
       toast.success("Cupom aplicado!", {
         position: "top-center",
-        toastId: "create",
+        toastId: "successCoupon",
         hideProgressBar: true,
         autoClose: 3000,
         pauseOnHover: false,
         closeButton: false,
-        className: 'text-center',
-      })
+        className: "text-center",
+      });
     } else {
       setDiscountedTotal(total);
       setIsCodeApplied(false);
+      if (onDiscountApplied) onDiscountApplied(total);
       toast.error("Cupom inválido", {
         position: "top-center",
-        toastId: "create",
+        toastId: "errorCoupon",
         hideProgressBar: true,
         autoClose: 3000,
         pauseOnHover: false,
         closeButton: false,
-        className: 'text-center',
-      })
+        className: "text-center",
+      });
     }
   };
 
@@ -58,7 +70,7 @@ export function Resume() {
   const formattedTotal = new Intl.NumberFormat("pt-BR", {
     style: "currency",
     currency: "BRL",
-  }).format(discountedTotal !== 0 ? discountedTotal : total);
+  }).format(discountedTotal !== null ? discountedTotal : total);
 
   return (
     <div className="col-md-5 col-lg-4 order-md-last">
@@ -70,12 +82,12 @@ export function Resume() {
         {itemList.map((item, index) => (
           <ResumeItem
             key={index}
-            title={`${item.title} ${index + 1}`}
-            subtitle={item.subtitle}
+            title={`${item.name} ${index + 1}`}
+            subtitle={`Quantidade: ${item.quantity.toString()}`}
             amount={new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
-            }).format(item.amount)}
+            }).format(item.price)}
           />
         ))}
         {isCodeApplied && (
@@ -84,7 +96,7 @@ export function Resume() {
             amount={new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",
-            }).format(discountedTotal - total)}
+            }).format(total - (discountedTotal ?? 0))}
           />
         )}
         <ResumeItem isTotal amount={formattedTotal} />

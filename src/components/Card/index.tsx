@@ -73,30 +73,12 @@ export function Card({
               </a>
             </li>
             <li>
-              <a
-                href={`/product/${id}`}
-                // onClick={() =>
-                //   toast(`🔍 Carregando informações...`, {
-                //     position: "top-center",
-                //     toastId: "cart",
-                //     hideProgressBar: true,
-                //     autoClose: 3000,
-                //     pauseOnHover: false,
-                //     closeButton: false,
-                //     className: 'text-center',
-                //     onClose: () => {
-                //       navigate('/product/1');
-                //       window.scrollTo({ top: 0, behavior: 'smooth' });
-                //     }
-                //   })
-                // }
-              >
+              <a href={`/product/${id}`}>
                 <FaMagnifyingGlass />
               </a>
             </li>
             <li>
               <a
-                // href="#"
                 onClick={() => {
                   toast(`🛒 Adicionado ao carrinho`, {
                     position: "top-center",
