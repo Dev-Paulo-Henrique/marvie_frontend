@@ -23,7 +23,33 @@ export function Card({
   id,
 }: CardProps) {
   // const navigate = useNavigate();
-  const { addItem } = useCart();
+  const { addItem, addFavorite, removeFavorite, isFavorite } = useCart();
+
+  const handleFavoriteClick = () => {
+    if (isFavorite(id)) {
+      removeFavorite(id);
+      toast(`💔 Removido dos favoritos`, {
+        position: "top-center",
+        toastId: "removeFavorite",
+        hideProgressBar: true,
+        autoClose: 3000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: "text-center",
+      });
+    } else {
+      addFavorite(id);
+      toast(`❤️ Adicionado aos favoritos`, {
+        position: "top-center",
+        toastId: "addFavorite",
+        hideProgressBar: true,
+        autoClose: 3000,
+        pauseOnHover: false,
+        closeButton: false,
+        className: "text-center",
+      });
+    }
+  };
 
   return (
     <div className="col-lg-3 col-md-4 col-sm-6 col-6 mt-3">
@@ -41,19 +67,9 @@ export function Card({
             <li>
               <a
                 // href="#"
-                onClick={() =>
-                  toast(`❤️ Adicionado aos favoritos`, {
-                    position: "top-center",
-                    toastId: "cart",
-                    hideProgressBar: true,
-                    autoClose: 3000,
-                    pauseOnHover: false,
-                    className: "text-center",
-                    closeButton: false,
-                  })
-                }
+                onClick={handleFavoriteClick}
               >
-                <FaHeart />
+                {isFavorite(id) ? <FaHeart color="#f00" /> : <FaHeart />}
               </a>
             </li>
             <li>
