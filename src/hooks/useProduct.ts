@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { products, CardProps } from "../utils/Cards";
 
-export function useProduct(productId: string | undefined) {
+export function useProduct(productId: number | undefined) {
   const [product, setProduct] = useState<CardProps | null>(null);
 
   useEffect(() => {

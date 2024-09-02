@@ -1,4 +1,4 @@
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import { FaShoppingCart } from "react-icons/fa";
 import {
   FaStar,
@@ -7,7 +7,7 @@ import {
   FaMagnifyingGlass,
   FaHeart,
 } from "react-icons/fa6";
-import { CardProps } from "../../utils/Cards"
+import { CardProps } from "../../utils/Cards";
 import { useCart } from "../../hooks/useCart";
 // import { useNavigate } from "react-router-dom";
 
@@ -20,7 +20,7 @@ export function Card({
   tag,
   discount,
   reviews,
-  id
+  id,
 }: CardProps) {
   // const navigate = useNavigate();
   const { addItem } = useCart();
@@ -48,7 +48,7 @@ export function Card({
                     hideProgressBar: true,
                     autoClose: 3000,
                     pauseOnHover: false,
-                    className: 'text-center',
+                    className: "text-center",
                     closeButton: false,
                   })
                 }
@@ -81,22 +81,23 @@ export function Card({
             <li>
               <a
                 // href="#"
-                onClick={() =>
-                  {toast(`🛒 Adicionado ao carrinho`, {
+                onClick={() => {
+                  toast(`🛒 Adicionado ao carrinho`, {
                     position: "top-center",
                     toastId: "cart",
                     hideProgressBar: true,
                     autoClose: 3000,
                     pauseOnHover: false,
                     closeButton: false,
-                    className: 'text-center'
-                  }), addItem({
-                    id,
-                    name,
-                    price,
-                    quantity: 1,
-                  })}
-                }
+                    className: "text-center",
+                  }),
+                    addItem({
+                      id,
+                      name,
+                      price,
+                      quantity: 1,
+                    });
+                }}
               >
                 <FaShoppingCart />
               </a>
@@ -121,11 +122,19 @@ export function Card({
               {name}
             </a>
           </h3>
-          <div className="price text-primary fw-bold fs-5 d-flex flex-wrap">
-            {oldPrice && discount && <span className="text-secondary">{oldPrice}</span>} {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(price)}
+          <div className="price text-primary fw-bold fs-5 d-flex flex-wrap align-items-center">
+            {oldPrice && discount && (
+              <span className="text-secondary">
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(oldPrice)}
+              </span>
+            )}{" "}
+            {new Intl.NumberFormat("pt-BR", {
+              style: "currency",
+              currency: "BRL",
+            }).format(price)}
           </div>
         </div>
       </div>

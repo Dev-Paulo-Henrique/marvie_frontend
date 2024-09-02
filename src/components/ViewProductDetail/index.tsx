@@ -17,7 +17,7 @@ export function ViewProductDetail() {
   const { id } = useParams<{ id: string }>();
   const [quantity, setQuantity] = useState(1);
   // const navigate = useNavigate();
-  const productId = id;
+  const productId = Number(id);
   const { addItem } = useCart();
   const product = useProduct(productId);
 
@@ -93,7 +93,10 @@ export function ViewProductDetail() {
                 {product.oldPrice && (
                   <>
                     <small className="text-decoration-line-through text-muted">
-                      {product.oldPrice}
+                      {new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(product.oldPrice)}
                     </small>
                     <br />
                   </>
