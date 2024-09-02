@@ -15,7 +15,7 @@ export function Sidebar() {
 
   const sidebarStyle = {
     width: isDesktop ? "280px" : "80px",
-    height: "100vh",
+    height: "100%",
     top: 0,
     left: 0,
     zIndex: 1000,
