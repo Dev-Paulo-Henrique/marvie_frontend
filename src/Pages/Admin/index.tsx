@@ -41,9 +41,6 @@ export function Admin() {
 
   Title({ title: "Marvie" });
 
-  const sidebarWidth = isDesktop ? "280px" : "80px";
-  
-
   if (isLoading || loading) {
     return <Loading />;
   }
@@ -54,10 +51,11 @@ export function Admin() {
       <div
         className="p-4 w-100"
         style={{
-          marginLeft: sidebarWidth,
+          marginLeft: isDesktop ? "280px" : "0",
           background: "#f7f7f8",
           height: "100vh",
           overflowY: "auto",
+          marginTop: isDesktop ? "0" : "80px"
         }}
       >
         {isConnected ? (

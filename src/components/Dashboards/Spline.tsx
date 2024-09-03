@@ -1,7 +1,6 @@
 import Chart from "react-apexcharts";
 import { ApexOptions } from "apexcharts";
 import { useMediaQuery } from "react-responsive";
-// import { useState } from "react"
 
 interface SplineProps {
   type:
@@ -22,7 +21,6 @@ interface SplineProps {
     | "rangeArea"
     | "treemap"
     | undefined;
-  width?: number;
   height: number;
   title: string;
   count?: number;
@@ -30,11 +28,12 @@ interface SplineProps {
   value: string;
 }
 
-export function Spline({ type, width, height, title, value, count, action }: SplineProps) {
+export function Spline({ type, height, title, value, count, action }: SplineProps) {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+
   const options: ApexOptions = {
     chart: {
       height: height,
-      width: width,
       type: type,
       toolbar: {
         show: false
@@ -69,12 +68,10 @@ export function Spline({ type, width, height, title, value, count, action }: Spl
     colors: ["var(--blue-100)"],
     fill: {
       colors: ["var(--blue-100)"],
-    //   type: 'gradient'
-    gradient: {
+      gradient: {
         shadeIntensity: 1,
         opacityFrom: 0.7,
         opacityTo: 0,
-        // stops: [0, 100]
       }
     },
     markers: {
@@ -89,14 +86,17 @@ export function Spline({ type, width, height, title, value, count, action }: Spl
     },
   ];
 
-  const isDesktop = useMediaQuery({ minWidth: 992 });
-
   return (
-      <div className={`d-flex flex-column align-items-start bg-white px-4 py-3 rounded border border-secondary mb-4 ${!isDesktop && "w-100"}`}>
-    <small className="badge ms-3 text-uppercase" style={{ background: "var(--blue-50)" }}>{title}</small>
-    <span className="fs-2 fw-normal mx-3" style={{ color: "var(--blue-100)" }}>{value}</span>
-    {count && action && <small className="text-secondary mx-3">{count} pedidos <strong>{action}</strong></small>}
-        <Chart options={options} series={series} {...options.chart} />
+    <div
+      className={`d-flex flex-column align-items-start bg-white px-4 py-3 rounded border border-secondary mb-4 ${!isDesktop && "w-100"}`}
+      style={{ width: isDesktop ? 'auto' : '100%' }}
+    >
+      <small className="badge ms-3 text-uppercase" style={{ background: "var(--blue-50)" }}>{title}</small>
+      <span className="fs-2 fw-normal mx-3" style={{ color: "var(--blue-100)" }}>{value}</span>
+      {count && action && <small className="text-secondary mx-3">{count} pedidos <strong>{action}</strong></small>}
+      <div style={{ width: '100%' }}>
+        <Chart options={options} series={series} type={type} height={height} />
+      </div>
     </div>
   );
 }

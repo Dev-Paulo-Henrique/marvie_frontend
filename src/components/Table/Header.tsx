@@ -56,7 +56,7 @@ export function TableHeader({
           </th>
         )}
         {status && (
-          <th scope="col">
+          <th scope="col" className={isDesktop ? "" : "text-center"}>
             <small className="text-uppercase text-secondary">Status</small>
           </th>
         )}
