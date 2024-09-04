@@ -304,3 +304,23 @@ ul.list-unstyled li:last-child {
     margin: 20px auto 80px;
   }
 }
+
+/* styles.css */
+.dashed {
+  border: 2px dashed #007bff;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.dashed::file-selector-button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}

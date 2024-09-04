@@ -1,195 +1,149 @@
-import { useState } from "react";
-import { api } from "../../services/api";
-import { toast } from "react-hot-toast";
+import { useState, useRef, FormEvent, ChangeEvent } from "react";
 import { Header } from "../Admin/Header";
 import { Title } from "../../utils/Title";
 import { useNavigate } from "react-router-dom";
-// import { md4 } from 'hash-wasm';
+import { storage } from "../../services/firebase";
+import { ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 export function AddProduct() {
-  const [nome, setNome] = useState("");
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [confirmarSenha, setConfirmarSenha] = useState("");
-  const [nascimento, setNascimento] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [CEP, setCEP] = useState("");
-  const [numero, setNumero] = useState("");
+  const [progresspercent, setProgresspercent] = useState<number>(0);
+  const [imgPreviews, setImgPreviews] = useState<string[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [uploading, setUploading] = useState<boolean>(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const navigate = useNavigate();
 
   Title({ title: "Novo Produto" });
 
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = event.target.files;
 
-  const formatDateForMySQL = (date: Date) => {
-    const padTo2Digits = (num: { toString: () => string; }) => {
-      return num.toString().padStart(2, '0');
-    };
-  
-    return (
-      date.getFullYear() + '-' +
-      padTo2Digits(date.getMonth() + 1) + '-' +
-      padTo2Digits(date.getDate()) + ' ' +
-      padTo2Digits(date.getHours()) + ':' +
-      padTo2Digits(date.getMinutes()) + ':' +
-      padTo2Digits(date.getSeconds())
-    );
+    if (!selectedFiles) return;
+
+    const newFiles = Array.from(selectedFiles);
+    const newImgPreviews = newFiles.map((file) => URL.createObjectURL(file));
+
+    setImgPreviews((prev) => [...prev, ...newImgPreviews]);
+    setFiles((prev) => [...prev, ...newFiles]);
+
+    event.target.value = "";
   };
 
-  const newCustomer = {
-    nome: nome,
-    email: email,
-    senha: senha,
-    nascimento: nascimento,
-    telefone: telefone,
-    CEP: CEP,
-    numero: numero,
-    createdAt: formatDateForMySQL(new Date())
-  }
+  const handleRemove = (index: number) => {
+    setImgPreviews((prev) => prev.filter((_, i) => i !== index));
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  };
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(senha !== confirmarSenha) {
-        toast.error('Senha incorreta');
-        return
+
+    if (files.length === 0) return;
+
+    setUploading(true);
+    setProgresspercent(0);
+
+    const totalFiles = files.length;
+    let completedUploads = 0;
+
+    files.forEach((file) => {
+      const storageRef = ref(storage, `products/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress = Math.round(
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          );
+          setProgresspercent(progress);
+        },
+        (error) => {
+          alert(error.message);
+          setUploading(false);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File available at", downloadURL);
+            completedUploads += 1;
+            if (completedUploads === totalFiles) {
+              setUploading(false);
+              setImgPreviews([]);
+              setFiles([]);
+            }
+          });
+        }
+      );
+    });
+  };
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
-    try {
-        await api.post("/products", newCustomer);
-        setNome("")
-        setEmail("")
-        setSenha("")
-        setConfirmarSenha("")
-        setNascimento("")
-        setTelefone("")
-        setCEP("")
-        setNumero("")
-        toast.success('Cliente criado');
-      } catch (error) {
-        console.error("Erro ao salvar cliente:", error);
-      }
   };
 
   return (
     <>
-      <Header title="Novo Produto"/>
+      <Header title="Novo Produto" />
       <div className="bg-white shadow rounded p-4">
         <form onSubmit={handleSubmit}>
-          <div className="form-row row mb-3">
-            <div className="form-group col">
-              <label htmlFor="nomeCompleto">Nome Completo</label>
-              <input
-                type="text"
-                className="form-control"
-                id="nomeCompleto"
-                placeholder="Nome completo"
-                required
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-              />
+          <input
+            type="file"
+            multiple
+            className="dashed"
+            onChange={handleFileChange}
+            ref={fileInputRef}
+            hidden
+          />
+          <button
+            type="button"
+            onClick={handleButtonClick}
+            className="btn btn-primary"
+          >
+            Escolher arquivos
+          </button>
+          {!uploading && imgPreviews.length > 0 && imgPreviews.length > 0 && (
+            <div className="mt-4">
+              <h4>Preview</h4>
+              <div className="d-flex flex-wrap">
+                {imgPreviews.map((url, index) => (
+                  <div
+                    key={index}
+                    className="position-relative me-2 mb-2 gap-1 d-flex flex-column"
+                  >
+                    <img src={url} alt={`preview ${index}`} height={200} />
+                    <button
+                      type="button"
+                      className="btn btn-danger bottom-0 start-0 end-0"
+                      onClick={() => handleRemove(index)}
+                    >
+                      Remover
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="form-group col">
-              <label htmlFor="inputEmail4">Email</label>
-              <input
-                type="email"
-                className="form-control"
-                id="inputEmail4"
-                placeholder="Email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+          )}
+          {uploading && (
+            <div className="mt-4 d-flex justify-content-center">
+              <div className="outerbar">
+                <div
+                  className="innerbar w-100"
+                  style={{ width: `${progresspercent}%` }}
+                >
+                  Uploading: {progresspercent}%
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="form-row row mb-3">
-            <div className="form-group col">
-              <label htmlFor="inputPassword4">Senha</label>
-              <input
-                type="password"
-                className="form-control"
-                id="inputPassword4"
-                placeholder="Senha"
-                minLength={8}
-                required
-                value={senha}
-                onChange={(e) => setSenha(e.target.value)}
-              />
-              <small id="passwordHelp" className={`form-text ${senha && senha.length < 8 ? "text-danger" :"text-muted"}`}>
-                {senha.length >= 8 ? "Número de caracteres aceitáveis." : "Deve conter no mínimo 8 caracteres."}
-              </small>
-            </div>
-            <div className="form-group col">
-              <label htmlFor="inputPasswordConfirm4">
-                Confirmação de senha
-              </label>
-              <input
-                type="password"
-                className={`form-control ${(senha !== confirmarSenha) && (confirmarSenha.length > 0) && "is-invalid"}`}
-                id="inputPasswordConfirm4"
-                minLength={8}
-                placeholder="Confirmação de senha"
-                required
-                value={confirmarSenha}
-                disabled={!senha}
-                onChange={(e) => setConfirmarSenha(e.target.value)}
-              />
-              {(senha !== confirmarSenha) && (confirmarSenha.length > 0) && <small id="passwordHelp" className="form-text text-danger">
-                As senhas devem ser iguais.
-              </small>}
-            </div>
-          </div>
-          <div className="form-row row mb-3">
-            <div className="form-group col-md-3">
-              <label htmlFor="inputNascimento">Data de Nascimento</label>
-              <input
-                type="date"
-                className="form-control"
-                id="inputNascimento"
-                placeholder="Data de nascimento"
-                required
-                value={nascimento}
-                onChange={(e) => setNascimento(e.target.value)}
-              />
-            </div>
-            <div className="form-group col-md-3">
-              <label htmlFor="inputTelefone">Telefone</label>
-              <input
-                type="tel"
-                className="form-control"
-                id="inputTelefone"
-                placeholder="Telefone"
-                required
-                value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
-              />
-            </div>
-            <div className="form-group col-md-3">
-              <label htmlFor="inputCEP">CEP</label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputCEP"
-                placeholder="CEP"
-                maxLength={9}
-                required
-                value={CEP}
-                onChange={(e) => setCEP(e.target.value)}
-              />
-            </div>
-            <div className="form-group col-md-3">
-              <label htmlFor="inputNumero">Número</label>
-              <input
-                type="text"
-                className="form-control"
-                id="inputNumero"
-                placeholder="Número"
-                required
-                value={numero}
-                onChange={(e) => setNumero(e.target.value)}
-              />
-            </div>
-          </div>
+          )}
           <div className="d-flex gap-2 mt-4 justify-content-end">
-            <button onClick={() => navigate("/admin/products")} className="btn btn-danger">
+            <button
+              type="button"
+              onClick={() => navigate("/admin/products")}
+              className="btn btn-danger"
+            >
               Cancelar
             </button>
             <button type="submit" className="btn btn-primary">
