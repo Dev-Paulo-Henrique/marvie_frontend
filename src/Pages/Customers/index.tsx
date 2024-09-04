@@ -100,7 +100,7 @@ export function Customers() {
                     name={user.nome}
                     date={user.createdAt}
                     relativeDate={user.createdAt}
-                    actions={<Actions id={user.id} />}
+                    actions={<Actions id={user.id} route="users"/>}
                   />
                 ))}
               </tbody>

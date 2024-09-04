@@ -4,7 +4,6 @@ import { Title } from "../../utils/Title";
 import { TableRowProducts } from "../../components/Table/Body";
 import { Header } from "../Admin/Header";
 import { Pagination } from "../../components/Pagination";
-import { faker } from "@faker-js/faker";
 import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
@@ -14,6 +13,9 @@ import { storage } from "../../services/firebase";
 // import { useMediaQuery } from "react-responsive";
 import { Loading } from "../../components/Loading";
 import { Actions } from "../../components/Actions";
+import { useAuth } from "../../hooks/useAuth";
+import { Error } from "../../components/Error";
+import { api } from "../../services/api";
 
 interface ProductsProps {
   id: number;
@@ -34,6 +36,8 @@ export function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const { token } = useAuth();
 
   // const isDesktop = useMediaQuery({ minWidth: 992 });
 
@@ -42,35 +46,35 @@ export function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       setLoading(true);
-      const res = await listAll(ref(storage));
-      const firstImageUrl =
-        res.items.length > 0 ? await getDownloadURL(res.items[0]) : "";
       try {
-        const fakeProducts: ProductsProps[] = Array.from({ length: 50 }).map(
-          (_, index) => ({
-            id: index + 1,
-            nome: faker.commerce.productName(),
-            createdAt: faker.date.past().toISOString(),
-            relativeDate: faker.date.recent().toLocaleDateString(),
-            descricao: faker.commerce.productDescription(),
-            estoque: faker.number.int({ min: 0, max: 100 }),
-            data_fabricacao: faker.date.past().toISOString(),
-            valor: parseFloat(faker.commerce.price()),
-            categoria: faker.number.int({ min: 1, max: 10 }),
-            url: firstImageUrl,
-          })
-        );
+        const response = await api.get<ProductsProps[]>('/products', {
+          headers: { 'x-access-token': token }
+        });
 
-        setProducts(fakeProducts);
-      } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
+        const fetchedProducts = await Promise.all(response.data.map(async (product) => {
+          const productRef = ref(storage, `products/${product.id}`);
+          const imageSnapshots = await listAll(productRef);
+          const imageUrls = await Promise.all(imageSnapshots.items.map(item => getDownloadURL(item)));
+          
+          const updatedProduct = {
+            ...product,
+            url: imageUrls[0] || ""
+          };
+
+          return updatedProduct;
+        }));
+
+        setProducts(fetchedProducts);
+      } catch (err) {
+        console.error("Erro ao buscar produtos:", err);
+        setError(true);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [token]);
 
   const filteredProducts = products.filter((product) =>
     product.nome.toLowerCase().includes(searchTerm.toLowerCase())
@@ -90,6 +94,12 @@ export function Products() {
 
   if (loading) {
     return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <Error/>
+    );
   }
 
   return (
@@ -118,7 +128,7 @@ export function Products() {
                     img={product.url}
                     estoque={product.estoque}
                     link={`/admin/products/${product.id}`}
-                    actions={<Actions id={product.id} />}
+                    actions={<Actions id={product.id} route="products"/>}
                   />
                 ))}
               </tbody>
