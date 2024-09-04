@@ -14,6 +14,7 @@ interface TableRowUsersProps {
 interface TableRowProductsProps {
   id: number;
   nome: string;
+  link: string;
   estoque: number;
   img: string;
   actions: ReactNode;
@@ -40,14 +41,6 @@ export function TableRowUsers({
 
   return (
     <tr>
-      {/* <th scope="row" className="d-none d-lg-table-cell align-middle">
-        <input
-          className="form-check-input me-1 row-checkbox"
-          type="checkbox"
-          value=""
-          aria-label="..."
-        />
-      </th> */}
       <td className="align-middle ps-lg-4">
         <a
           href={`/admin/customers/${id}`}
@@ -76,22 +69,26 @@ export function TableRowProducts({
   estoque,
   nome,
   actions,
+  link,
 }: TableRowProductsProps) {
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+
   return (
     <tr>
-      {/* <th scope="row" className="d-none d-lg-table-cell align-middle">
-        <input
-          className="form-check-input me-1 row-checkbox"
-          type="checkbox"
-          value=""
-          aria-label="..."
-        />
-      </th> */}
       <td className="d-none d-lg-table-cell align-middle text-center">{id}</td>
       <td className="align-middle ps-lg-4">
         <div className="d-flex align-items-center">
           <img src={img} width={50} className="d-none d-lg-block" />
-          <span className="mx-3 fs-6 text-break">{nome}</span>
+          {isDesktop ? (
+            <span className="ms-3 fs-6 text-break">{nome}</span>
+          ) : (
+            <a
+              href={link}
+              className="text-secondary ms-3 text-break text-decoration-none"
+            >
+              {nome}
+            </a>
+          )}
         </div>
       </td>
       <td className="d-none d-lg-table-cell align-middle text-center">
@@ -121,9 +118,6 @@ export function TableRowOrders({
 
   return (
     <tr key={id} className="align-middle">
-      {/* <td>
-        <input type="checkbox" className="form-check-input row-checkbox" />
-      </td> */}
       <td className="ps-lg-4">
         <div className="d-flex align-items-center gap-2">
           {isDesktop && (
@@ -171,8 +165,13 @@ export function TableRowOrders({
         </>
       )}
       <td className={isDesktop ? "" : "text-center"}>
-        
-        <small className={`badge ${getStatusClass(status)} ${!isDesktop && "rounded-pill p-1"}`}>{isDesktop ? status : " "}</small>
+        <small
+          className={`badge ${getStatusClass(status)} ${
+            !isDesktop && "rounded-pill p-1"
+          }`}
+        >
+          {isDesktop ? status : " "}
+        </small>
       </td>
     </tr>
   );

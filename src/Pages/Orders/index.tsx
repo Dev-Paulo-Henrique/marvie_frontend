@@ -9,7 +9,6 @@ import visaFlag from '../../assets/payment/visa.svg';
 import mastercardFlag from '../../assets/payment/mastercard.svg';
 import pixFlag from '../../assets/payment/pix.svg';
 import billetFlag from '../../assets/payment/billet.svg';
-import { useCheckbox } from "../../hooks/useCheckbox";
 import { TableHeader } from "../../components/Table/Header";
 
 import { paginate } from '../../utils/Pagination';
@@ -46,8 +45,6 @@ export function Orders() {
   // const [filteredOrders, setFilteredOrders] = useState<OrderProps[]>([]);
 
   Title({ title: "Pedidos" });
-
-  useCheckbox(orders)
 
   useEffect(() => {
     const generateFakeOrders = () => {

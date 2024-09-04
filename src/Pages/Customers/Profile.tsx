@@ -51,7 +51,9 @@ export function Profile() {
 
   async function handleDeleteUser() {
     try {
-      await api.delete(`/users/${userId}`);
+      await api.delete(`/users/${userId}`, {
+        headers: token ? { "x-access-token": token } : {},
+      });
       toast.success("Usuário deletado", {
         position: "top-center",
         toastId: "create",

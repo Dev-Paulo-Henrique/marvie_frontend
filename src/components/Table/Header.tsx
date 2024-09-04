@@ -26,13 +26,6 @@ export function TableHeader({
   return (
     <thead>
       <tr>
-        {/* <th scope="col" className="d-none d-lg-block">
-          <input
-            id="header-checkbox"
-            className="form-check-input me-1"
-            type="checkbox"
-          />
-        </th> */}
         {id && (
           <th scope="col" className="d-none d-lg-table-cell text-center">
             <small className="text-uppercase text-secondary">ID</small>

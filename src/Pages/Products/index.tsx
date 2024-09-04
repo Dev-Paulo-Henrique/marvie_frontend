@@ -5,7 +5,6 @@ import { TableRowProducts } from "../../components/Table/Body";
 import { Header } from "../Admin/Header";
 import { Pagination } from "../../components/Pagination";
 import { faker } from "@faker-js/faker";
-import { useCheckbox } from "../../hooks/useCheckbox";
 import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
@@ -76,8 +75,6 @@ export function Products() {
     fetchProducts();
   }, []);
 
-  useCheckbox(products);
-
   const filteredProducts = products.filter((product) =>
     product.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -125,11 +122,12 @@ export function Products() {
                     nome={product.nome}
                     img={product.url}
                     estoque={product.estoque}
+                    link={`/admin/products/${product.id}`}
                     actions={
                       <div className="btn-group btn-group-toggle">
-                        <button className="btn btn-primary align-items-center d-flex" onClick={() => navigate(`/admin/products/${product.id}`)}>
+                        {isDesktop && <button className="btn btn-primary align-items-center d-flex" onClick={() => navigate(`/admin/products/${product.id}`)}>
                           <MdRemoveRedEye />
-                        </button>
+                        </button>}
                         <button className="btn btn-warning align-items-center d-flex">
                           <MdEdit />
                         </button>

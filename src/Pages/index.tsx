@@ -2,8 +2,7 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { Banner } from "../components/Banner";
 import { Card } from "../components/Card";
-import { products } from "./../utils/Cards"
-// import { Cart } from "../components/Cart";
+import { products } from "./../utils/Cards";
 
 export function Main() {
   return (
@@ -13,7 +12,7 @@ export function Main() {
       <div className="container mt-3">
         <h1 className="text-dark">Tendências</h1>
         <div className="row">
-        {products.length > 0 ? (
+          {products.length > 0 ? (
             products.map((product, index) => (
               <Card
                 key={index}
@@ -33,7 +32,6 @@ export function Main() {
           )}
         </div>
       </div>
-      {/* <Cart /> */}
       <Footer />
     </>
   );

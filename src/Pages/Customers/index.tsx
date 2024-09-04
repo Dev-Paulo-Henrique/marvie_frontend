@@ -3,7 +3,6 @@ import { TableRowUsers } from "../../components/Table/Body";
 import { Title } from "../../utils/Title";
 import { Header } from "../Admin/Header";
 import { Pagination } from "../../components/Pagination";
-import { useCheckbox } from "../../hooks/useCheckbox";
 import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
@@ -49,8 +48,6 @@ export function Customers() {
 
     fetchUsers();
   }, [token, users]);
-
-  useCheckbox(users);
 
   const filteredUsers = users.filter((user) =>
     user.nome.toLowerCase().includes(searchTerm.toLowerCase())
