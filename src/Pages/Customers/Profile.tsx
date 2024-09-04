@@ -61,15 +61,12 @@ export function Profile() {
         autoClose: 3000,
         pauseOnHover: false,
         closeButton: false,
-        className: 'text-center',
+        className: "text-center",
         onClose: () => {
-          navigate('/admin/customers');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-      })
-      setTimeout(() => {
-        window.history.back();
-      }, 2500);
+          navigate("/admin/customers");
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        },
+      });
     } catch (error) {
       if (isAxiosError(error)) {
         if (error.response) {
@@ -80,8 +77,8 @@ export function Profile() {
             autoClose: 3000,
             pauseOnHover: false,
             closeButton: false,
-            className: 'text-center',
-          })
+            className: "text-center",
+          });
         }
       } else {
         console.log("Erro desconhecido:", error);
@@ -90,11 +87,11 @@ export function Profile() {
   }
 
   if (loading) {
-    return <Loading/>
+    return <Loading />;
   }
 
   if (error) {
-    return <Error/>
+    return <Error />;
   }
 
   if (!user) {

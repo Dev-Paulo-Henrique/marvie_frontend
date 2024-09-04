@@ -6,11 +6,12 @@ import { Pagination } from "../../components/Pagination";
 import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
-import { useMediaQuery } from "react-responsive";
+// import { useMediaQuery } from "react-responsive";
 import { api } from "../../services/api";
 import { Loading } from "../../components/Loading";
 import { useAuth } from "../../hooks/useAuth";
 import { Error } from "../../components/Error";
+import { Actions } from "../../components/Actions";
 
 interface UserProps {
   id: number;
@@ -28,7 +29,7 @@ export function Customers() {
   const [error, setError] = useState(false);
   const { token } = useAuth();
 
-  const isDesktop = useMediaQuery({ minWidth: 992 });
+  // const isDesktop = useMediaQuery({ minWidth: 992 });
 
   Title({ title: "Clientes" });
 
@@ -79,7 +80,7 @@ export function Customers() {
 
   return (
     <>
-      <Header title="Clientes" textButton={`${isDesktop ? "Novo" : ""} Cliente`} />
+      <Header title="Clientes" textButton="Novo Cliente" />
       <div className="pb-4">
         <SearchAdmin
           value={searchTerm}
@@ -99,6 +100,7 @@ export function Customers() {
                     name={user.nome}
                     date={user.createdAt}
                     relativeDate={user.createdAt}
+                    actions={<Actions id={user.id} />}
                   />
                 ))}
               </tbody>

@@ -9,6 +9,7 @@ interface TableRowUsersProps {
   name: string;
   date: Date;
   relativeDate: Date;
+  actions: ReactNode;
 }
 
 interface TableRowProductsProps {
@@ -36,12 +37,13 @@ export function TableRowUsers({
   name,
   date,
   relativeDate,
+  actions,
 }: TableRowUsersProps) {
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
   return (
     <tr>
-      <td className="align-middle ps-lg-4">
+      <td className="align-middle">
         <a
           href={`/admin/customers/${id}`}
           className="text-decoration-none text-break"
@@ -49,16 +51,25 @@ export function TableRowUsers({
           {name}
         </a>
       </td>
-      <td className="align-middle">
-        {format(new Date(date), isDesktop ? "dd/MM/yyyy HH:mm" : "dd/MM/yyyy")}
-        <br />
-        <small className="text-secondary">
-          {formatDistance(new Date(relativeDate), new Date(), {
-            addSuffix: true,
-            locale: ptBR,
-          })}
-        </small>
-      </td>
+      {isDesktop ? (
+        <td className="align-middle">
+          {format(
+            new Date(date),
+            isDesktop ? "dd/MM/yyyy HH:mm" : "dd/MM/yyyy"
+          )}
+          <br />
+          <small className="text-secondary">
+            {formatDistance(new Date(relativeDate), new Date(), {
+              addSuffix: true,
+              locale: ptBR,
+            })}
+          </small>
+        </td>
+      ) : (
+        <td className="d-table-cell d-lg-none align-middle text-center">
+          {actions}
+        </td>
+      )}
     </tr>
   );
 }
@@ -76,7 +87,7 @@ export function TableRowProducts({
   return (
     <tr>
       <td className="d-none d-lg-table-cell align-middle text-center">{id}</td>
-      <td className="align-middle ps-lg-4">
+      <td className="align-middle">
         <div className="d-flex align-items-center">
           <img src={img} width={50} className="d-none d-lg-block" />
           {isDesktop ? (
@@ -84,7 +95,7 @@ export function TableRowProducts({
           ) : (
             <a
               href={link}
-              className="text-secondary ms-3 text-break text-decoration-none"
+              className="text-secondary text-break text-decoration-none"
             >
               {nome}
             </a>

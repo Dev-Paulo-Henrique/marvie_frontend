@@ -33,8 +33,11 @@ export function TableHeader({
         )}
         {numeroDoPedido && (
           <th scope="col" className="ps-lg-4">
-            <small className="text-uppercase text-secondary">
+            <small className="d-none d-lg-block text-uppercase text-secondary">
               Número do pedido
+            </small>
+            <small className="d-block d-lg-none text-uppercase text-secondary">
+              Nome
             </small>
           </th>
         )}
@@ -54,7 +57,7 @@ export function TableHeader({
           </th>
         )}
         {nome && (
-          <th scope="col" className="ps-4">
+          <th scope="col">
             <small className="text-uppercase text-secondary">Nome</small>
           </th>
         )}
@@ -63,8 +66,8 @@ export function TableHeader({
             <small className="d-none d-lg-block text-uppercase text-secondary">
               Data de cadastro
             </small>
-            <small className="d-block d-lg-none text-uppercase text-secondary">
-              Cadastro
+            <small className="d-block d-lg-none text-uppercase text-center text-secondary">
+              Ações
             </small>
           </th>
         )}

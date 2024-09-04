@@ -8,13 +8,12 @@ import { faker } from "@faker-js/faker";
 import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
-import { MdEdit, MdDelete, MdRemoveRedEye } from "react-icons/md";
 
 import { ref, listAll, getDownloadURL } from "firebase/storage";
 import { storage } from "../../services/firebase";
-import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
+// import { useMediaQuery } from "react-responsive";
 import { Loading } from "../../components/Loading";
+import { Actions } from "../../components/Actions";
 
 interface ProductsProps {
   id: number;
@@ -35,10 +34,8 @@ export function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
-
-  const isDesktop = useMediaQuery({ minWidth: 992 });
+  // const isDesktop = useMediaQuery({ minWidth: 992 });
 
   Title({ title: "Produtos" });
 
@@ -92,16 +89,14 @@ export function Products() {
   };
 
   if (loading) {
-    return (
-      <Loading/>
-    );
+    return <Loading />;
   }
 
   return (
     <>
       <Header
         title="Produtos"
-        textButton={`${isDesktop ? "Novo" : ""} Produto`}
+        textButton="Novo Produto"
       />
       <div className="pb-4">
         <SearchAdmin
@@ -123,19 +118,7 @@ export function Products() {
                     img={product.url}
                     estoque={product.estoque}
                     link={`/admin/products/${product.id}`}
-                    actions={
-                      <div className="btn-group btn-group-toggle">
-                        {isDesktop && <button className="btn btn-primary align-items-center d-flex" onClick={() => navigate(`/admin/products/${product.id}`)}>
-                          <MdRemoveRedEye />
-                        </button>}
-                        <button className="btn btn-warning align-items-center d-flex">
-                          <MdEdit />
-                        </button>
-                        <button className="btn btn-danger align-items-center d-flex">
-                          <MdDelete />
-                        </button>
-                      </div>
-                    }
+                    actions={<Actions id={product.id} />}
                   />
                 ))}
               </tbody>
