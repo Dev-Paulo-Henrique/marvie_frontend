@@ -173,7 +173,6 @@ export function TableRowOrders({
       <td className={isDesktop ? "" : "text-center"}>
         
         <small className={`badge ${getStatusClass(status)} ${!isDesktop && "rounded-pill p-1"}`}>{isDesktop ? status : " "}</small>
-        {/* <div className={`badge ${getStatusClass(status)} rounded-pill p-1`}>{" "}</div> */}
       </td>
     </tr>
   );

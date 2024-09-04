@@ -10,6 +10,8 @@ import {
 import { CardProps } from "../../utils/Cards";
 import { useCart } from "../../hooks/useCart";
 // import { useNavigate } from "react-router-dom";
+import { calculateAverageRating, calculateStars } from "../../utils/Rating";
+
 
 export function Card({
   name,
@@ -24,6 +26,9 @@ export function Card({
 }: CardProps) {
   // const navigate = useNavigate();
   const { addItem, addFavorite, removeFavorite, isFavorite } = useCart();
+
+  const averageRating = calculateAverageRating(reviews);
+  const { fullStars, halfStar, emptyStars } = calculateStars(averageRating);
 
   const handleFavoriteClick = () => {
     if (isFavorite(id)) {
@@ -104,14 +109,18 @@ export function Card({
         </div>
         <div className="product-content">
           <ul className="rating">
-            <FaStar size={15} />
-            <FaStar size={15} />
-            <FaStar size={15} />
-            <FaRegStarHalfStroke size={15} />
-            <FaRegStar size={15} />
+          {[...Array(fullStars)].map((_, i) => (
+              <FaStar key={`full-${i}`} size={15} />
+            ))}
+            {[...Array(halfStar)].map((_, i) => (
+              <FaRegStarHalfStroke key={`half-${i}`} size={15} />
+            ))}
+            {[...Array(emptyStars)].map((_, i) => (
+              <FaRegStar key={`empty-${i}`} size={15} />
+            ))}
             {reviews && (
               <li className="disable mx-1">
-                ({reviews} {reviews > 1 ? "avaliações" : "avaliação"})
+                ({reviews.length} {reviews.length > 1 ? "avaliações" : "avaliação"})
               </li>
             )}
           </ul>

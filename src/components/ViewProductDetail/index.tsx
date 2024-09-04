@@ -1,5 +1,11 @@
 // import { useMediaQuery } from "react-responsive";
-import { FaPlus, FaMinus, FaStar, FaRegStarHalfStroke } from "react-icons/fa6";
+import {
+  FaPlus,
+  FaMinus,
+  FaStar,
+  FaRegStarHalfStroke,
+  FaRegStar,
+} from "react-icons/fa6";
 import { Slider } from "../Slider";
 import { toast } from "react-toastify";
 import {
@@ -11,6 +17,7 @@ import { useCart } from "../../hooks/useCart";
 import { Title } from "../../utils/Title";
 import { useProduct } from "../../hooks/useProduct";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { calculateAverageRating, calculateStars } from "../../utils/Rating";
 
 export function ViewProductDetail() {
   // const isDesktop = useMediaQuery({ minWidth: 992 });
@@ -24,6 +31,9 @@ export function ViewProductDetail() {
   Title({
     title: product?.name ? product?.name : import.meta.env.VITE_APP_TITLE,
   });
+
+  const averageRating = calculateAverageRating(product?.reviews);
+  const { fullStars, halfStar, emptyStars } = calculateStars(averageRating);
 
   if (!product) {
     return (
@@ -64,7 +74,6 @@ export function ViewProductDetail() {
     <section className="py-lg-5">
       <div className="container mb-lg-5">
         <div className="row gx-5">
-          {/* Product Image and Gallery */}
           <Slider images={[product.firstImage, product.secondImage]} />
 
           <main className="col-lg-6">
@@ -75,16 +84,23 @@ export function ViewProductDetail() {
               <h3 className="text-dark">{product.name}</h3>
               <div className="d-flex align-items-center my-2">
                 <div className="text-warning me-2">
-                  {[...Array(4)].map((_, i) => (
-                    <FaStar size={20} key={i} />
+                  {[...Array(fullStars)].map((_, i) => (
+                    <FaStar key={`full-${i}`} size={15} />
                   ))}
-                  <FaRegStarHalfStroke size={20} />
+                  {[...Array(halfStar)].map((_, i) => (
+                    <FaRegStarHalfStroke key={`half-${i}`} size={15} />
+                  ))}
+                  {[...Array(emptyStars)].map((_, i) => (
+                    <FaRegStar key={`empty-${i}`} size={15} />
+                  ))}
                 </div>
                 <small className="text-muted">
                   (
-                  {product.reviews && product.reviews > 1
-                    ? `${product.reviews} avaliações`
-                    : `${product.reviews} avaliação`}
+                  {product.reviews && product.reviews.length > 1
+                    ? `${product.reviews.length} avaliações`
+                    : product.reviews?.length === 1
+                    ? "1 avaliação"
+                    : "Sem avaliações"}
                   )
                 </small>
               </div>
@@ -94,9 +110,9 @@ export function ViewProductDetail() {
                   <>
                     <small className="text-decoration-line-through text-muted">
                       {new Intl.NumberFormat("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  }).format(product.oldPrice)}
+                        style: "currency",
+                        currency: "BRL",
+                      }).format(product.oldPrice)}
                     </small>
                     <br />
                   </>
@@ -171,7 +187,6 @@ export function ViewProductDetail() {
 
               <div className="d-flex">
                 <button
-                  //  href="#"
                   onClick={handleAddToCart}
                   className="w-100 btn btn-primary p-3 fs-5"
                 >
