@@ -63,7 +63,7 @@ export function Sidebar() {
           </ActiveLink>
         </li>
         <li className="nav-item">
-          <ActiveLink href="/admin/customers">
+          <ActiveLink href="/admin/users">
             <FiUsers className={`bi ${isDesktop ? "me-2" : ""}`} size={isDesktop ? 16 : 14} />
             {isDesktop && "Clientes"}
           </ActiveLink>

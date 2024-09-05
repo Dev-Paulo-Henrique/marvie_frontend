@@ -15,7 +15,6 @@ interface UserDataProps {
   data_nascimento: string;
   email: string;
   telefone: string;
-  papel: string;
   numero: string;
   senha: string;
   cep: string;
@@ -104,11 +103,7 @@ export function Profile() {
   return (
     <div className="container">
       <div className={`d-flex ${!isDesktop && "flex-column"} gap-3`}>
-        <div
-          className={`d-flex ${
-            !isDesktop && "justify-content-center"
-          }`}
-        >
+        <div className={`d-flex ${!isDesktop && "justify-content-center"}`}>
           <Avatar
             name={user.nome.split(" ").slice(0, 2).join(" ")}
             size="150"
@@ -118,24 +113,37 @@ export function Profile() {
           />
         </div>
         <div
-          className={`d-flex justify-content-center ${!isDesktop && "align-items-center"} flex-column`}
+          className={`d-flex justify-content-center ${
+            !isDesktop && "align-items-center"
+          } flex-column w-100`}
         >
-          <h2 className={`text-primary mb-0 ${!isDesktop && "text-center"}`}>{user.nome}</h2>
+          <h2 className={`text-primary mb-0 ${!isDesktop && "text-center"}`}>
+            {user.nome}
+          </h2>
           <p className="text-muted">{user.email}</p>
           <div className="mb-4">
             <h5>Informações</h5>
             <ul className="list-group">
               <li className="list-group-item">
+                <strong>ID:</strong> {user.id}
+              </li>
+              <li className="list-group-item">
+                <strong>Telefone:</strong> {user.telefone}
+              </li>
+              <li className="list-group-item">
+                <strong>CEP:</strong> {user.cep}
+              </li>
+              <li className="list-group-item">
+                <strong>Nº:</strong> {user.numero}
+              </li>
+              {/* <li className="list-group-item">
                 <strong>Data de Nascimento:</strong>{" "}
                 {new Date(user.data_nascimento).toLocaleDateString("pt-BR", {
                   day: "2-digit",
                   month: "long",
                   year: "numeric",
                 })}
-              </li>
-              <li className="list-group-item">
-                <strong>Telefone:</strong> {user.telefone}
-              </li>
+              </li> */}
               <li className="list-group-item">
                 <strong>Data de Cadastro:</strong>{" "}
                 {new Date(user.createdAt).toLocaleDateString("pt-BR", {
@@ -144,14 +152,17 @@ export function Profile() {
                   year: "numeric",
                 })}
               </li>
-              <li className="list-group-item">
-                <strong>Nome Completo:</strong> {user.nome}
-              </li>
             </ul>
           </div>
-          <div className="d-flex justify-content-end">
+          <div className="d-flex justify-content-end gap-2">
+            <button
+              onClick={() => navigate(`/admin/users/${user.id}/edit`)}
+              className="btn btn-warning"
+            >
+              Editar
+            </button>
             <button onClick={handleDeleteUser} className="btn btn-danger">
-              Deletar Conta
+              Deletar
             </button>
           </div>
         </div>

@@ -20,7 +20,7 @@ interface UserProps {
   relativeDate: Date;
 }
 
-export function Customers() {
+export function Users() {
   const [users, setUsers] = useState<UserProps[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);

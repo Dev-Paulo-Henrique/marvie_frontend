@@ -5,9 +5,9 @@ import { Home } from "../Home";
 import { Dashboard } from "../Dashboard";
 import { Orders } from "../Orders";
 import { Products } from "../Products";
-import { Customers } from "../Customers";
-import { AddCustomer } from "../Customers/AddCustomer";
-import { Profile } from "../Customers/Profile";
+import { Users } from "../Users";
+import { AddUser } from "../Users/AddUser";
+import { Profile } from "../Users/Profile";
 import { AddProduct } from "../Products/AddProduct";
 import { useAxiosConnection } from "../../utils/AxiosConnection";
 import { BsServer } from "react-icons/bs";
@@ -67,9 +67,10 @@ export function Admin() {
             <Route path="products" element={<Products />} />
             <Route path="products/:productId" element={<ProductDetail />} />
             <Route path="products/new" element={<AddProduct />} />
-            <Route path="customers" element={<Customers />} />
-            <Route path="customers/:userId" element={<Profile />} />
-            <Route path="customers/new" element={<AddCustomer />} />
+            <Route path="users" element={<Users />} />
+            <Route path="users/:userId/edit" element={<AddUser />} />
+            <Route path="users/new" element={<AddUser />} />
+            <Route path="users/:userId" element={<Profile />} />
             <Route path="/" element={<Navigate to="home" replace />} />
           </Routes>
         ) : (

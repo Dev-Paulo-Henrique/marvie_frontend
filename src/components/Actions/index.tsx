@@ -56,6 +56,8 @@ export function Actions({ id, route }: ActionsProps) {
     }
   };
 
+
+
   return (
     <div className="btn-group btn-group-toggle">
       {isDesktop && (
@@ -66,7 +68,8 @@ export function Actions({ id, route }: ActionsProps) {
           <MdRemoveRedEye />
         </button>
       )}
-      <button className="btn btn-warning align-items-center d-flex">
+      <button className="btn btn-warning align-items-center d-flex"
+      onClick={() => navigate(`/admin/${route}/${id}/edit`)}>
         <MdEdit />
       </button>
       <button

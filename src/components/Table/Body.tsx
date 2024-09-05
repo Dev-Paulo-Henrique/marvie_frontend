@@ -45,7 +45,7 @@ export function TableRowUsers({
     <tr>
       <td className="align-middle">
         <a
-          href={`/admin/customers/${id}`}
+          href={`/admin/users/${id}`}
           className="text-decoration-none text-break"
         >
           {name}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../../services/api";
 import { toast } from "react-toastify";
 import { Header } from "../Admin/Header";
@@ -6,10 +6,11 @@ import { Title } from "../../utils/Title";
 import { addHours } from 'date-fns'
 import { isAxiosError } from "axios";
 import { useMask } from '@react-input/mask';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { useMediaQuery } from "react-responsive";
 
-export function AddCustomer() {
+export function AddUser() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
@@ -18,12 +19,38 @@ export function AddCustomer() {
   const [telefone, setTelefone] = useState("");
   const [CEP, setCEP] = useState("");
   const [numero, setNumero] = useState("");
+  const [isEdit, setIsEdit] = useState(false);
+  const { userId } = useParams<{ userId?: string }>();
   const navigate = useNavigate();
   const { token } = useAuth();
   const inputTelefoneRef = useMask({ mask: '+__ (__) _____-____', replacement: { _: /\d/ } });
   const inputCEPRef = useMask({ mask: '_____-___', replacement: { _: /\d/ } });
 
-  Title({ title: "Novo cliente" });
+  Title({ title: isEdit ? "Editar cliente" : "Novo cliente" });
+  const isDesktop = useMediaQuery({ minWidth: 992 });
+
+  useEffect(() => {
+    if (userId) {
+      setIsEdit(true);
+      (async () => {
+        try {
+          const response = await api.get(`/users/${userId}`, {
+            headers: { 'x-access-token': token },
+          });
+          const user = response.data;
+          setNome(user.nome);
+          setEmail(user.email);
+          // setNascimento(user.data_nascimento);
+          setTelefone(user.telefone);
+          setCEP(user.cep);
+          setNumero(user.numero);
+        } catch (error) {
+          console.error("Erro ao buscar dados do usuário:", error);
+          toast.error("Erro ao carregar dados do usuário.");
+        }
+      })();
+    }
+  }, [userId, token]);
 
   const formatDateForMySQL = (date: Date) => {
     const padTo2Digits = (num: number) => {
@@ -40,73 +67,59 @@ export function AddCustomer() {
     );
   };
 
-  const newCustomer = {
-    nome: nome,
-    email: email,
-    senha: senha,
-    nascimento: nascimento,
-    telefone: telefone,
-    CEP: CEP,
-    numero: numero,
-    createdAt: formatDateForMySQL(addHours(new Date(), 3))
-  }
-
   const handleSubmit = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    if(senha !== confirmarSenha) {
-        toast.error('Senha incorreta');
-        return
+    if (senha !== confirmarSenha) {
+      toast.error('Senhas não coincidem.');
+      return;
     }
+    const customerData = {
+      nome,
+      email,
+      senha,
+      // data_nascimento: nascimento,
+      telefone,
+      cep: CEP,
+      numero,
+      createdAt: isEdit ? undefined : formatDateForMySQL(addHours(new Date(), 3)),
+    };
+
     try {
-        await api.post("/users", newCustomer, { headers: { 'x-access-token': token } });
-        setNome("")
-        setEmail("")
-        setSenha("")
-        setConfirmarSenha("")
-        setNascimento("")
-        setTelefone("")
-        setCEP("")
-        setNumero("")
-        toast.success("Cliente criado!", {
-          position: "top-center",
-          toastId: "create",
-          hideProgressBar: true,
-          autoClose: 3000,
-          pauseOnHover: false,
-          closeButton: false,
-          className: 'text-center',
-          onClose: () => {
-            navigate('/admin/customers');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-          }
-        })
-      } catch (error) {
-        console.error("Erro ao salvar cliente:", error);
-        if (isAxiosError(error)) {
-          if (error.response) {
-            toast.error(error.response.data, {
-              position: "top-center",
-              toastId: "create",
-              hideProgressBar: true,
-              autoClose: 3000,
-              pauseOnHover: false,
-              closeButton: false,
-              className: 'text-center',
-            })
-          }
-        } else {
-          console.log("Erro desconhecido:", error);
-        }
+      if (isEdit) {
+        await api.put(`/users/${userId}`, customerData, { headers: { 'x-access-token': token } });
+        toast.success("Cliente atualizado com sucesso!");
+      } else {
+        await api.post("/users", customerData, { headers: { 'x-access-token': token } });
+        toast.success("Cliente criado com sucesso!");
       }
+      navigate('/admin/users');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (error) {
+      console.error("Erro ao salvar cliente:", error);
+      if (isAxiosError(error)) {
+        if (error.response) {
+          toast.error(error.response.data, {
+            position: "top-center",
+            hideProgressBar: true,
+            autoClose: 3000,
+            pauseOnHover: false,
+            closeButton: false,
+            className: 'text-center',
+          });
+        }
+      } else {
+        console.log("Erro desconhecido:", error);
+      }
+    }
   };
 
   return (
     <>
-      <Header title="Novo cliente"/>
+      <Header title={isEdit ? "Editar cliente" : "Novo cliente"} />
       <div className="bg-white shadow rounded p-4">
         <form onSubmit={handleSubmit}>
-          <div className="form-row row mb-3">
-            <div className="form-group col">
+          <div className={`form-row ${isDesktop && "row"}`}>
+            <div className="form-group col mb-3">
               <label htmlFor="nomeCompleto">Nome Completo</label>
               <input
                 type="text"
@@ -118,7 +131,7 @@ export function AddCustomer() {
                 onChange={(e) => setNome(e.target.value)}
               />
             </div>
-            <div className="form-group col">
+            <div className="form-group col mb-3">
               <label htmlFor="inputEmail4">Email</label>
               <input
                 type="email"
@@ -131,8 +144,8 @@ export function AddCustomer() {
               />
             </div>
           </div>
-          <div className="form-row row mb-3">
-            <div className="form-group col">
+          {!isEdit && <div className="form-row row">
+            <div className="form-group col mb-3">
               <label htmlFor="inputPassword4">Senha</label>
               <input
                 type="password"
@@ -140,7 +153,7 @@ export function AddCustomer() {
                 id="inputPassword4"
                 placeholder="Senha"
                 minLength={8}
-                required
+                required={!isEdit}
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
               />
@@ -148,7 +161,7 @@ export function AddCustomer() {
                 {senha.length >= 8 ? "Número de caracteres aceitáveis." : "Deve conter no mínimo 8 caracteres."}
               </small>
             </div>
-            <div className="form-group col">
+            <div className="form-group col mb-3">
               <label htmlFor="inputPasswordConfirm4">
                 Confirmação de senha
               </label>
@@ -158,7 +171,7 @@ export function AddCustomer() {
                 id="inputPasswordConfirm4"
                 minLength={8}
                 placeholder="Confirmação de senha"
-                required
+                required={!isEdit}
                 value={confirmarSenha}
                 disabled={!senha}
                 onChange={(e) => setConfirmarSenha(e.target.value)}
@@ -167,9 +180,9 @@ export function AddCustomer() {
                 As senhas devem ser iguais.
               </small>}
             </div>
-          </div>
-          <div className="form-row row mb-3">
-            <div className="form-group col-md-3">
+          </div>}
+          <div className="form-row row">
+            {!isEdit && <div className="form-group col-md-3 mb-3">
               <label htmlFor="inputNascimento">Data de Nascimento</label>
               <input
                 type="date"
@@ -180,8 +193,8 @@ export function AddCustomer() {
                 value={nascimento}
                 onChange={(e) => setNascimento(e.target.value)}
               />
-            </div>
-            <div className="form-group col-md-3">
+            </div>}
+            <div className={`form-group ${isEdit ? "col-md-4" : "col-md-3"} mb-3`}>
               <label htmlFor="inputTelefone">Telefone</label>
               <input
                 type="tel"
@@ -194,7 +207,7 @@ export function AddCustomer() {
                 onChange={(e) => setTelefone(e.target.value)}
               />
             </div>
-            <div className="form-group col-md-3">
+            <div className={`form-group ${isEdit ? "col-md-4" : "col-md-3"} mb-3`}>
               <label htmlFor="inputCEP">CEP</label>
               <input
                 type="text"
@@ -208,7 +221,7 @@ export function AddCustomer() {
                 onChange={(e) => setCEP(e.target.value)}
               />
             </div>
-            <div className="form-group col-md-3">
+            <div className={`form-group ${isEdit ? "col-md-4" : "col-md-3"} mb-3`}>
               <label htmlFor="inputNumero">Número</label>
               <input
                 type="text"
@@ -222,7 +235,7 @@ export function AddCustomer() {
             </div>
           </div>
           <div className="d-flex gap-2 mt-4 justify-content-end">
-            <button onClick={() => navigate("/admin/customers")} className="btn btn-danger">
+            <button onClick={() => navigate("/admin/users")} className="btn btn-danger">
               Cancelar
             </button>
             <button type="submit" className="btn btn-primary">
