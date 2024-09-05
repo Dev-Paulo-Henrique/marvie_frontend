@@ -7,6 +7,7 @@ import Avatar from "react-avatar";
 import { Loading } from "../../components/Loading";
 import { Error } from "../../components/Error";
 import { isAxiosError } from "axios";
+import { useMediaQuery } from "react-responsive";
 
 interface UserDataProps {
   id: number;
@@ -29,6 +30,8 @@ export function Profile() {
   const { userId } = useParams<{ userId: string }>();
   const { token } = useAuth();
   const navigate = useNavigate();
+
+  const isDesktop = useMediaQuery({ minWidth: 992 });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -99,54 +102,60 @@ export function Profile() {
   }
 
   return (
-    <div className="d-flex flex-column align-items-start gap-3">
-      <div className="d-flex align-items-center">
-        <Avatar
-          name={user.nome.split(" ").slice(0, 2).join(" ")}
-          size="100"
-          round={true}
-          color="var(--blue-100)"
-        />
-        <div className="d-flex flex-column mx-3">
-          <h2 className="fw-normal m-0" style={{ color: "var(--gray-75)" }}>
-            {user.nome}
-          </h2>
-          <small className="text-secondary">{user.email}</small>
+    <div className="container">
+      <div className={`d-flex ${!isDesktop && "flex-column"} gap-3`}>
+        <div
+          className={`d-flex ${
+            !isDesktop && "justify-content-center"
+          }`}
+        >
+          <Avatar
+            name={user.nome.split(" ").slice(0, 2).join(" ")}
+            size="150"
+            round={true}
+            color="#007bff"
+            className="shadow-sm"
+          />
+        </div>
+        <div
+          className={`d-flex justify-content-center ${!isDesktop && "align-items-center"} flex-column`}
+        >
+          <h2 className={`text-primary mb-0 ${!isDesktop && "text-center"}`}>{user.nome}</h2>
+          <p className="text-muted">{user.email}</p>
+          <div className="mb-4">
+            <h5>Informações</h5>
+            <ul className="list-group">
+              <li className="list-group-item">
+                <strong>Data de Nascimento:</strong>{" "}
+                {new Date(user.data_nascimento).toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </li>
+              <li className="list-group-item">
+                <strong>Telefone:</strong> {user.telefone}
+              </li>
+              <li className="list-group-item">
+                <strong>Data de Cadastro:</strong>{" "}
+                {new Date(user.createdAt).toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </li>
+              <li className="list-group-item">
+                <strong>Nome Completo:</strong> {user.nome}
+              </li>
+            </ul>
+          </div>
+          <div className="d-flex justify-content-end">
+            <button onClick={handleDeleteUser} className="btn btn-danger">
+              Deletar Conta
+            </button>
+          </div>
         </div>
       </div>
-      <div className="row w-100 gap-2">
-        <div className="form-group col-auto bg-white p-2 rounded border">
-          <label className="fw-bold">Data de Nascimento</label>
-          <p>
-            {new Date(user.data_nascimento).toLocaleDateString("pt-BR", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            })}
-          </p>
-        </div>
-        <div className="form-group col-auto bg-white p-2 rounded border">
-          <label className="fw-bold">Telefone</label>
-          <p>{user.telefone}</p>
-        </div>
-        <div className="form-group col-auto bg-white p-2 rounded border">
-          <label className="fw-bold">Data de Cadastro</label>
-          <p>
-            {new Date(user.createdAt).toLocaleDateString("pt-BR", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            })}
-          </p>
-        </div>
-        <div className="form-group col-auto bg-white p-2 rounded border">
-          <label className="fw-bold">Nome Completo</label>
-          <p>{user.nome}</p>
-        </div>
-      </div>
-      <button onClick={handleDeleteUser} className="btn btn-danger">
-        Deletar
-      </button>
     </div>
   );
 }

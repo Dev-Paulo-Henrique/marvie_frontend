@@ -26,7 +26,7 @@ export function Sidebar() {
     <aside
       className={`d-flex ${
         isDesktop ? "flex-column" : "flex-row align-items-center"
-      } flex-shrink-0 p-3 text-white bg-custom-primary position-absolute`}
+      } flex-shrink-0 p-3 text-white bg-custom-primary position-fixed`}
       style={sidebarStyle}
     >
       <Logo />
