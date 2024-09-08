@@ -146,7 +146,7 @@ export function ViewProductDetail() {
                 </div>
 
                 <div className="mb-2">
-                  {productsDB.valor && (
+                  {/* {productsDB.valor && (
                     <>
                       <small className="text-decoration-line-through text-muted">
                         {new Intl.NumberFormat("pt-BR", {
@@ -156,7 +156,7 @@ export function ViewProductDetail() {
                       </small>
                       <br />
                     </>
-                  )}
+                  )} */}
                   <span className="h2 text-primary fw-bold">
                     {new Intl.NumberFormat("pt-BR", {
                       style: "currency",
