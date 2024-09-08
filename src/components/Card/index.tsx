@@ -12,7 +12,6 @@ import { useCart } from "../../hooks/useCart";
 // import { useNavigate } from "react-router-dom";
 import { calculateAverageRating, calculateStars } from "../../utils/Rating";
 
-
 export function Card({
   name,
   firstImage,
@@ -60,7 +59,7 @@ export function Card({
     <div className="col-lg-3 col-md-4 col-sm-6 col-6 mt-3">
       <div className="product-grid">
         <div className="product-image">
-          <a href={`/product/${id}`} className="image">
+          <a href={`/view/${id}`} className="image">
             <img className="img-1" src={firstImage} />
             <img className="img-2" src={secondImage} />
           </a>
@@ -78,7 +77,7 @@ export function Card({
               </a>
             </li>
             <li>
-              <a href={`/product/${id}`}>
+              <a href={`/view/${id}`}>
                 <FaMagnifyingGlass />
               </a>
             </li>
@@ -109,7 +108,7 @@ export function Card({
         </div>
         <div className="product-content">
           <ul className="rating">
-          {[...Array(fullStars)].map((_, i) => (
+            {[...Array(fullStars)].map((_, i) => (
               <FaStar key={`full-${i}`} size={15} />
             ))}
             {[...Array(halfStar)].map((_, i) => (
@@ -118,10 +117,16 @@ export function Card({
             {[...Array(emptyStars)].map((_, i) => (
               <FaRegStar key={`empty-${i}`} size={15} />
             ))}
-            {reviews && (
+            {reviews ? (
               <li className="disable mx-1">
-                ({reviews.length} {reviews.length > 1 ? "avaliações" : "avaliação"})
+                {reviews.length > 0 && reviews[0] !== null
+                  ? `${reviews.length} ${
+                      reviews.length > 1 ? "avaliações" : "avaliação"
+                    }`
+                  : "Sem avaliações"}
               </li>
+            ) : (
+              <li className="disable mx-1">Sem avaliações</li>
             )}
           </ul>
           <h3 className="title">

@@ -65,7 +65,7 @@ export function Profile() {
         closeButton: false,
         className: "text-center",
         onClose: () => {
-          navigate("/admin/customers");
+          navigate("/admin/users");
           window.scrollTo({ top: 0, behavior: "smooth" });
         },
       });
@@ -92,13 +92,14 @@ export function Profile() {
     return <Loading />;
   }
 
+  if (!user) {
+    return <p className="text-secondary">Nenhum usuário encontrado.</p>;
+  }
+
   if (error) {
     return <Error />;
   }
 
-  if (!user) {
-    return <p className="text-secondary">Nenhum usuário encontrado.</p>;
-  }
 
   return (
     <div className="container">
@@ -121,11 +122,11 @@ export function Profile() {
             {user.nome}
           </h2>
           <p className="text-muted">{user.email}</p>
-          <div className="mb-4">
+          <div className="mb-4 w-100">
             <h5>Informações</h5>
             <ul className="list-group">
               <li className="list-group-item">
-                <strong>ID:</strong> {user.id}
+                <strong>ID do Usuário:</strong> {user.id}
               </li>
               <li className="list-group-item">
                 <strong>Telefone:</strong> {user.telefone}

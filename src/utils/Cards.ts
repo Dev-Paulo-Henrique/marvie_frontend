@@ -47,6 +47,7 @@ export interface CardProps {
   sizes?: string[];
   colors?: string[];
   id: number;
+  estoque?: number;
 }
 
 export const products: CardProps[] = [
@@ -59,7 +60,8 @@ export const products: CardProps[] = [
     description: "Esta blusa feminina é ideal para os dias quentes de verão. Feita com um tecido leve e respirável, oferece conforto durante todo o dia. Seu design moderno e elegante permite combinar facilmente com diferentes peças do seu guarda-roupa.",
     sizes: ["P", "M", "G", "GG"],
     colors: ["Azul", "Rosa", "Preto"],
-    id: 1234567
+    id: 1234567,
+    estoque: 10
   },
   {
     firstImage: Img3,
@@ -71,7 +73,8 @@ export const products: CardProps[] = [
     description: "A nova jaqueta masculina traz um visual sofisticado e resistente, perfeita para enfrentar o frio do inverno. Confeccionada com materiais de alta qualidade, oferece um ajuste confortável e um estilo que combina com diversas ocasiões.",
     sizes: ["M", "G", "GG"],
     colors: ["Preto", "Cinza"],
-    id: 2345678
+    id: 2345678,
+    estoque: 10
   },
   {
     firstImage: Img5,
@@ -82,7 +85,8 @@ export const products: CardProps[] = [
     description: "Jaqueta masculina casual que combina estilo e conforto. Ideal para o uso diário, possui um corte moderno e é feita com tecido durável. Perfeita para adicionar um toque despojado ao seu visual sem comprometer a elegância.",
     sizes: ["P", "M", "G"],
     colors: ["Azul", "Preto"],
-    id: 3456789
+    id: 3456789,
+    estoque: 10
   },
   {
     firstImage: Img7,
@@ -95,7 +99,8 @@ export const products: CardProps[] = [
     description: "Camiseta feminina essencial para o seu guarda-roupa. Feita com um tecido de alta qualidade, oferece um ajuste confortável e uma durabilidade excepcional. Seu design básico é perfeito para qualquer ocasião, desde um dia casual até um encontro informal.",
     sizes: ["P", "M", "G"],
     colors: ["Branco", "Cinza"],
-    id: 4567890
+    id: 4567890,
+    estoque: 10
   },
   {
     firstImage: Img9,
@@ -108,7 +113,8 @@ export const products: CardProps[] = [
     description: "Jaqueta masculina preta, ideal para os meses mais frios. Com um design elegante e uma construção robusta, garante conforto e proteção contra o frio. O ajuste moderno e a cor versátil permitem que ela seja combinada com várias peças do seu guarda-roupa.",
     sizes: ["M", "G", "GG"],
     colors: ["Preto"],
-    id: 5678901
+    id: 5678901,
+    estoque: 10
   },
   {
     firstImage: Img11,
@@ -119,7 +125,8 @@ export const products: CardProps[] = [
     description: "Jaqueta masculina em jeans, uma peça essencial para um visual casual e estiloso. Feita com denim de alta qualidade, proporciona durabilidade e um ajuste confortável. Ideal para diversas ocasiões, desde um passeio descontraído até um evento casual.",
     sizes: ["P", "M", "G"],
     colors: ["Azul"],
-    id: 6789012
+    id: 6789012,
+    estoque: 10
   },
   {
     firstImage: Img13,
@@ -131,7 +138,8 @@ export const products: CardProps[] = [
     description: "Blusa feminina que combina um design moderno com tecido leve, perfeita para os dias quentes. Seu corte versátil e as cores disponíveis permitem criar looks variados e elegantes. Ideal para quem busca conforto e estilo durante o verão.",
     sizes: ["P", "M", "G"],
     colors: ["Rosa", "Branco"],
-    id: 7890123
+    id: 7890123,
+    estoque: 10
   },
   {
     firstImage: Img15,
@@ -142,7 +150,8 @@ export const products: CardProps[] = [
     description: "Jaqueta masculina básica, ideal para o uso diário com um toque casual. Feita com um tecido resistente e com um corte que oferece liberdade de movimento. Uma escolha prática para quem precisa de uma peça versátil para diferentes ocasiões.",
     sizes: ["M", "G"],
     colors: ["Cinza", "Preto"],
-    id: 8901234
+    id: 8901234,
+    estoque: 10
   },
   {
     firstImage: Img17,
@@ -154,7 +163,8 @@ export const products: CardProps[] = [
     description: "Jaqueta masculina em oferta com um design prático e confortável. Ideal para quem procura uma peça estilosa a um preço acessível. Disponível em quantidades limitadas, é a oportunidade perfeita para garantir um item de moda com um excelente custo-benefício.",
     sizes: ["P", "M"],
     colors: ["Marrom"],
-    id: 9012345
+    id: 9012345,
+    estoque: 10
   },
   {
     firstImage: Img19,
@@ -165,7 +175,8 @@ export const products: CardProps[] = [
     description: "Camiseta feminina que une conforto e estilo em uma única peça. Feita com tecido suave e respirável, é perfeita para o uso diário. Seu design simples e elegante torna-a fácil de combinar com outras peças do guarda-roupa, garantindo um visual casual e sofisticado.",
     sizes: ["P", "M", "G"],
     colors: ["Preto", "Branco"],
-    id: 1023456
+    id: 1023456,
+    estoque: 10
   },
   {
     firstImage: Img21,
@@ -176,7 +187,8 @@ export const products: CardProps[] = [
     description: "Blazer masculino sofisticado, ideal para eventos formais e ocasiões especiais. Confeccionado com materiais de alta qualidade, proporciona um ajuste elegante e confortável. Disponível em azul marinho, é a escolha perfeita para quem deseja um visual clássico e refinado.",
     sizes: ["M", "G", "GG"],
     colors: ["Azul Marinho"],
-    id: 2134567
+    id: 2134567,
+    estoque: 10
   },
   {
     firstImage: Img23,
@@ -189,6 +201,7 @@ export const products: CardProps[] = [
     description: "Top feminino em algodão, projetado para oferecer conforto e estilo no dia a dia. Seu tecido macio e respirável garante um ajuste agradável, enquanto o design versátil permite diversas combinações. Aproveite o desconto e adicione este item essencial ao seu guarda-roupa.",
     sizes: ["P", "M"],
     colors: ["Bege", "Cinza"],
-    id: 3245678
+    id: 3245678,
+    estoque: 10
   },
 ];

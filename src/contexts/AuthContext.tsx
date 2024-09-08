@@ -1,6 +1,7 @@
-import { isAxiosError } from 'axios';
-import { createContext, ReactNode, useState, useEffect } from 'react';
-import { api } from '../services/api';
+import { isAxiosError } from "axios";
+import { createContext, ReactNode, useState, useEffect } from "react";
+import { api } from "../services/api";
+import { toast } from "react-toastify";
 
 type AuthContextType = {
   token: string | null;
@@ -13,7 +14,9 @@ type AuthContextProviderProps = {
   children: ReactNode;
 };
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const [token, setToken] = useState<string | null>(null);
@@ -26,7 +29,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     if (storedToken) {
       setToken(storedToken);
     }
-    
+
     if (storedUserName) {
       setUserName(storedUserName);
     }
@@ -52,6 +55,15 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           localStorage.removeItem("authName");
           setToken(null);
           setUserName(null);
+          toast("Você excedeu o tempo limite de login", {
+            position: "top-center",
+            toastId: "limit",
+            hideProgressBar: true,
+            autoClose: 3000,
+            pauseOnHover: false,
+            closeButton: false,
+            className: "text-center",
+          });
         }
       } else {
         console.error("Erro desconhecido:", error);

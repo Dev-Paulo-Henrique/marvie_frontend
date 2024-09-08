@@ -67,6 +67,7 @@ export function Admin() {
             <Route path="products" element={<Products />} />
             <Route path="products/:productId" element={<ProductDetail />} />
             <Route path="products/new" element={<AddProduct />} />
+            <Route path="products/:productId/edit" element={<AddProduct />} />
             <Route path="users" element={<Users />} />
             <Route path="users/:userId/edit" element={<AddUser />} />
             <Route path="users/new" element={<AddUser />} />

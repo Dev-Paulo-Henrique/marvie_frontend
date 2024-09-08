@@ -6,6 +6,7 @@ import {
   // CiShoppingCart,
   CiUser,
 } from "react-icons/ci";
+import { useAuth } from "../../hooks/useAuth";
 
 
 interface HeaderProps {
@@ -15,6 +16,8 @@ interface HeaderProps {
 
 export function Header({ role, isCart }: HeaderProps) {
   const isDesktop = useMediaQuery({ minWidth: 992 });
+  const { token } = useAuth();
+
   return (
     <>
       <header className="p-3 border-bottom w-100 bg-custom-primary">
@@ -43,11 +46,11 @@ export function Header({ role, isCart }: HeaderProps) {
                     <Search />
                     {isDesktop ? <div className="d-flex justify-content-center align-items-center gap-3">
                       <a
-                        href="/login"
+                        href={token ? "/admin" : "/login"}
                         className="d-block gap-1 link-dark d-flex align-items-center text-decoration-none text-light btn-outline-light btn py-2 px-3"
                       >
                         <CiUser size={20} />
-                        <span>Login</span>
+                        <span>{token ? "Entrar" : "Login"}</span>
                       </a>
                       {/* <a
                         href="/checkout"

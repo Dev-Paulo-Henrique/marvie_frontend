@@ -15,7 +15,7 @@ export function ResumeItem({
 }: ResumeProps) {
   return (
     <li
-      className={`list-group-item d-flex justify-content-between ${
+      className={`list-group-item d-flex justify-content-between text-break gap-2 ${
         isCode ? "bg-light" : "lh-sm"
       }`}
     >

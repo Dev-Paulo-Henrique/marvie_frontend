@@ -3,7 +3,6 @@ import { api } from "../../services/api";
 import { toast } from "react-toastify";
 import { Header } from "../Admin/Header";
 import { Title } from "../../utils/Title";
-import { addHours } from 'date-fns'
 import { isAxiosError } from "axios";
 import { useMask } from '@react-input/mask';
 import { useNavigate, useParams } from "react-router-dom";
@@ -79,9 +78,9 @@ export function AddUser() {
       senha,
       // data_nascimento: nascimento,
       telefone,
-      cep: CEP,
+      CEP,
       numero,
-      createdAt: isEdit ? undefined : formatDateForMySQL(addHours(new Date(), 3)),
+      createdAt: isEdit ? undefined : formatDateForMySQL(new Date()),
     };
 
     try {

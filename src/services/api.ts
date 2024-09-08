@@ -1,5 +1,8 @@
-import axios from 'axios'
+import axios from "axios";
 
 export const api = axios.create({
-  baseURL: 'https://marvie-backend.vercel.app'
-})
+  baseURL:
+    import.meta.env.MODE === "development"
+      ? "http://localhost:3000"
+      : "https://marvie-backend.vercel.app",
+});

@@ -14,7 +14,7 @@ interface ResumeProps {
   onDiscountApplied?: (newTotal: number) => void;
 }
 
-export function Resume({ items, onDiscountApplied  }: ResumeProps) {
+export function Resume({ items, onDiscountApplied }: ResumeProps) {
   const [itemList, setItemList] = useState(items);
   const [promoCode, setPromoCode] = useState("");
   const [discountedTotal, setDiscountedTotal] = useState<number | null>(null);
@@ -76,13 +76,15 @@ export function Resume({ items, onDiscountApplied  }: ResumeProps) {
     <div className="col-md-5 col-lg-4 order-md-last">
       <h4 className="d-flex justify-content-between align-items-center mb-3">
         <span className="text-primary">Seu carrinho</span>
-        <span className="badge bg-primary rounded-pill">{items.length}</span>
+        <span className="badge bg-primary rounded-pill">
+          {itemList.reduce((acc, item) => acc + item.quantity, 0)}
+        </span>
       </h4>
       <ul className="list-group mb-3">
         {itemList.map((item, index) => (
           <ResumeItem
             key={index}
-            title={`${item.name} ${index + 1}`}
+            title={`${item.name}`}
             subtitle={`Quantidade: ${item.quantity.toString()}`}
             amount={new Intl.NumberFormat("pt-BR", {
               style: "currency",

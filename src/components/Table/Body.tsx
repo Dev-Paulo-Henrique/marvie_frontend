@@ -17,7 +17,7 @@ interface TableRowProductsProps {
   nome: string;
   link: string;
   estoque: number;
-  img: string;
+  img?: string;
   actions: ReactNode;
 }
 
@@ -46,7 +46,7 @@ export function TableRowUsers({
       <td className="align-middle">
         <a
           href={`/admin/users/${id}`}
-          className="text-decoration-none text-break"
+          className="text-decoration-none text-break text-secondary"
         >
           {name}
         </a>
@@ -89,7 +89,7 @@ export function TableRowProducts({
       <td className="d-none d-lg-table-cell align-middle text-center">{id}</td>
       <td className="align-middle">
         <div className="d-flex align-items-center">
-          <img src={img} width={50} className="d-none d-lg-block" />
+          <img src={img} width={50} alt={`Imagem do produto ${id}`} className="d-none d-lg-block" />
           {isDesktop ? (
             <span className="ms-3 fs-6 text-break">{nome}</span>
           ) : (

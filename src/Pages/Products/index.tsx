@@ -8,7 +8,7 @@ import { TableHeader } from "../../components/Table/Header";
 import { paginate } from "../../utils/Pagination";
 import { SearchAdmin } from "../../components/Search";
 
-import { ref, listAll, getDownloadURL } from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../services/firebase";
 // import { useMediaQuery } from "react-responsive";
 import { Loading } from "../../components/Loading";
@@ -17,7 +17,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { Error } from "../../components/Error";
 import { api } from "../../services/api";
 
-interface ProductsProps {
+export interface ProductsProps {
   id: number;
   nome: string;
   createdAt: string;
@@ -27,7 +27,14 @@ interface ProductsProps {
   data_fabricacao: string;
   valor: number;
   categoria: number;
-  url: string;
+  image_id: string;
+  url?: string;
+  status?: string;
+  discount?: number;
+  // image_id: string[];
+  sizes: string[];
+  colors: string[];
+  ratings?: string[];
 }
 
 export function Products() {
@@ -47,22 +54,51 @@ export function Products() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const response = await api.get<ProductsProps[]>('/products', {
-          headers: { 'x-access-token': token }
+        const response = await api.get<ProductsProps[]>("/products", {
+          headers: { "x-access-token": token },
         });
 
-        const fetchedProducts = await Promise.all(response.data.map(async (product) => {
-          const productRef = ref(storage, `products/${product.id}`);
-          const imageSnapshots = await listAll(productRef);
-          const imageUrls = await Promise.all(imageSnapshots.items.map(item => getDownloadURL(item)));
-          
-          const updatedProduct = {
-            ...product,
-            url: imageUrls[0] || ""
-          };
+        const fetchedProducts = await Promise.all(
+          response.data.map(async (product) => {
+            let imageUrls: string[] = [];
 
-          return updatedProduct;
-        }));
+            // Verifica se image_id é um array
+            if (Array.isArray(product.image_id)) {
+              // Assume que image_id é um array de URLs de imagem
+              imageUrls = product.image_id;
+            } else if (typeof product.image_id === "string") {
+              // Verifica se é uma URL direta
+              if (product.image_id.startsWith("http")) {
+                imageUrls = [product.image_id];
+              } else {
+                // Assume que é um JSON com IDs de imagem
+                try {
+                  const imageIdArray = JSON.parse(product.image_id);
+                  if (Array.isArray(imageIdArray)) {
+                    imageUrls = await Promise.all(
+                      imageIdArray.map(async (id: string) => {
+                        const imageRef = ref(storage, `products/${id}`);
+                        return getDownloadURL(imageRef);
+                      })
+                    );
+                  }
+                } catch (e) {
+                  console.error("Erro ao analisar image_id:", e);
+                }
+              }
+            } else {
+              console.warn(
+                "image_id não é uma string nem um array:",
+                product.image_id
+              );
+            }
+
+            return {
+              ...product,
+              url: imageUrls[0] || "",
+            };
+          })
+        );
 
         setProducts(fetchedProducts);
       } catch (err) {
@@ -97,17 +133,12 @@ export function Products() {
   }
 
   if (error) {
-    return (
-      <Error/>
-    );
+    return <Error />;
   }
 
   return (
     <>
-      <Header
-        title="Produtos"
-        textButton="Novo Produto"
-      />
+      <Header title="Produtos" textButton="Novo Produto" />
       <div className="pb-4">
         <SearchAdmin
           value={searchTerm}
@@ -128,7 +159,7 @@ export function Products() {
                     img={product.url}
                     estoque={product.estoque}
                     link={`/admin/products/${product.id}`}
-                    actions={<Actions id={product.id} route="products"/>}
+                    actions={<Actions id={product.id} route="products" />}
                   />
                 ))}
               </tbody>

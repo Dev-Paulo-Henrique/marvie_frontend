@@ -21,9 +21,7 @@ import { CartProvider } from "./contexts/CartContext";
 import { Cart } from "./components/Cart";
 
 const AppRoutes = () => {
-  const { token, userName } = useAuth();
-  console.log("Token in AppRoutes:", token);
-  console.log("Username:", userName);
+  const { token } = useAuth();
 
   return (
     <Routes>
@@ -31,7 +29,7 @@ const AppRoutes = () => {
       <Route path="/busca/:search" element={<Busca />} />
       <Route path="/forgotPassword" element={<ForgotPassword />} />
       <Route path="/reset_password/:token" element={<ResetPassword />} />
-      <Route path="/product/:id" element={<ViewProduct />} />
+      <Route path="/view/:productId" element={<ViewProduct />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route
         path="/login"
