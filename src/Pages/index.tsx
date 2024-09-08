@@ -8,6 +8,7 @@ import { api } from "../services/api";
 import { ProductsProps } from "./Products";
 import { Loading } from "../components/Loading";
 import { Error } from "../components/Error";
+import { isAxiosError } from "axios";
 
 export function Main() {
   const [productsDB, setProductsDB] = useState<ProductsProps[]>([]);
@@ -21,6 +22,13 @@ export function Main() {
         setProductsDB(response.data);
       } catch (err) {
         setError("Erro ao buscar produtos.");
+        if (isAxiosError(err)) {
+          if (err.response) {
+            console.error(err.response.data);
+          }
+        } else {
+          console.log("Erro desconhecido:", err);
+        }
       } finally {
         setLoading(false);
       }
@@ -29,14 +37,14 @@ export function Main() {
     fetchProducts();
   }, []);
 
-  console.log(productsDB)
+  console.log(productsDB);
 
   if (loading) {
-    return <Loading/>;
+    return <Loading />;
   }
 
   if (error) {
-    return <Error/>;
+    return <Error />;
   }
 
   return (
@@ -67,23 +75,23 @@ export function Main() {
         </div>
         <div className="row">
           {productsDB && <h1 className="text-dark mt-4">Novidade</h1>}
-          {productsDB.length > 0 && (
+          {productsDB.length > 0 &&
             productsDB.map((product: ProductsProps, index: number) => (
-                <Card
-                  key={index}
-                  firstImage={product.image_id[0]}
-                  secondImage={product.image_id[1]}
-                  price={product.valor}
-                  name={product.nome}
-                  reviews={product.ratings?.map(rating => 
-                    typeof rating === 'string' ? parseFloat(rating) : rating)}
-                  tag={product.status}
-                  // oldPrice={product.valor}
-                  // discount={product.valor}
-                  id={product.id}
-                />
-            ))
-          )}
+              <Card
+                key={index}
+                firstImage={product.image_id[0]}
+                secondImage={product.image_id[1]}
+                price={product.valor}
+                name={product.nome}
+                reviews={product.ratings?.map((rating) =>
+                  typeof rating === "string" ? parseFloat(rating) : rating
+                )}
+                tag={product.status}
+                // oldPrice={product.valor}
+                // discount={product.valor}
+                id={product.id}
+              />
+            ))}
         </div>
       </div>
       <Footer />
