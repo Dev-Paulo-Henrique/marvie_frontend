@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, ChangeEvent, FormEvent } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate, useParams } from "react-router-dom";
 import { CardProps, products } from "../../utils/Cards";
+import { api } from "../../services/api";
+import { ProductsProps } from "../../Pages/Products";
 
 interface SearchAdminProps {
   value: string;
@@ -15,11 +17,25 @@ export function Search() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFocus, setSearchFocus] = useState(false);
   const [uniqueProducts, setUniqueProducts] = useState<CardProps[]>([]);
+  const [productsDB, setProductsDB] = useState<ProductsProps[]>([]);
   const { search } = useParams<{ search: string }>();
   const navigate = useNavigate();
 
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
+
+  useEffect(() => {
+    const fetchProductsDB = async () => {
+      try {
+        const response = await api.get("/products");
+        setProductsDB(response.data);
+      } catch (err) {
+        console.error("Erro ao buscar produtos do banco de dados", err);
+      }
+    };
+
+    fetchProductsDB();
+  }, []);
 
   useEffect(() => {
     setSearchQuery(search ? search : "");
@@ -31,19 +47,39 @@ export function Search() {
       return;
     }
 
-    const filteredProducts = products.filter((product) =>
+    const filteredLocalProducts = products.filter((product) =>
       product.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
+    const filteredDBProducts = productsDB.filter((product) =>
+      product.nome.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
+    const combinedProducts = [
+      ...filteredLocalProducts.map(p => ({
+        ...p,
+        name: p.name
+      })),
+      ...filteredDBProducts.map(p => ({
+        id: p.id,
+        name: p.nome,
+        price: p.valor,
+        firstImage: p.image_id[0],
+        secondImage: p.image_id[1],
+        reviews: p.ratings?.map(r => typeof r === "string" ? parseFloat(r) : r),
+        tag: p.status
+      }))
+    ];
+
     const seen = new Set();
-    const unique = filteredProducts.filter((product) => {
+    const unique = combinedProducts.filter((product) => {
       const duplicate = seen.has(product.name.toLowerCase());
       seen.add(product.name.toLowerCase());
       return !duplicate;
     });
 
     setUniqueProducts(unique);
-  }, [searchQuery]);
+  }, [searchQuery, productsDB]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);

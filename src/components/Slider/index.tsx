@@ -34,7 +34,7 @@ export function Slider({ images }: SliderProps) {
   };
 
   return (
-    <aside className="col-lg-6">
+    <aside className="col-lg-6 mb-4">
       <Slick {...settings}>
         {images.map((img, index) => (
           <div

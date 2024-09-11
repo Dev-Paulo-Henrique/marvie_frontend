@@ -30,11 +30,12 @@ export interface ProductsProps {
   image_id: string;
   url?: string;
   status?: string;
-  discount?: number;
   // image_id: string[];
   sizes: string[];
   colors: string[];
   ratings?: string[];
+  oldPrice?: number;
+  discount?: number;
 }
 
 export function Products() {

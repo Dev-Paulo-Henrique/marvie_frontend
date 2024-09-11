@@ -11,6 +11,7 @@ import { CardProps } from "../../utils/Cards";
 import { useCart } from "../../hooks/useCart";
 // import { useNavigate } from "react-router-dom";
 import { calculateAverageRating, calculateStars } from "../../utils/Rating";
+import { useMediaQuery } from "react-responsive";
 
 export function Card({
   name,
@@ -25,6 +26,7 @@ export function Card({
 }: CardProps) {
   // const navigate = useNavigate();
   const { addItem, addFavorite, removeFavorite, isFavorite } = useCart();
+  const isDesktop = useMediaQuery({ minWidth: 1400 });
 
   const averageRating = calculateAverageRating(reviews);
   const { fullStars, halfStar, emptyStars } = calculateStars(averageRating);
@@ -60,8 +62,28 @@ export function Card({
       <div className="product-grid">
         <div className="product-image">
           <a href={`/view/${id}`} className="image">
-            <img className="img-1" src={firstImage} />
-            <img className="img-2" src={secondImage} />
+            <img
+              className="img-1"
+              src={firstImage}
+              alt={`${name} image 1`}
+              style={{
+                width: "100%",
+                height: isDesktop ? 390 : 300, // Define a altura fixa para cortar a imagem
+                objectFit: "cover", // Corta a imagem para preencher o espaço
+                objectPosition: "center", 
+              }}
+            />
+            <img
+              className="img-2"
+              src={secondImage}
+              alt={`${name} image 2`}
+              style={{
+                width: "100%",
+                height: isDesktop ? 390 : 300, // Define a altura fixa para cortar a imagem
+                objectFit: "cover", // Corta a imagem para preencher o espaço
+                objectPosition: "center",
+              }}
+            />
           </a>
           {tag && <span className="product-hot-label">{tag}</span>}
           {discount && oldPrice && (
