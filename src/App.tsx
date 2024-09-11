@@ -19,7 +19,7 @@ import { ViewProduct } from "./Pages/Products/ViewProduct";
 import { Busca } from "./Pages/Busca";
 import { CartProvider } from "./contexts/CartContext";
 import { Cart } from "./components/Cart";
-import { My } from "./Pages/client";
+import { My } from "./Pages/Client";
 
 const AppRoutes = () => {
   const { token, userName } = useAuth();

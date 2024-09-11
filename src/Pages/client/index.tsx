@@ -1,7 +1,6 @@
 import { useMediaQuery } from "react-responsive";
 import { Sidebar } from "../../components/Sidebar";
 import { Routes, Route, Navigate, useNavigate } from "react-router-dom";
-import { Orders } from "../Orders";
 import { useAxiosConnection } from "../../utils/AxiosConnection";
 import { BsServer } from "react-icons/bs";
 import { OrderDetail } from "../Orders/OrderDetail";
@@ -9,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Title } from "../../utils/Title";
 import { Loading } from "../../components/Loading";
+import { Order } from "./Order";
 
 export function My() {
   const isDesktop = useMediaQuery({ minWidth: 992 });
@@ -52,7 +52,7 @@ export function My() {
       >
         {isConnected ? (
           <Routes>
-            <Route path="orders" element={<Orders />} />
+            <Route path="orders" element={<Order />} />
             <Route path="orders/:orderId" element={<OrderDetail />} />
             <Route path="/" element={<Navigate to="orders" replace />} />
           </Routes>
