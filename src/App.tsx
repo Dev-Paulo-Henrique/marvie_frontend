@@ -19,9 +19,10 @@ import { ViewProduct } from "./Pages/Products/ViewProduct";
 import { Busca } from "./Pages/Busca";
 import { CartProvider } from "./contexts/CartContext";
 import { Cart } from "./components/Cart";
+import { My } from "./Pages/client";
 
 const AppRoutes = () => {
-  const { token } = useAuth();
+  const { token, userName } = useAuth();
 
   return (
     <Routes>
@@ -31,9 +32,18 @@ const AppRoutes = () => {
       <Route path="/reset_password/:token" element={<ResetPassword />} />
       <Route path="/view/:productId" element={<ViewProduct />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/my/*" element={<My />} />
       <Route
         path="/login"
-        element={!token ? <Login /> : <Navigate to="/admin/home" replace />}
+        element={
+          !token ? (
+            <Login />
+          ) : userName === "Administrador" ? (
+            <Navigate to="/admin/home" replace />
+          ) : (
+            <Navigate to="/my/orders" replace />
+          )
+        }
       />
       <Route path="/admin/*" element={<Admin />} />
       <Route path="*" element={<Navigate to="/" />} />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { api } from "../../services/api";
 import { Particle } from "../../components/Particle";
 import { useAuth } from "../../hooks/useAuth";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Forms } from "../../components/Forms";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
@@ -16,7 +16,7 @@ export function Login() {
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPass, setErrorPass] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { token, setToken, setUserName } = useAuth();
+  const { token, setToken, setUserName, userName } = useAuth();
 
   const isDesktop = useMediaQuery({ minWidth: 992 });
 
@@ -24,7 +24,9 @@ export function Login() {
 
   Title({ title: "Login" });
 
-  if (token) return <Navigate to="/admin/home" replace />;
+  if (token) {
+    navigate(userName === "Administrador" ? "/admin/home" : "/my/orders");
+  }
 
   const handleLogin = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -68,7 +70,7 @@ export function Login() {
         closeButton: false,
         className: "text-center",
         onClose: () => {
-          navigate("/admin/home");
+          navigate(userName === "Administrador" ? "/admin/home" : "/my/orders");
           window.scrollTo({ top: 0, behavior: "smooth" });
         },
       });

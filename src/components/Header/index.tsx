@@ -2,12 +2,8 @@ import { useMediaQuery } from "react-responsive";
 import "../../scss/styles.scss";
 import { Logo } from "../Logo";
 import { Search } from "../Search";
-import {
-  // CiShoppingCart,
-  CiUser,
-} from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
 import { useAuth } from "../../hooks/useAuth";
-
 
 interface HeaderProps {
   role?: string;
@@ -16,7 +12,13 @@ interface HeaderProps {
 
 export function Header({ role, isCart }: HeaderProps) {
   const isDesktop = useMediaQuery({ minWidth: 992 });
-  const { token } = useAuth();
+  const { token, userName } = useAuth();
+
+  // Define the link based on the token and userName
+  let userLink = "/login";
+  if (token) {
+    userLink = userName === "Administrador" ? "/admin" : "/my";
+  }
 
   return (
     <>
@@ -44,27 +46,31 @@ export function Header({ role, isCart }: HeaderProps) {
                 {!isCart && (
                   <>
                     <Search />
-                    {isDesktop ? <div className="d-flex justify-content-center align-items-center gap-3">
+                    {isDesktop ? (
+                      <div className="d-flex justify-content-center align-items-center gap-3">
+                        <a
+                          href={userLink}
+                          className="d-block gap-1 link-dark d-flex align-items-center text-decoration-none text-light btn-outline-light btn py-2 px-3"
+                        >
+                          <CiUser size={20} />
+                          <span>{token ? "Perfil" : "Login"}</span>
+                        </a>
+                        {/* <a
+                          href="/checkout"
+                          className="d-block link-dark text-decoration-none"
+                        >
+                          <CiShoppingCart color="#FFFFFF" size={32} />
+                          <span className="badge badge-light text-dark">0</span>
+                        </a> */}
+                      </div>
+                    ) : (
                       <a
-                        href={token ? "/admin" : "/login"}
-                        className="d-block gap-1 link-dark d-flex align-items-center text-decoration-none text-light btn-outline-light btn py-2 px-3"
-                      >
-                        <CiUser size={20} />
-                        <span>{token ? "Entrar" : "Login"}</span>
-                      </a>
-                      {/* <a
-                        href="/checkout"
-                        className="d-block link-dark text-decoration-none"
-                      >
-                        <CiShoppingCart color="#FFFFFF" size={32} />
-                        <span className="badge badge-light text-dark">0</span>
-                      </a> */}
-                    </div> : <a
                         href="/login"
                         className="d-block link-dark d-flex align-items-center text-decoration-none py-2 px-3"
                       >
                         <CiUser size={32} color="#FFFFFF" />
-                      </a>}
+                      </a>
+                    )}
                   </>
                 )}
               </>
