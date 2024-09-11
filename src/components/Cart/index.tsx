@@ -9,7 +9,7 @@ export function Cart() {
   const { cartItems } = useCart();
   const modalRef = useRef(null);
   const location = useLocation();
-  console.log(cartItems)
+  // console.log(cartItems)
   //   const { cartItems } = useContext(CartContext);
 
   const handleShow = () => {

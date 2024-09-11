@@ -37,7 +37,7 @@ export function Main() {
     fetchProducts();
   }, []);
 
-  console.log(productsDB);
+  // console.log(productsDB);
 
   if (loading) {
     return <Loading />;

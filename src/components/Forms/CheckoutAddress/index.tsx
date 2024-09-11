@@ -12,6 +12,7 @@ interface CheckoutFormInputProps {
   options?: ReactNode;
   onChange?: (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => void;
   disabled?: boolean;
+  defaultValue?: string | number;
 }
 
 export const CheckoutFormAddressInput = forwardRef<
@@ -31,6 +32,7 @@ export const CheckoutFormAddressInput = forwardRef<
       options,
       onChange,
       disabled,
+      ...rest
     },
     ref
   ) => {
@@ -47,6 +49,7 @@ export const CheckoutFormAddressInput = forwardRef<
             onChange={onChange}
             ref={ref as Ref<HTMLSelectElement>}
             disabled={disabled}
+            {...rest}
           >
             <option value="" selected disabled>
               Escolha...
@@ -63,6 +66,7 @@ export const CheckoutFormAddressInput = forwardRef<
               placeholder={placeholder}
               required={required}
               ref={ref as Ref<HTMLInputElement>}
+              {...rest}
             />
             <div className="invalid-feedback">
               {errorMessage || "Este campo é obrigatório."}
@@ -76,6 +80,7 @@ export const CheckoutFormAddressInput = forwardRef<
             placeholder={placeholder}
             required={required}
             ref={ref as Ref<HTMLInputElement>}
+            {...rest}
           />
         )}
         <div className="invalid-feedback">

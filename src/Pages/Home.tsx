@@ -31,7 +31,7 @@ export function Home() {
         type="line"
         action="realizados"
         count={1.282}
-        title="Seu faturamento nesta semana"
+        title="Faturamento Mensal"
         value="R$ 32.024,89"
       />
     </div>
