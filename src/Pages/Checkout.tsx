@@ -1,4 +1,6 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, 
+  // FormEvent, 
+  useEffect, useState } from "react";
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import { Resume } from "../components/Resume";
@@ -34,6 +36,8 @@ export function Checkout() {
 
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
+
+  console.log({ data, state });
 
   const countries = Country.getAllCountries();
   const states = State.getStatesOfCountry(country);
@@ -122,11 +126,11 @@ export function Checkout() {
         pauseOnHover: false,
         closeButton: false,
         className: "text-center",
-        // onClose: () => {
-          //   navigate("/");
-          //   deleteItens();
-          //   window.scrollTo({ top: 0, behavior: "smooth" });
-          // },
+        onClose: () => {
+            navigate("/");
+            deleteItens();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          },
         }
       );
       console.log({ data, cartItems, finalTotal });
