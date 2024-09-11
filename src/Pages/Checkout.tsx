@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { Country, State } from "country-state-city";
+import { api } from "../services/api";
 
 interface FormData {
   firstName: string;
@@ -86,7 +87,7 @@ export function Checkout() {
   });
 
   // Função de envio do formulário
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     const forms =
       document.querySelectorAll<HTMLFormElement>(".needs-validation");
 
@@ -110,6 +111,16 @@ export function Checkout() {
     });
     setData(data);
     const finalTotal = discountedTotal !== null ? discountedTotal : total;
+
+    try {
+      const response = await api.post("/orders", {
+        cartItems,
+        data,
+        finalTotal,
+      });
+
+      console.log("Pedido enviado com sucesso:", response.data);
+
     toast.success(
       `Compra realizada com sucesso!\n\nValor: ${new Intl.NumberFormat(
         "pt-BR",
@@ -132,8 +143,11 @@ export function Checkout() {
             window.scrollTo({ top: 0, behavior: "smooth" });
           },
         }
-      );
-      console.log({ data, cartItems, finalTotal });
+      ) } catch (error) {
+        console.error("Erro ao enviar o pedido:", error);
+        toast.error("Erro ao realizar a compra. Tente novamente mais tarde.");
+      }
+      // console.log({ data, cartItems, finalTotal });
   };
 
   return (
