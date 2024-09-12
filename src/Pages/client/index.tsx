@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
 import { Title } from "../../utils/Title";
 import { Loading } from "../../components/Loading";
-import { Order, Orders } from "./Order";
+// import { Order, Orders } from "./Order";
 
 export function My() {
   const isDesktop = useMediaQuery({ minWidth: 992 });
@@ -52,10 +52,9 @@ export function My() {
       >
         {isConnected ? (
           <Routes>
-            <Route path="orders" element={<Orders />} />
-            <Route path="orders/:orderId" element={<Order />} />
-            {/* <Route path="orders/:orderId" element={<OrderDetail />} /> */}
-            <Route path="/" element={<Navigate to="orders" replace />} />
+            {/* <Route path="orders" element={<Orders />} />
+            <Route path="orders/:orderId" element={<Order />} /> */}
+            <Route path="/" element={<Navigate to="/" replace />} />
           </Routes>
         ) : (
           <div className="d-flex flex-column justify-content-center align-items-center h-100">
