@@ -144,7 +144,7 @@ export function TableRowOrders({
                 href={`/admin/orders/${numeroPedido}`}
                 className="text-primary fw-bold text-decoration-none"
               >
-                {numeroPedido}
+                Pedido {numeroPedido}
               </a>
             )}
             {isDesktop ? (
@@ -163,7 +163,7 @@ export function TableRowOrders({
       {isDesktop && (
         <>
           <td>
-            {format(new Date(createdAt), "dd/MM/yyyy HH:mm")}
+            {format(new Date(createdAt), "dd/MM/yyyy")}
             <br />
             <small className="text-muted">
               {formatDistance(new Date(relativeDate), new Date(), {
