@@ -128,15 +128,15 @@ export function Profile() {
               <li className="list-group-item">
                 <strong>ID do Usuário:</strong> {user.id}
               </li>
-              <li className="list-group-item">
+              {user.telefone && <li className="list-group-item">
                 <strong>Telefone:</strong> {user.telefone}
-              </li>
+              </li>}
               <li className="list-group-item">
                 <strong>CEP:</strong> {user.cep}
               </li>
-              <li className="list-group-item">
+              {user.numero && <li className="list-group-item">
                 <strong>Nº:</strong> {user.numero}
-              </li>
+              </li>}
               {/* <li className="list-group-item">
                 <strong>Data de Nascimento:</strong>{" "}
                 {new Date(user.data_nascimento).toLocaleDateString("pt-BR", {

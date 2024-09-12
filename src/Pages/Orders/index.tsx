@@ -33,7 +33,6 @@ const cardFlags: Record<PaymentType, string> = {
   mastercard: mastercardFlag,
   pix: pixFlag,
   billet: billetFlag
-  // Adicione outros tipos e bandeiras conforme necessário
 };
 
 
@@ -58,12 +57,9 @@ export function Orders() {
           relativeDate: faker.date.past(),
           total: faker.commerce.price({ symbol: "R$ " }).replace(".", ","),
           status: faker.helpers.arrayElement([
-            'AGUARDANDO PAGAMENTO', 
-            'PEDIDO AUTORIZADO', 
+            'PEDIDO REALIZADO', 
             'PAGAMENTO APROVADO', 
-            'PRODUTOS EM SEPARAÇÃO', 
-            'FATURADO', 
-            'PRONTO PARA ENVIO', 
+            'EM SEPARAÇÃO', 
             'EM TRANSPORTE', 
             'ENTREGUE', 
             'CANCELADO'

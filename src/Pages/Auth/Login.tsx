@@ -69,10 +69,6 @@ export function Login() {
         pauseOnHover: false,
         closeButton: false,
         className: "text-center",
-        onClose: () => {
-          navigate(userName === "Administrador" ? "/admin/home" : "/my/orders");
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        },
       });
     } catch (error) {
       if (isAxiosError(error)) {

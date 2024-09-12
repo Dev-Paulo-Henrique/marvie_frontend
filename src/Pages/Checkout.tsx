@@ -12,6 +12,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import { Country, State } from "country-state-city";
 import { api } from "../services/api";
+import { useAuth } from "../hooks/useAuth";
 
 interface FormData {
   firstName: string;
@@ -34,7 +35,7 @@ export function Checkout() {
   const { cartItems, deleteItens } = useCart();
   const navigate = useNavigate();
   const [discountedTotal, setDiscountedTotal] = useState<number | null>(null);
-
+  const { setToken, setUserName } = useAuth();
   const [country, setCountry] = useState("");
   const [state, setState] = useState("");
 
@@ -86,7 +87,6 @@ export function Checkout() {
     mode: "onChange",
   });
 
-  // Função de envio do formulário
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     const forms =
       document.querySelectorAll<HTMLFormElement>(".needs-validation");
@@ -112,40 +112,60 @@ export function Checkout() {
     setData(data);
     const finalTotal = discountedTotal !== null ? discountedTotal : total;
 
+    const loadingToastId = "loading-toast";
+    toast.info("Enviando seu pedido...", {
+      toastId: loadingToastId,
+      position: "top-center",
+      autoClose: false,
+      closeButton: false,
+      hideProgressBar: true,
+      className: "text-center",
+      style: { fontSize: '16px' }
+    });
+
     try {
       const response = await api.post("/orders", {
         cartItems,
         data,
         finalTotal,
+        status: 1
       });
 
-      console.log("Pedido enviado com sucesso:", response.data);
+      const { token, userName, orderId } = response.data;
 
-    toast.success(
-      `Compra realizada com sucesso!\n\nValor: ${new Intl.NumberFormat(
-        "pt-BR",
-        {
-          style: "currency",
-          currency: "BRL",
-        }
-      ).format(finalTotal)}`,
-      {
-        position: "top-center",
-        toastId: "create",
-        hideProgressBar: true,
-        autoClose: 3000,
-        pauseOnHover: false,
-        closeButton: false,
-        className: "text-center",
-        onClose: () => {
-            navigate("/");
-            deleteItens();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          },
-        }
-      ) } catch (error) {
+      setToken(token);
+      setUserName(userName);
+
+      // console.log("Pedido enviado com sucesso:", response.data);
+
+    toast.update(loadingToastId, {
+      render: `Compra realizada com sucesso!\n\nValor: ${new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(finalTotal)}`,
+      type: "success",
+      position: "top-center",
+      hideProgressBar: true,
+      autoClose: 3000,
+      pauseOnHover: false,
+      closeButton: false,
+      className: "text-center",
+      onClose: () => {
+        navigate(`/my/orders/${orderId}`);
+        deleteItens();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      },
+    });
+    } catch (error) {
         console.error("Erro ao enviar o pedido:", error);
-        toast.error("Erro ao realizar a compra. Tente novamente mais tarde.");
+        // toast.error("Erro ao realizar a compra. Tente novamente mais tarde.");
+        toast.update(loadingToastId, {
+          render: "Erro ao realizar a compra. Tente novamente mais tarde.",
+          type: "error",
+          position: "top-center",
+          hideProgressBar: true,
+          autoClose: 3000,
+          pauseOnHover: false,
+          closeButton: false,
+          className: "text-center",
+        });
       }
       // console.log({ data, cartItems, finalTotal });
   };
@@ -169,7 +189,6 @@ export function Checkout() {
                 // onSubmit={(e) => handleSubmit(e)}
                 onSubmit={handleSubmit(onSubmit)}
               >
-                {/* <CheckoutForm /> */}
                 <div className="row">
                   <div className="col-md-6 mb-3">
                     <label htmlFor="firstName">Nome</label>
@@ -468,6 +487,9 @@ export function Checkout() {
                         );
                       }}
                     />
+                    <small className="text-muted">
+                      Número do cartão de 16 dígitos 
+                    </small>
                     <div className="invalid-feedback">
                       {errors.ccNumber?.message || "Este campo é obrigatório."}
                     </div>
@@ -485,6 +507,9 @@ export function Checkout() {
                         required: "Validade é obrigatória",
                       })}
                     />
+                    <small className="text-muted">
+                      Exemplo: mês/ano
+                    </small>
                     <div className="invalid-feedback">
                       {errors.ccExpiration?.message ||
                         "Este campo é obrigatório."}
@@ -513,6 +538,9 @@ export function Checkout() {
                         setValue("ccCvv", value.slice(0, 3));
                       }}
                     />
+                    <small className="text-muted">
+                      Código de segurança
+                    </small>
                     <div className="invalid-feedback">
                       {errors.ccCvv?.message || "Este campo é obrigatório."}
                     </div>
