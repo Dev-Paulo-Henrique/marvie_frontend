@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { api } from "../../services/api";
 import { useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { formatDistance, subHours } from "date-fns";
+import { formatDistance } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { MdDelete } from "react-icons/md";
 import { Loading } from "../Loading";
@@ -125,7 +125,7 @@ export function Reviews({ isReadOnly = true }) {
                 </h5>
                 <small className="text-muted">
                   {formatDistance(
-                    subHours(new Date(review.created_at), 3),
+                    new Date(review.created_at),
                     new Date(),
                     {
                       addSuffix: true,
