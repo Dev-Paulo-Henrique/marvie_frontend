@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { faker } from "@faker-js/faker";
 import { Title } from "../../utils/Title";
 import { Header } from "../Admin/Header";
 import { Pagination } from "../../components/Pagination";
@@ -64,14 +63,16 @@ export function Orders() {
     ];
 
     const paymentTypes: PaymentType[] = ["visa", "mastercard", "pix", "billet"];
-    const paymentType = faker.helpers.arrayElement(paymentTypes);
+
+    const getRandomPaymentType = (): PaymentType => {
+      return paymentTypes[Math.floor(Math.random() * paymentTypes.length)];
+    };
 
     const fetchOrders = async () => {
       try {
         const response = await api.get("/orders", {
           headers: token ? { "x-access-token": token } : {},
         });
-
 
         const fetchedOrders = await Promise.all(
           response.data.map(async (order: OrderProps) => {
@@ -82,6 +83,9 @@ export function Orders() {
                   headers: token ? { "x-access-token": token } : {},
                 }
               );
+
+              const paymentType = getRandomPaymentType();
+              const paymentFlag = cardFlags[paymentType];
 
               return {
                 id: order.id,
@@ -97,7 +101,7 @@ export function Orders() {
                   "Status desconhecido",
                 clientName: userResponse.data.nome,
                 paymentType: ["visa", "mastercard", "pix", "billet"],
-                paymentFlag: cardFlags[paymentType],
+                paymentFlag,
               };
             } catch (userError) {
               console.error(
